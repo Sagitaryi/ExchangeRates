@@ -1,7 +1,10 @@
 import Foundation
 
+
+typealias CurrencyId = String // "EUR", "RUB" ...
+
 struct SymbolsModel {
-    let symbols: [String : String]
+    let symbols: [CurrencyId: String]
 }
 
 extension SymbolsModel {

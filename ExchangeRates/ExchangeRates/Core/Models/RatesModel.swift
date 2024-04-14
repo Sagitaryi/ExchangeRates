@@ -1,9 +1,9 @@
 import Foundation
 
 struct RatesModel {
-    let base: String
-    let date: String
-    let rates: [String : Double]
+    let base: CurrencyId
+    let date: String // DateTime !!! Парсинг !!!
+    let rates: [CurrencyId : Double]
 }
 
 extension RatesModel {
