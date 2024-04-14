@@ -4,7 +4,7 @@ enum NetworkClientError: Error {
     /// Ошибка создания запроса
     case request
     /// Ошибка сети - нет интернета или ресурс забанен
-  case network
+    case network
     /// Пустой ответ от сервера, при этом все ok
     case empty
     /// Ошибка сервера 40x, 50x, 60x и тп
