@@ -9,14 +9,19 @@ let networkClient = NetworkClient()
     }
 
     @IBAction func ReturnsAllCurrencies(_ sender: UIButton) {
-//        let symbols = SymbolsModel(response: <#T##SymbolsResponseDTO#>)
-//        let objectSymbolsService = SymbolsService(networkClient: networkClient)
-//        objectSymbolsService.fetchSymbols(completion: <#T##(Result<SymbolsModel, NetworkClientError>) -> ()#>)
-
-let objectSymbolsService = SymbolsService(networkClient: networkClient)
-        objectSymbolsService.fetchSymbols { result in
-            print(result)
+        print("Begin")
+        let service = SymbolsService(networkClient: networkClient)
+        service.fetchSymbols { result in
+            switch result {
+            case .success(let data):
+                print("OK")
+                print(data)
+            case .failure(let error):
+                print(error)
+            }
         }
+        print("end")
+
         }
 
 

@@ -1,5 +1,12 @@
 import Foundation
 
+enum APIPath {
+    static let host = "https://api.apilayer.com/"
+    static let path = "exchangerates_data/"
+    static var fullPath: String { host + path }
+}
+
+
 //enum HTTPMethodType: String {
 //    case get = "GET"
 //    case head = "HEAD"
@@ -17,13 +24,20 @@ import Foundation
 //        return url
 //    }
 //
-    enum APIPath {
-        static let hostURL = "https://api.apilayer.com/"
-        static let URL = "exchangerates_data/"
-    }
+
+//struct Kfu {
+//    let lk: Endpoints
+//
+//    enum Endpoints: String {
+//        case symbols
+//        case latest
+//    }
+//}
+//
+//let dfj = Kfu(lk: .latest)
 
 //    enum Endpoints: String {
 //        case symbols
 //        case rates = "latest"
 //    }
-}
+//}

@@ -1,15 +1,20 @@
 import Foundation
 
 final class RatesRequestBuilder {
-    func makeRequest() -> Result<URLRequest, Error> {
-        guard let url = URL(string: APIPath.shared. + endpoint) else {
-            return .failure(NetworkClientError.request)
-        }
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.addValue("tN6XcUKHL2u6REhZf9ZpQleUOiwNPjnP", forHTTPHeaderField: "apikey")
+//    final class SymbolsRequestBuilder {
+        private let endpoint = "latest"
+        private let 
 
-        return .success(request)
+        func makeRequest() -> Result<URLRequest, NetworkClientError> {
+            guard let url = URL(string: APIPath.fullPath + endpoint) else {
+                return .failure(.request)
+            }
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            request.addValue("tN6XcUKHL2u6REhZf9ZpQleUOiwNPjnP", forHTTPHeaderField: "apikey")
+
+            return .success(request)
+
     }
 }
 
