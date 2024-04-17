@@ -3,7 +3,7 @@ import Foundation
 final class SymbolsRequestBuilder {
     private let endpoint = "symbols"
 
-    func makeRequest() -> Result<URLRequest, NetworkClientError> {
+    fileprivate func makeRequest() -> Result<URLRequest, NetworkClientError> {
         guard let url = URL(string: APIPath.fullPath + endpoint) else {
             return .failure(.request)
         }

@@ -3,7 +3,7 @@ import Foundation
 
 typealias CurrencyId = String // "EUR", "RUB" ...
 
-struct SymbolsModel {
+struct SymbolsModel: Encodable {
     let symbols: [CurrencyId: String]
 }
 

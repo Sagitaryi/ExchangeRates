@@ -16,20 +16,33 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JeB-eN-HyJ">
-                                <rect key="frame" x="102.33333333333333" y="421" width="188.66666666666669" height="35"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Returns all currencies"/>
-                                <connections>
-                                    <action selector="ReturnsAllCurrencies:" destination="BYZ-38-t0r" eventType="touchUpInside" id="h5J-Ib-TUp"/>
-                                </connections>
-                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="HRN-Lx-7jg">
+                                <rect key="frame" x="112.66666666666667" y="371.66666666666669" width="167.66666666666663" height="108.66666666666669"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JeB-eN-HyJ">
+                                        <rect key="frame" x="5.6666666666666572" y="0.0" width="156.66666666666666" height="34.333333333333336"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Get all currencies"/>
+                                        <connections>
+                                            <action selector="getAllCurrenciesButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="zx2-yy-4dy"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P5W-dF-bu1">
+                                        <rect key="frame" x="0.0" y="74.333333333333314" width="167.66666666666669" height="34.333333333333343"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Get exchange rate "/>
+                                        <connections>
+                                            <action selector="getExchangeRateButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Bqr-zp-aRZ"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="JeB-eN-HyJ" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="9IE-4W-tKc"/>
-                            <constraint firstItem="JeB-eN-HyJ" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="woC-rr-ggt"/>
+                            <constraint firstItem="HRN-Lx-7jg" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Wnr-b9-iZD"/>
+                            <constraint firstItem="HRN-Lx-7jg" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="ayF-MN-PkM"/>
                         </constraints>
                     </view>
                 </viewController>

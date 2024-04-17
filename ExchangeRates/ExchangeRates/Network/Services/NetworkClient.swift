@@ -14,17 +14,17 @@ final class NetworkClient: NetworkClientProtocol {
                 completion(.failure(.network))
                 return
             }
-
+            
             guard let data = data else {
                 completion(.failure(.empty))
                 return
             }
-
+            
             guard httpResponse.statusCode == 200 else {
                 completion(.failure(.service(httpResponse.statusCode)))
                 return
             }
-
+            
             let decoder = JSONDecoder()
 
             do {
