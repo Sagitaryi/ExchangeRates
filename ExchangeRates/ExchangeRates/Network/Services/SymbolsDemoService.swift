@@ -7,16 +7,26 @@ protocol SymbolsDemoServiceProtocol {
 final class SymbolsDemoService: SymbolsDemoServiceProtocol {
 
     func fetchSymbols(completion: @escaping (Result<SymbolsModel, NetworkClientError>) -> ()) {
-        let arraySymbols = SymbolsModel(symbols: [ "RON": "Romanian Leu",
-                                                   "RSD": "Serbian Dinar",
-                                                   "RUB": "Russian Ruble",
-                                                   "RWF": "Rwandan Franc",
-                                                   "SAR": "Saudi Riyal",
-                                                   "SBD": "Solomon Islands Dollar",
-                                                   "SCR": "Seychellois Rupee",
-                                                   "SDG": "South Sudanese Pound",
-                                                   "SEK": "Swedish Krona"])
+        completion(.success(Constants.model))
+    }
+}
 
-        completion(.success(arraySymbols))
+private extension SymbolsDemoService {
+    
+    enum Constants {
+        
+        static let symbols: [CurrencyId: String] = [
+            "RON": "Romanian Leu",
+            "RSD": "Serbian Dinar",
+            "RUB": "Russian Ruble",
+            "RWF": "Rwandan Franc",
+            "SAR": "Saudi Riyal",
+            "SBD": "Solomon Islands Dollar",
+            "SCR": "Seychellois Rupee",
+            "SDG": "South Sudanese Pound",
+            "SEK": "Swedish Krona"
+        ]
+                
+        static let model = SymbolsModel(symbols: symbols)
     }
 }

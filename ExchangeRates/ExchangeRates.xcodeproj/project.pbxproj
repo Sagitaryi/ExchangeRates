@@ -22,6 +22,7 @@
 		5BC4C23A2BB543B100E40CFB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5BC4C2392BB543B100E40CFB /* Assets.xcassets */; };
 		5BC4C23D2BB543B100E40CFB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5BC4C23B2BB543B100E40CFB /* LaunchScreen.storyboard */; };
 		5BC4C2472BB5690200E40CFB /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC4C2462BB5690200E40CFB /* NetworkClient.swift */; };
+		8E09634F2BD41887001244DF /* TokenProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E09634E2BD41887001244DF /* TokenProvider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		5BC4C23C2BB543B100E40CFB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5BC4C23E2BB543B100E40CFB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5BC4C2462BB5690200E40CFB /* NetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
+		8E09634E2BD41887001244DF /* TokenProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenProvider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +118,7 @@
 			children = (
 				5BC2989D2BBC0390004928B2 /* Models */,
 				5BC2989C2BBC037B004928B2 /* Services */,
+				8E09634E2BD41887001244DF /* TokenProvider.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -230,6 +233,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5B01685C2BBFDAF000950730 /* SymbolsResponseDTO.swift in Sources */,
+				8E09634F2BD41887001244DF /* TokenProvider.swift in Sources */,
 				5B01685B2BBFDA8D00950730 /* SymbolsModel.swift in Sources */,
 				5BB787D22BBD30900009A870 /* RatesService.swift in Sources */,
 				5BC4C2352BB543AE00E40CFB /* ViewController.swift in Sources */,
