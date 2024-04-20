@@ -27,7 +27,6 @@ final class RatesRequestBuilder {
         guard let url = url else {
             return .failure(.request)
         }
-        print(url)
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.addValue("tN6XcUKHL2u6REhZf9ZpQleUOiwNPjnP", forHTTPHeaderField: "apikey")

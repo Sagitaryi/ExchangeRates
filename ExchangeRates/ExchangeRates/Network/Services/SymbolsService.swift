@@ -3,11 +3,19 @@ import Foundation
 final class SymbolsRequestBuilder {
     private let endpoint = "symbols"
 
+    private func makeURL() -> URL? {
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = "api.apilayer.com"
+        components.path = "/exchangerates_data/\(endpoint)"
+
+        return components.url
+    }
+
     fileprivate func makeRequest() -> Result<URLRequest, NetworkClientError> {
-        guard let url = URL(string: APIPath.fullPath + endpoint) else {
+        guard let url = makeURL() else {
             return .failure(.request)
         }
-        print(url)
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.addValue("tN6XcUKHL2u6REhZf9ZpQleUOiwNPjnP", forHTTPHeaderField: "apikey")
@@ -21,25 +29,27 @@ protocol SymbolsServiceProtocol {
 
 final class SymbolsService: SymbolsServiceProtocol {
     private let networkClient: NetworkClientProtocol
-    private var urlRequest: URLRequest?
+//    private var urlRequest: URLRequest?
 
     init(networkClient: NetworkClientProtocol) {
         self.networkClient = networkClient
     }
 
     func fetchSymbols(completion: @escaping (Result<SymbolsModel, NetworkClientError>) -> ()) {
-        let result = SymbolsRequestBuilder().makeRequest()
-        switch result {
-        case .success(let request):
-            print("request success")
-            urlRequest = request
-        case .failure(let error):
-            completion(.failure(error))
+        guard case let .success(urlRequest) = SymbolsRequestBuilder().makeRequest() else {
+            return completion(.failure(.request))
         }
+//
+//        let result = SymbolsRequestBuilder().makeRequest()
+//        switch result {
+//        case .success(let request):
+//            print("request success")
+//            urlRequest = request
+//        case .failure(let error):
+//            completion(.failure(error))
+//        }
 
-        if let request = urlRequest {
-            print("request = urlRequest")
-            networkClient.fetch(request: request ) { (result: Result<SymbolsResponseDTO, NetworkClientError>) in
+            networkClient.fetch(request: urlRequest ) { (result: Result<SymbolsResponseDTO, NetworkClientError>) in
                 switch result {
                 case .success(let responseData):
                     let model = SymbolsModel.init(response: responseData)
@@ -50,7 +60,7 @@ final class SymbolsService: SymbolsServiceProtocol {
             }
         }
     }
-}
+
 
 //        let arraySymbols = SymbolsModel(symbols: [ "RON": "Romanian Leu",
 //                                                   "RSD": "Serbian Dinar",

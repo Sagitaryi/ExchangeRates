@@ -11,10 +11,10 @@
 		5B01685C2BBFDAF000950730 /* SymbolsResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB787D82BBD6AE80009A870 /* SymbolsResponseDTO.swift */; };
 		5B01685D2BBFDB2900950730 /* RatesResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB787D72BBD6AE60009A870 /* RatesResponseDTO.swift */; };
 		5B01685F2BBFE13E00950730 /* RatesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B01685E2BBFE13E00950730 /* RatesModel.swift */; };
+		5B9B880C2BD408F000ADEF15 /* SymbolsDemoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9B880B2BD408F000ADEF15 /* SymbolsDemoService.swift */; };
 		5BB787C22BBD26520009A870 /* NetworkClientError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB787C12BBD26520009A870 /* NetworkClientError.swift */; };
 		5BB787D02BBD30070009A870 /* SymbolsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB787CF2BBD30070009A870 /* SymbolsService.swift */; };
 		5BB787D22BBD30900009A870 /* RatesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB787D12BBD30900009A870 /* RatesService.swift */; };
-		5BBD16E52BC622A0001D6DAF /* RequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBD16E42BC6229F001D6DAF /* RequestModel.swift */; };
 		5BC4C2312BB543AE00E40CFB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC4C2302BB543AE00E40CFB /* AppDelegate.swift */; };
 		5BC4C2332BB543AE00E40CFB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC4C2322BB543AE00E40CFB /* SceneDelegate.swift */; };
 		5BC4C2352BB543AE00E40CFB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC4C2342BB543AE00E40CFB /* ViewController.swift */; };
@@ -22,18 +22,17 @@
 		5BC4C23A2BB543B100E40CFB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5BC4C2392BB543B100E40CFB /* Assets.xcassets */; };
 		5BC4C23D2BB543B100E40CFB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5BC4C23B2BB543B100E40CFB /* LaunchScreen.storyboard */; };
 		5BC4C2472BB5690200E40CFB /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC4C2462BB5690200E40CFB /* NetworkClient.swift */; };
-		5BCD55DB2BC56845007DED68 /* APIPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCD55DA2BC56845007DED68 /* APIPath.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		5B01685A2BBFDA8D00950730 /* SymbolsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolsModel.swift; sourceTree = "<group>"; };
 		5B01685E2BBFE13E00950730 /* RatesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatesModel.swift; sourceTree = "<group>"; };
+		5B9B880B2BD408F000ADEF15 /* SymbolsDemoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolsDemoService.swift; sourceTree = "<group>"; };
 		5BB787C12BBD26520009A870 /* NetworkClientError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClientError.swift; sourceTree = "<group>"; };
 		5BB787CF2BBD30070009A870 /* SymbolsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolsService.swift; sourceTree = "<group>"; };
 		5BB787D12BBD30900009A870 /* RatesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatesService.swift; sourceTree = "<group>"; };
 		5BB787D72BBD6AE60009A870 /* RatesResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatesResponseDTO.swift; sourceTree = "<group>"; };
 		5BB787D82BBD6AE80009A870 /* SymbolsResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolsResponseDTO.swift; sourceTree = "<group>"; };
-		5BBD16E42BC6229F001D6DAF /* RequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestModel.swift; sourceTree = "<group>"; };
 		5BC4C22D2BB543AE00E40CFB /* ExchangeRates.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExchangeRates.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BC4C2302BB543AE00E40CFB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5BC4C2322BB543AE00E40CFB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -43,7 +42,6 @@
 		5BC4C23C2BB543B100E40CFB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5BC4C23E2BB543B100E40CFB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5BC4C2462BB5690200E40CFB /* NetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
-		5BCD55DA2BC56845007DED68 /* APIPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIPath.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +96,7 @@
 				5BC4C2462BB5690200E40CFB /* NetworkClient.swift */,
 				5BB787D12BBD30900009A870 /* RatesService.swift */,
 				5BB787CF2BBD30070009A870 /* SymbolsService.swift */,
+				5B9B880B2BD408F000ADEF15 /* SymbolsDemoService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -107,9 +106,7 @@
 			children = (
 				5BB787C12BBD26520009A870 /* NetworkClientError.swift */,
 				5BB787D72BBD6AE60009A870 /* RatesResponseDTO.swift */,
-				5BBD16E42BC6229F001D6DAF /* RequestModel.swift */,
 				5BB787D82BBD6AE80009A870 /* SymbolsResponseDTO.swift */,
-				5BCD55DA2BC56845007DED68 /* APIPath.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -235,11 +232,10 @@
 				5B01685C2BBFDAF000950730 /* SymbolsResponseDTO.swift in Sources */,
 				5B01685B2BBFDA8D00950730 /* SymbolsModel.swift in Sources */,
 				5BB787D22BBD30900009A870 /* RatesService.swift in Sources */,
-				5BBD16E52BC622A0001D6DAF /* RequestModel.swift in Sources */,
-				5BCD55DB2BC56845007DED68 /* APIPath.swift in Sources */,
 				5BC4C2352BB543AE00E40CFB /* ViewController.swift in Sources */,
 				5B01685D2BBFDB2900950730 /* RatesResponseDTO.swift in Sources */,
 				5BB787D02BBD30070009A870 /* SymbolsService.swift in Sources */,
+				5B9B880C2BD408F000ADEF15 /* SymbolsDemoService.swift in Sources */,
 				5BB787C22BBD26520009A870 /* NetworkClientError.swift in Sources */,
 				5BC4C2472BB5690200E40CFB /* NetworkClient.swift in Sources */,
 				5B01685F2BBFE13E00950730 /* RatesModel.swift in Sources */,

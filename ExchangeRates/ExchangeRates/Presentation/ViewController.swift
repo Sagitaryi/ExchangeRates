@@ -9,7 +9,6 @@ class ViewController: UIViewController {
     }
 
     @IBAction func getAllCurrenciesButtonPressed(_ sender: UIButton) {
-        print("Begin")
         let symbolsService = SymbolsService(networkClient: networkClient)
         symbolsService.fetchSymbols { result in
             switch result {
