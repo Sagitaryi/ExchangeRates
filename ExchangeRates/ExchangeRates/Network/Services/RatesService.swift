@@ -2,31 +2,38 @@ import Foundation
 
 final class RatesRequestBuilder {
     private let endpoint = "latest"
-    
+
     private func get(outputCurrencies: [CurrencyId]) -> CurrencyId {
-        var result: CurrencyId = ""
-        for currency in outputCurrencies {
-            if currency == outputCurrencies.first {
-                result = currency
-            } else {
-                result = ("\(result)%2C\(currency)")
-            }
-        }
-        return result
+        return outputCurrencies.joined(separator: ",")
     }
-    
+
+    private func makeURL(base: String,
+                         symbols: [String]) -> URL? {
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = "api.apilayer.com"
+        components.path = "/exchangerates_data/\(endpoint)"
+        components.queryItems = [
+            URLQueryItem(name: "symbols", value: get(outputCurrencies: symbols)),
+            URLQueryItem(name: "base", value: base)
+        ]
+
+        return components.url
+    }
+
     fileprivate func makeRequest(base: String,
                                  symbols: [String]) -> Result<URLRequest, NetworkClientError> {
-        guard let url = URL(string: ("\(APIPath.fullPath)\(endpoint)?symbols=\(get(outputCurrencies: symbols))&base=\(base)")) else {
+        let url = makeURL(base: base, symbols: symbols)
+        guard let url = url else {
             return .failure(.request)
         }
         print(url)
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.addValue("tN6XcUKHL2u6REhZf9ZpQleUOiwNPjnP", forHTTPHeaderField: "apikey")
-        
+
         return .success(request)
-        
+
     }
 }
 
@@ -41,7 +48,6 @@ protocol RatesServiceProtocol {
 final class RatesService: RatesServiceProtocol {
 
     private let networkClient: NetworkClientProtocol
-    private var urlRequest: URLRequest?
 
     init(networkClient: NetworkClientProtocol) {
         self.networkClient = networkClient
@@ -52,25 +58,21 @@ final class RatesService: RatesServiceProtocol {
         symbols: [String],
         completion: @escaping (Result<RatesModel, NetworkClientError>) -> ()
     ) {
-
-        let result = RatesRequestBuilder().makeRequest(base: base, symbols: symbols)
-        switch result {
-        case .success(let request):
-            urlRequest = request
-        case .failure(let error):
-            completion(.failure(error))
+        guard case let .success(urlRequest) = RatesRequestBuilder()
+            .makeRequest(base: base, symbols: symbols) else {
+            return completion(.failure(.request))
         }
 
-        if let request = urlRequest{
-            networkClient.fetch(request: request) { (result: Result<RatesResponseDTO, NetworkClientError>) in
-                switch result {
-                case .success(let data):
-                    let model = RatesModel(response: data)
-                    completion(.success(model))
-                case .failure(let error):
-                    completion(.failure(error))
-                }
+        networkClient.fetch(request: urlRequest) { (result: Result<RatesResponseDTO, NetworkClientError>) in
+            switch result {
+            case .success(let data):
+                let model = RatesModel(response: data)
+                completion(.success(model))
+            case .failure(let error):
+                completion(.failure(error))
             }
         }
     }
 }
+
+
