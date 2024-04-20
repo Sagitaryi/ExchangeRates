@@ -2,13 +2,17 @@ import Foundation
 
 struct RatesModel {
     let base: CurrencyId
-    let date: Date // DateTime !!! Парсинг !!!
+    let date: Date
     let rates: [CurrencyId : Double]
-    var errorGettingDate: String?
 }
 
 extension RatesModel {
-    init(response: RatesResponseDTO) {
+    init?(response: RatesResponseDTO) {
+        guard response.success else { return nil }
+        
+        
+        
+        /*
         func castingDate() -> (Date, String?) {
             var date = Date()
             var error: String?
@@ -25,6 +29,7 @@ extension RatesModel {
             }
             return (date, error)
         }
+        */
         self.init(base: response.base, date: castingDate().0, rates: response.rates, errorGettingDate: castingDate().1)
     }
 }
