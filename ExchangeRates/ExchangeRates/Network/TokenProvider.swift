@@ -11,3 +11,11 @@ final class TokenProvider: TokenProviderProtocol {
         urlRequest.addValue(TokenProvider.apiKey, forHTTPHeaderField: "apikey")
     }
 }
+
+// TODO: можно сделать еще константы так:
+
+private extension TokenProvider {
+    enum Constants {
+        static let ...
+    }
+}

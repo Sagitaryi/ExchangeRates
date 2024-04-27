@@ -28,6 +28,7 @@ final class SymbolsService: NetworkService, SymbolsServiceProtocol {
             switch result {
             case let .success(responseData):
                 guard let model = SymbolsModel(response: responseData) else {
+                    // TODO: вот так лучше не делать, ты в метод  fetchSymbols еще и self затягиваешь ... ради одного DispatchQueue.main.async  - грузно получается.
                     self.processCompletion(value: .failure(.incorrectData), completion: completion)
                     return
                 }
