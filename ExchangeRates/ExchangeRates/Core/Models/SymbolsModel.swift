@@ -1,6 +1,5 @@
 import Foundation
 
-
 typealias CurrencyId = String // "EUR", "RUB" ...
 
 struct SymbolsModel: Encodable {
@@ -8,7 +7,7 @@ struct SymbolsModel: Encodable {
 }
 
 extension SymbolsModel {
-    init?(response: SymbolsResponseDTO) {        
+    init?(response: SymbolsResponseDTO) {
         guard response.success else {
             return nil
         }

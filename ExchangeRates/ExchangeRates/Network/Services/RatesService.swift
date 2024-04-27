@@ -1,67 +1,68 @@
 import Foundation
 
-
 protocol RatesServiceProtocol {
     func fetchRates(
         base: String,
         symbols: [String],
-        completion: @escaping (Result<RatesModel, NetworkClientError>) -> ()
+        completion: @escaping (Result<RatesModel, NetworkClientError>) -> Void
     )
 }
 
-final class RatesService: RatesServiceProtocol {
-
-    private let networkClient: NetworkClientProtocol
-
-    init(networkClient: NetworkClientProtocol) {
-        self.networkClient = networkClient
-    }
+final class RatesService: NetworkService, RatesServiceProtocol {
+    private var model: RatesModel?
 
     func fetchRates(
         base: CurrencyId,
         symbols: [CurrencyId],
-        completion: @escaping (Result<RatesModel, NetworkClientError>) -> ()
+        completion: @escaping (Result<RatesModel, NetworkClientError>) -> Void
     ) {
-        guard case let .success(urlRequest) = RatesRequestBuilder()
-            .makeRequest(base: base, symbols: symbols) else {
+        if let model = model {
+            completion(.success(model))
+        }
+        guard case var .success(urlRequest) = RatesRequestBuilder()
+            .makeRequest(base: base, symbols: symbols)
+        else {
             DispatchQueue.main.async {
                 completion(.failure(.request))
             }
             return
         }
 
+        updateURLRequest(urlRequest: &urlRequest)
+
         networkClient.fetch(request: urlRequest) { (result: Result<RatesResponseDTO, NetworkClientError>) in
-            
-            let r: Result<RatesModel, NetworkClientError>
-            
+            let ratesModel: Result<RatesModel, NetworkClientError>
             switch result {
-            case .success(let data):
-                r = .success(RatesModel(response: data))
-            case .failure(let error):
-                r = .failure(error)
+            case let .success(data):
+                guard let model = RatesModel(response: data) else {
+                    ratesModel = .failure(.incorrectData)
+                    return
+                }
+                self.model = model
+                ratesModel = .success(model)
+            case let .failure(error):
+                ratesModel = .failure(error)
             }
             DispatchQueue.main.async {
-                completion(r)
+                completion(ratesModel)
             }
         }
     }
 }
 
-
 final class RatesRequestBuilder {
     private let endpoint = "latest"
 
     private func makeURL(base: String, symbols: [String]) -> URL? {
-        
         let symbolsParam = symbols.joined(separator: ",")
-        
+
         var components = URLComponents()
         components.scheme = "https"
         components.host = "api.apilayer.com"
         components.path = "/exchangerates_data/\(endpoint)"
         components.queryItems = [
             URLQueryItem(name: "symbols", value: symbolsParam),
-            URLQueryItem(name: "base", value: base)
+            URLQueryItem(name: "base", value: base),
         ]
 
         return components.url
@@ -74,9 +75,7 @@ final class RatesRequestBuilder {
         }
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        request.addValue("tN6XcUKHL2u6REhZf9ZpQleUOiwNPjnP", forHTTPHeaderField: "apikey")
 
         return .success(request)
     }
 }
-

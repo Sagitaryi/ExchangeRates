@@ -1,30 +1,40 @@
 import Foundation
 
 protocol SymbolsServiceProtocol {
-    func fetchSymbols(completion: @escaping (Result<SymbolsModel, NetworkClientError>) -> ())
+    func fetchSymbols(completion: @escaping (Result<SymbolsModel, NetworkClientError>) -> Void)
 }
 
-final class SymbolsService: SymbolsServiceProtocol {
-    private let networkClient: NetworkClientProtocol
+final class SymbolsService: NetworkService, SymbolsServiceProtocol {
+    private var model: SymbolsModel?
 
-    init(networkClient: NetworkClientProtocol) {
-        self.networkClient = networkClient
+    private func processCompletion(value: Result<SymbolsModel, NetworkClientError>, completion: @escaping (Result<SymbolsModel, NetworkClientError>) -> Void) {
+        DispatchQueue.main.async {
+            completion(value)
+        }
     }
 
-    func fetchSymbols(completion: @escaping (Result<SymbolsModel, NetworkClientError>) -> ()) {
- 
-        guard case let .success(urlRequest) = SymbolsRequestBuilder().makeRequest() else {
-            completion(.failure(.request))
+    func fetchSymbols(completion: @escaping (Result<SymbolsModel, NetworkClientError>) -> Void) {
+        if let model = model {
+            completion(.success(model))
+        }
+        guard case var .success(urlRequest) = SymbolsRequestBuilder().makeRequest() else {
+            processCompletion(value: .failure(.request), completion: completion)
             return
         }
-        
+
+        updateURLRequest(urlRequest: &urlRequest)
+
         networkClient.fetch(request: urlRequest) { (result: Result<SymbolsResponseDTO, NetworkClientError>) in
             switch result {
-            case .success(let responseData):
-                let model = SymbolsModel(response: responseData)
-                completion(.success(model))
-            case .failure(let error):
-                completion(.failure(error))
+            case let .success(responseData):
+                guard let model = SymbolsModel(response: responseData) else {
+                    self.processCompletion(value: .failure(.incorrectData), completion: completion)
+                    return
+                }
+                self.model = model
+                self.processCompletion(value: .success(model), completion: completion)
+            case let .failure(error):
+                self.processCompletion(value: .failure(error), completion: completion)
             }
         }
     }
@@ -48,7 +58,6 @@ final class SymbolsRequestBuilder {
         }
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        request.addValue("tN6XcUKHL2u6REhZf9ZpQleUOiwNPjnP", forHTTPHeaderField: "apikey")
         return .success(request)
     }
 }
