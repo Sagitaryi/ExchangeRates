@@ -1,7 +1,7 @@
 import Foundation
 
 class NetworkService {
-    let networkClient: NetworkClientProtocol // TODO: private нужно скрыть от изменения
+    let networkClient: NetworkClientProtocol
     let token = TokenProvider()              // TODO: private
 
     init(networkClient: NetworkClientProtocol) {
