@@ -5,17 +5,14 @@ protocol TokenProviderProtocol {
 }
 
 final class TokenProvider: TokenProviderProtocol {
-    private static let apiKey = "tN6XcUKHL2u6REhZf9ZpQleUOiwNPjnP"
-
     func injectToken(urlRequest: inout URLRequest) {
-        urlRequest.addValue(TokenProvider.apiKey, forHTTPHeaderField: "apikey")
+        urlRequest.addValue(Constants.apiKey, forHTTPHeaderField: Constants.httpHeader)
     }
 }
 
-// TODO: можно сделать еще константы так:
-
 private extension TokenProvider {
     enum Constants {
-        static let ...
+        static let apiKey = "tN6XcUKHL2u6REhZf9ZpQleUOiwNPjnP"
+        static let httpHeader = "apikey"
     }
 }

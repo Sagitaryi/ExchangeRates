@@ -1,14 +1,14 @@
 import Foundation
 
 class NetworkService {
-    let networkClient: NetworkClientProtocol // TODO: private нужно скрыть от изменения
-    let token = TokenProvider()              // TODO: private
+    let networkClient: NetworkClientProtocol
+    private let token = TokenProvider()
 
     init(networkClient: NetworkClientProtocol) {
         self.networkClient = networkClient
     }
 
-    func updateURLRequest(urlRequest: inout URLRequest) { // TODO: я бы тут более понятное название сделал, например updateToken и тп
+    func addingTokenToURLRequest(urlRequest: inout URLRequest) {
         token.injectToken(urlRequest: &urlRequest)
     }
 }

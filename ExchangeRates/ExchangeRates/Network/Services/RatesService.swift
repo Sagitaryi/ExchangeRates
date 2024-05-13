@@ -28,7 +28,7 @@ final class RatesService: NetworkService, RatesServiceProtocol {
             return
         }
 
-        updateURLRequest(urlRequest: &urlRequest)
+        addingTokenToURLRequest(urlRequest: &urlRequest)
 
         networkClient.fetch(request: urlRequest) { (result: Result<RatesResponseDTO, NetworkClientError>) in
             let ratesModel: Result<RatesModel, NetworkClientError>

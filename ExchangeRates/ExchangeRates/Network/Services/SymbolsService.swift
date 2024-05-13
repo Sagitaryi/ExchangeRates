@@ -22,7 +22,7 @@ final class SymbolsService: NetworkService, SymbolsServiceProtocol {
             return
         }
 
-        updateURLRequest(urlRequest: &urlRequest)
+        addingTokenToURLRequest(urlRequest: &urlRequest)
 
         networkClient.fetch(request: urlRequest) { (result: Result<SymbolsResponseDTO, NetworkClientError>) in
             switch result {
