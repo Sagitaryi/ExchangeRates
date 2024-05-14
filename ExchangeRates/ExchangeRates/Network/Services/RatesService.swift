@@ -4,6 +4,7 @@ protocol RatesServiceProtocol {
     func fetchRates(
         base: String,
         symbols: [String],
+        queue: DispatchQueue,
         completion: @escaping (Result<RatesModel, NetworkClientError>) -> Void
     )
 }
@@ -14,6 +15,7 @@ final class RatesService: NetworkService, RatesServiceProtocol {
     func fetchRates(
         base: CurrencyId,
         symbols: [CurrencyId],
+        queue: DispatchQueue = .main,
         completion: @escaping (Result<RatesModel, NetworkClientError>) -> Void
     ) {
         if let model = model {
@@ -22,7 +24,7 @@ final class RatesService: NetworkService, RatesServiceProtocol {
         guard case var .success(urlRequest) = RatesRequestBuilder()
             .makeRequest(base: base, symbols: symbols)
         else {
-            DispatchQueue.main.async {
+            queue.async {
                 completion(.failure(.request))
             }
             return
@@ -44,7 +46,7 @@ final class RatesService: NetworkService, RatesServiceProtocol {
             case let .failure(error):
                 ratesModel = .failure(error)
             }
-            DispatchQueue.main.async {
+            queue.async {
                 completion(ratesModel)
             }
         }

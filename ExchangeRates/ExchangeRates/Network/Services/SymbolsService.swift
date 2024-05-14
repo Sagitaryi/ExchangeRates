@@ -1,18 +1,18 @@
 import Foundation
 
 protocol SymbolsServiceProtocol {
-    func fetchSymbols(completion: @escaping (Result<SymbolsModel, NetworkClientError>) -> Void)
+    func fetchSymbols(queue: DispatchQueue, completion: @escaping (Result<SymbolsModel, NetworkClientError>) -> Void)
 }
 
 final class SymbolsService: NetworkService, SymbolsServiceProtocol {
     private var model: SymbolsModel?
 
-    func fetchSymbols(completion: @escaping (Result<SymbolsModel, NetworkClientError>) -> Void) {
+    func fetchSymbols(queue: DispatchQueue = .main, completion: @escaping (Result<SymbolsModel, NetworkClientError>) -> Void) {
         if let model = model {
             completion(.success(model))
         }
         guard case var .success(urlRequest) = SymbolsRequestBuilder().makeRequest() else {
-            DispatchQueue.main.async {
+            queue.async {
                 completion(.failure(.request))
             }
             return
@@ -34,7 +34,7 @@ final class SymbolsService: NetworkService, SymbolsServiceProtocol {
             case let .failure(error):
                 symbolsModel = .failure(error)
             }
-            DispatchQueue.main.async {
+            queue.async {
                 completion(symbolsModel)
             }
         }
