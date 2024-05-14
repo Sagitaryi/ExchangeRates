@@ -34,14 +34,14 @@ final class RatesService: NetworkService, RatesServiceProtocol {
             let ratesModel: Result<RatesModel, NetworkClientError>
 
             switch result {
-            case .success(let data):
+            case let .success(data):
                 if let model = RatesModel(response: data) {
                     self.model = model
                     ratesModel = .success(model)
                 } else {
                     ratesModel = .failure(.incorrectData) // TODO: не вызовется completion, зависнет этот кусок кода тут лучше тогда if let ... else  ...
                 }
-            case .failure(let error):
+            case let .failure(error):
                 ratesModel = .failure(error)
             }
             DispatchQueue.main.async {

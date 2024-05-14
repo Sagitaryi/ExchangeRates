@@ -7,35 +7,35 @@ protocol SymbolsServiceProtocol {
 final class SymbolsService: NetworkService, SymbolsServiceProtocol {
     private var model: SymbolsModel?
 
-    private func processCompletion(value: Result<SymbolsModel, NetworkClientError>, completion: @escaping (Result<SymbolsModel, NetworkClientError>) -> Void) {
-        DispatchQueue.main.async {
-            completion(value)
-        }
-    }
-
     func fetchSymbols(completion: @escaping (Result<SymbolsModel, NetworkClientError>) -> Void) {
         if let model = model {
             completion(.success(model))
         }
         guard case var .success(urlRequest) = SymbolsRequestBuilder().makeRequest() else {
-            processCompletion(value: .failure(.request), completion: completion)
+            DispatchQueue.main.async {
+                completion(.failure(.request))
+            }
             return
         }
 
         addingTokenToURLRequest(urlRequest: &urlRequest)
 
         networkClient.fetch(request: urlRequest) { (result: Result<SymbolsResponseDTO, NetworkClientError>) in
+            let symbolsModel: Result<SymbolsModel, NetworkClientError>
+
             switch result {
             case let .success(responseData):
-                guard let model = SymbolsModel(response: responseData) else {
-                    // TODO: вот так лучше не делать, ты в метод  fetchSymbols еще и self затягиваешь ... ради одного DispatchQueue.main.async  - грузно получается.
-                    self.processCompletion(value: .failure(.incorrectData), completion: completion)
-                    return
+                if let model = SymbolsModel(response: responseData) {
+                    self.model = model
+                    symbolsModel = .success(model)
+                } else {
+                    symbolsModel = .failure(.incorrectData)
                 }
-                self.model = model
-                self.processCompletion(value: .success(model), completion: completion)
             case let .failure(error):
-                self.processCompletion(value: .failure(error), completion: completion)
+                symbolsModel = .failure(error)
+            }
+            DispatchQueue.main.async {
+                completion(symbolsModel)
             }
         }
     }
