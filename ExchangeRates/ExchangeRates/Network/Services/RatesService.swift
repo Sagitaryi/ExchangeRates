@@ -32,15 +32,16 @@ final class RatesService: NetworkService, RatesServiceProtocol {
 
         networkClient.fetch(request: urlRequest) { (result: Result<RatesResponseDTO, NetworkClientError>) in
             let ratesModel: Result<RatesModel, NetworkClientError>
+
             switch result {
-            case let .success(data):
-                guard let model = RatesModel(response: data) else {
-                     ratesModel = .failure(.incorrectData) // TODO: не вызовется completion, зависнет этот кусок кода тут лучше тогда if let ... else  ... 
-                    return
+            case .success(let data):
+                if let model = RatesModel(response: data) {
+                    self.model = model
+                    ratesModel = .success(model)
+                } else {
+                    ratesModel = .failure(.incorrectData) // TODO: не вызовется completion, зависнет этот кусок кода тут лучше тогда if let ... else  ...
                 }
-                self.model = model
-                ratesModel = .success(model)
-            case let .failure(error):
+            case .failure(let error):
                 ratesModel = .failure(error)
             }
             DispatchQueue.main.async {
