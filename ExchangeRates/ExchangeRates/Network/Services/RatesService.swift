@@ -19,8 +19,12 @@ final class RatesService: NetworkService, RatesServiceProtocol {
         completion: @escaping (Result<RatesModel, NetworkClientError>) -> Void
     ) {
         if let model = model {
-            completion(.success(model))
+            queue.async {
+                completion(.success(model))
+            }
+            return
         }
+
         guard case var .success(urlRequest) = RatesRequestBuilder()
             .makeRequest(base: base, symbols: symbols)
         else {
