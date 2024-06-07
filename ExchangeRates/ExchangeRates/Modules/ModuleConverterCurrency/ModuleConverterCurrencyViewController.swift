@@ -1,6 +1,6 @@
 import UIKit
 
-class ViewController: UIViewController {
+class ModuleConverterCurrencyViewController: UIViewController {
     let networkClient = NetworkClient()
 
     override func viewDidLoad() {
