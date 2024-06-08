@@ -11,6 +11,15 @@
 		5B01685C2BBFDAF000950730 /* SymbolsResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB787D82BBD6AE80009A870 /* SymbolsResponseDTO.swift */; };
 		5B01685D2BBFDB2900950730 /* RatesResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB787D72BBD6AE60009A870 /* RatesResponseDTO.swift */; };
 		5B01685F2BBFE13E00950730 /* RatesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B01685E2BBFE13E00950730 /* RatesModel.swift */; };
+		5B70BDD72C0AFDF900B15191 /* ModuleConverterCurrencyPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B70BDD62C0AFDF900B15191 /* ModuleConverterCurrencyPresenter.swift */; };
+		5B70BDD92C0AFE0800B15191 /* ModuleConverterCurrencyRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B70BDD82C0AFE0800B15191 /* ModuleConverterCurrencyRouter.swift */; };
+		5B70BDDB2C0AFE1600B15191 /* ModuleConverterCurrencyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B70BDDA2C0AFE1600B15191 /* ModuleConverterCurrencyView.swift */; };
+		5B70BDDD2C0AFE2C00B15191 /* ModuleConverterCurrencyFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B70BDDC2C0AFE2C00B15191 /* ModuleConverterCurrencyFactory.swift */; };
+		5B99F7312C132FEC000B7B3B /* ModuleSelectionCurrencyFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99F7302C132FEC000B7B3B /* ModuleSelectionCurrencyFactory.swift */; };
+		5B99F7332C1330B5000B7B3B /* ModuleSelectionCurrencyPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99F7322C1330B5000B7B3B /* ModuleSelectionCurrencyPresenter.swift */; };
+		5B99F7352C1330DC000B7B3B /* ModuleSelectionCurrencyRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99F7342C1330DC000B7B3B /* ModuleSelectionCurrencyRouter.swift */; };
+		5B99F7372C1330E8000B7B3B /* ModuleSelectionCurrencyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99F7362C1330E8000B7B3B /* ModuleSelectionCurrencyView.swift */; };
+		5B99F7392C133110000B7B3B /* ModuleSelectionCurrencyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99F7382C133110000B7B3B /* ModuleSelectionCurrencyViewController.swift */; };
 		5B9B880C2BD408F000ADEF15 /* SymbolsDemoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9B880B2BD408F000ADEF15 /* SymbolsDemoService.swift */; };
 		5BACC1452BDBB3C5007422DD /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BACC1442BDBB3C5007422DD /* NetworkService.swift */; };
 		5BB787C22BBD26520009A870 /* NetworkClientError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB787C12BBD26520009A870 /* NetworkClientError.swift */; };
@@ -19,8 +28,7 @@
 		5BBC95952BD64D790038E10E /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBC95942BD64D790038E10E /* Extensions.swift */; };
 		5BC4C2312BB543AE00E40CFB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC4C2302BB543AE00E40CFB /* AppDelegate.swift */; };
 		5BC4C2332BB543AE00E40CFB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC4C2322BB543AE00E40CFB /* SceneDelegate.swift */; };
-		5BC4C2352BB543AE00E40CFB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC4C2342BB543AE00E40CFB /* ViewController.swift */; };
-		5BC4C2382BB543AE00E40CFB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5BC4C2362BB543AE00E40CFB /* Main.storyboard */; };
+		5BC4C2352BB543AE00E40CFB /* ModuleConverterCurrencyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC4C2342BB543AE00E40CFB /* ModuleConverterCurrencyViewController.swift */; };
 		5BC4C23A2BB543B100E40CFB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5BC4C2392BB543B100E40CFB /* Assets.xcassets */; };
 		5BC4C23D2BB543B100E40CFB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5BC4C23B2BB543B100E40CFB /* LaunchScreen.storyboard */; };
 		5BC4C2472BB5690200E40CFB /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC4C2462BB5690200E40CFB /* NetworkClient.swift */; };
@@ -30,6 +38,15 @@
 /* Begin PBXFileReference section */
 		5B01685A2BBFDA8D00950730 /* SymbolsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolsModel.swift; sourceTree = "<group>"; };
 		5B01685E2BBFE13E00950730 /* RatesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatesModel.swift; sourceTree = "<group>"; };
+		5B70BDD62C0AFDF900B15191 /* ModuleConverterCurrencyPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleConverterCurrencyPresenter.swift; sourceTree = "<group>"; };
+		5B70BDD82C0AFE0800B15191 /* ModuleConverterCurrencyRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleConverterCurrencyRouter.swift; sourceTree = "<group>"; };
+		5B70BDDA2C0AFE1600B15191 /* ModuleConverterCurrencyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleConverterCurrencyView.swift; sourceTree = "<group>"; };
+		5B70BDDC2C0AFE2C00B15191 /* ModuleConverterCurrencyFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleConverterCurrencyFactory.swift; sourceTree = "<group>"; };
+		5B99F7302C132FEC000B7B3B /* ModuleSelectionCurrencyFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleSelectionCurrencyFactory.swift; sourceTree = "<group>"; };
+		5B99F7322C1330B5000B7B3B /* ModuleSelectionCurrencyPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleSelectionCurrencyPresenter.swift; sourceTree = "<group>"; };
+		5B99F7342C1330DC000B7B3B /* ModuleSelectionCurrencyRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleSelectionCurrencyRouter.swift; sourceTree = "<group>"; };
+		5B99F7362C1330E8000B7B3B /* ModuleSelectionCurrencyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleSelectionCurrencyView.swift; sourceTree = "<group>"; };
+		5B99F7382C133110000B7B3B /* ModuleSelectionCurrencyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleSelectionCurrencyViewController.swift; sourceTree = "<group>"; };
 		5B9B880B2BD408F000ADEF15 /* SymbolsDemoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolsDemoService.swift; sourceTree = "<group>"; };
 		5BACC1442BDBB3C5007422DD /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		5BB787C12BBD26520009A870 /* NetworkClientError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClientError.swift; sourceTree = "<group>"; };
@@ -41,8 +58,7 @@
 		5BC4C22D2BB543AE00E40CFB /* ExchangeRates.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExchangeRates.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BC4C2302BB543AE00E40CFB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5BC4C2322BB543AE00E40CFB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		5BC4C2342BB543AE00E40CFB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		5BC4C2372BB543AE00E40CFB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		5BC4C2342BB543AE00E40CFB /* ModuleConverterCurrencyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleConverterCurrencyViewController.swift; sourceTree = "<group>"; };
 		5BC4C2392BB543B100E40CFB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5BC4C23C2BB543B100E40CFB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5BC4C23E2BB543B100E40CFB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -61,22 +77,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		5BB787CE2BBD2EC30009A870 /* Application */ = {
+		5B70BDDF2C0B012600B15191 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				5BCA4BA52C09C6080090E3B8 /* ModuleConverterCurrency */,
+				5BCA4BA62C09C7700090E3B8 /* ModuleSelectionCurrency */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		5BB787CE2BBD2EC30009A870 /* ApplicationDelegate */ = {
 			isa = PBXGroup;
 			children = (
 				5BC4C2302BB543AE00E40CFB /* AppDelegate.swift */,
 				5BC4C2322BB543AE00E40CFB /* SceneDelegate.swift */,
 			);
-			path = Application;
+			path = ApplicationDelegate;
 			sourceTree = "<group>";
 		};
-		5BB787D32BBD36B70009A870 /* Core */ = {
+		5BB787D32BBD36B70009A870 /* General */ = {
 			isa = PBXGroup;
 			children = (
 				5BBC95932BD64D5D0038E10E /* Extensions */,
 				5BED9B412BBFFDA8007AEB1F /* Models */,
 			);
-			path = Core;
+			path = General;
 			sourceTree = "<group>";
 		};
 		5BB787D42BBD36C10009A870 /* Resourses */ = {
@@ -86,15 +111,6 @@
 				5BC4C23B2BB543B100E40CFB /* LaunchScreen.storyboard */,
 			);
 			path = Resourses;
-			sourceTree = "<group>";
-		};
-		5BB787D52BBD36D00009A870 /* Presentation */ = {
-			isa = PBXGroup;
-			children = (
-				5BC4C2342BB543AE00E40CFB /* ViewController.swift */,
-				5BC4C2362BB543AE00E40CFB /* Main.storyboard */,
-			);
-			path = Presentation;
 			sourceTree = "<group>";
 		};
 		5BBC95932BD64D5D0038E10E /* Extensions */ = {
@@ -157,13 +173,37 @@
 			isa = PBXGroup;
 			children = (
 				5BC2989E2BBC03F1004928B2 /* Network */,
-				5BB787CE2BBD2EC30009A870 /* Application */,
-				5BB787D32BBD36B70009A870 /* Core */,
-				5BB787D52BBD36D00009A870 /* Presentation */,
+				5BB787CE2BBD2EC30009A870 /* ApplicationDelegate */,
+				5BB787D32BBD36B70009A870 /* General */,
+				5B70BDDF2C0B012600B15191 /* Modules */,
 				5BB787D42BBD36C10009A870 /* Resourses */,
 				5BC4C23E2BB543B100E40CFB /* Info.plist */,
 			);
 			path = ExchangeRates;
+			sourceTree = "<group>";
+		};
+		5BCA4BA52C09C6080090E3B8 /* ModuleConverterCurrency */ = {
+			isa = PBXGroup;
+			children = (
+				5BC4C2342BB543AE00E40CFB /* ModuleConverterCurrencyViewController.swift */,
+				5B70BDD62C0AFDF900B15191 /* ModuleConverterCurrencyPresenter.swift */,
+				5B70BDD82C0AFE0800B15191 /* ModuleConverterCurrencyRouter.swift */,
+				5B70BDDA2C0AFE1600B15191 /* ModuleConverterCurrencyView.swift */,
+				5B70BDDC2C0AFE2C00B15191 /* ModuleConverterCurrencyFactory.swift */,
+			);
+			path = ModuleConverterCurrency;
+			sourceTree = "<group>";
+		};
+		5BCA4BA62C09C7700090E3B8 /* ModuleSelectionCurrency */ = {
+			isa = PBXGroup;
+			children = (
+				5B99F7382C133110000B7B3B /* ModuleSelectionCurrencyViewController.swift */,
+				5B99F7302C132FEC000B7B3B /* ModuleSelectionCurrencyFactory.swift */,
+				5B99F7322C1330B5000B7B3B /* ModuleSelectionCurrencyPresenter.swift */,
+				5B99F7342C1330DC000B7B3B /* ModuleSelectionCurrencyRouter.swift */,
+				5B99F7362C1330E8000B7B3B /* ModuleSelectionCurrencyView.swift */,
+			);
+			path = ModuleSelectionCurrency;
 			sourceTree = "<group>";
 		};
 		5BED9B412BBFFDA8007AEB1F /* Models */ = {
@@ -237,7 +277,6 @@
 			files = (
 				5BC4C23D2BB543B100E40CFB /* LaunchScreen.storyboard in Resources */,
 				5BC4C23A2BB543B100E40CFB /* Assets.xcassets in Resources */,
-				5BC4C2382BB543AE00E40CFB /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -289,16 +328,25 @@
 			files = (
 				5B01685C2BBFDAF000950730 /* SymbolsResponseDTO.swift in Sources */,
 				8E09634F2BD41887001244DF /* TokenProvider.swift in Sources */,
+				5B70BDD72C0AFDF900B15191 /* ModuleConverterCurrencyPresenter.swift in Sources */,
 				5B01685B2BBFDA8D00950730 /* SymbolsModel.swift in Sources */,
+				5B99F7392C133110000B7B3B /* ModuleSelectionCurrencyViewController.swift in Sources */,
 				5BB787D22BBD30900009A870 /* RatesService.swift in Sources */,
-				5BC4C2352BB543AE00E40CFB /* ViewController.swift in Sources */,
+				5BC4C2352BB543AE00E40CFB /* ModuleConverterCurrencyViewController.swift in Sources */,
 				5B01685D2BBFDB2900950730 /* RatesResponseDTO.swift in Sources */,
 				5BB787D02BBD30070009A870 /* SymbolsService.swift in Sources */,
+				5B99F7372C1330E8000B7B3B /* ModuleSelectionCurrencyView.swift in Sources */,
+				5B70BDDB2C0AFE1600B15191 /* ModuleConverterCurrencyView.swift in Sources */,
 				5B9B880C2BD408F000ADEF15 /* SymbolsDemoService.swift in Sources */,
+				5B99F7312C132FEC000B7B3B /* ModuleSelectionCurrencyFactory.swift in Sources */,
+				5B99F7332C1330B5000B7B3B /* ModuleSelectionCurrencyPresenter.swift in Sources */,
+				5B70BDDD2C0AFE2C00B15191 /* ModuleConverterCurrencyFactory.swift in Sources */,
+				5B70BDD92C0AFE0800B15191 /* ModuleConverterCurrencyRouter.swift in Sources */,
 				5BB787C22BBD26520009A870 /* NetworkClientError.swift in Sources */,
 				5BC4C2472BB5690200E40CFB /* NetworkClient.swift in Sources */,
 				5BACC1452BDBB3C5007422DD /* NetworkService.swift in Sources */,
 				5B01685F2BBFE13E00950730 /* RatesModel.swift in Sources */,
+				5B99F7352C1330DC000B7B3B /* ModuleSelectionCurrencyRouter.swift in Sources */,
 				5BC4C2312BB543AE00E40CFB /* AppDelegate.swift in Sources */,
 				5BC4C2332BB543AE00E40CFB /* SceneDelegate.swift in Sources */,
 				5BBC95952BD64D790038E10E /* Extensions.swift in Sources */,
@@ -308,14 +356,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		5BC4C2362BB543AE00E40CFB /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				5BC4C2372BB543AE00E40CFB /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		5BC4C23B2BB543B100E40CFB /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -459,7 +499,6 @@
 				INFOPLIST_FILE = ExchangeRates/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -488,7 +527,6 @@
 				INFOPLIST_FILE = ExchangeRates/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (

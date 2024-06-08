@@ -114,3 +114,4 @@ private extension ModuleConverterCurrencyView {
         presenter.showNextVCTapButton()
     }
 }
+}
