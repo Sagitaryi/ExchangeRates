@@ -9,9 +9,7 @@ import UIKit
 
 protocol ModuleSelectionCurrencyPresenterProtocol {
     var title: String { get }
-//    var analiticScreenName: String { get }
-//
-//    func viewDidLoad()
+    func viewDidLoad()
     func showNextVCTapButton()
 }
 
@@ -23,8 +21,6 @@ final class ModuleSelectionCurrencyPresenter: ModuleSelectionCurrencyPresenterPr
 
     var title: String { "Add currency" }
 
-//    var analiticScreenName: String { "module_a_screen_name" }
-
     init(
         networkClient: NetworkClientProtocol,
         router: ModuleSelectionCurrencyRouterProtocol
@@ -33,28 +29,32 @@ final class ModuleSelectionCurrencyPresenter: ModuleSelectionCurrencyPresenterPr
         self.router = router
     }
 
-//    func viewDidLoad() {
-//        view?.stopLoader()
-//        service.requestData { [weak self] (result: Result<String, Error>) in
-//            guard let self else { return }
-//            view?.stopLoader()
-//
-//            switch result {
-//            case let .success(model):
-//                let model = ModuleAlphaView.Model(
-//                    text: model,
-//                    buttonText: "Go Go Go"
-//                )
-//                view?.update(model: model)
-//                break
-//            case .failure:
-//                view?.showError()
-//            }
-//        }
-//    }
-//
+    func viewDidLoad() {
+        view?.stopLoader()
+        let symbolsService = SymbolsService(networkClient: networkClient)
+        symbolsService.fetchSymbols { [self] result in
+            view?.stopLoader()
+            switch result {
+            case let .success(data):
+                print(data)
+                let model: ModuleSelectionCurrencyView.Model = .init(items: createModelItem(symbolsModel: data))
+                view?.update(model: model)
+            case let .failure(error):
+                print(error)
+            }
+        }
+    }
+
+    private func createModelItem(symbolsModel: SymbolsModel) -> [Item] {
+        var items: [Item] = []
+        for currency in symbolsModel.symbols {
+            items.append(Item(key: currency.key, value: currency.value, isSelected: false))
+        }
+        return items
+    }
+
     func showNextVCTapButton() {
         // открыть модуль Beta и передать туда параметры
-        router.openModuleSelectionCurrency(with: "sdfs")
+//        router.openModuleSelectionCurrency(with: "sdfs")
     }
 }

@@ -10,11 +10,13 @@ final class SymbolsService: NetworkService, SymbolsServiceProtocol {
     func fetchSymbols(queue: DispatchQueue = .main, completion: @escaping (Result<SymbolsModel, NetworkClientError>) -> Void) {
         if let model = model {
             queue.async {
+                print(11111)
                 completion(.success(model))
             }
             return
         }
 
+        print(22222)
         guard case var .success(urlRequest) = SymbolsRequestBuilder().makeRequest() else {
             queue.async {
                 completion(.failure(.request))

@@ -22,6 +22,7 @@
 		5B99F7392C133110000B7B3B /* ModuleSelectionCurrencyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99F7382C133110000B7B3B /* ModuleSelectionCurrencyViewController.swift */; };
 		5B9B880C2BD408F000ADEF15 /* SymbolsDemoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9B880B2BD408F000ADEF15 /* SymbolsDemoService.swift */; };
 		5BACC1452BDBB3C5007422DD /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BACC1442BDBB3C5007422DD /* NetworkService.swift */; };
+		5BB70C792C254AC800CDC6C3 /* ModuleSelectionCurrencyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB70C782C254AC800CDC6C3 /* ModuleSelectionCurrencyTableViewCell.swift */; };
 		5BB787C22BBD26520009A870 /* NetworkClientError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB787C12BBD26520009A870 /* NetworkClientError.swift */; };
 		5BB787D02BBD30070009A870 /* SymbolsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB787CF2BBD30070009A870 /* SymbolsService.swift */; };
 		5BB787D22BBD30900009A870 /* RatesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB787D12BBD30900009A870 /* RatesService.swift */; };
@@ -49,6 +50,7 @@
 		5B99F7382C133110000B7B3B /* ModuleSelectionCurrencyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleSelectionCurrencyViewController.swift; sourceTree = "<group>"; };
 		5B9B880B2BD408F000ADEF15 /* SymbolsDemoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolsDemoService.swift; sourceTree = "<group>"; };
 		5BACC1442BDBB3C5007422DD /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		5BB70C782C254AC800CDC6C3 /* ModuleSelectionCurrencyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleSelectionCurrencyTableViewCell.swift; sourceTree = "<group>"; };
 		5BB787C12BBD26520009A870 /* NetworkClientError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClientError.swift; sourceTree = "<group>"; };
 		5BB787CF2BBD30070009A870 /* SymbolsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolsService.swift; sourceTree = "<group>"; };
 		5BB787D12BBD30900009A870 /* RatesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatesService.swift; sourceTree = "<group>"; };
@@ -202,6 +204,7 @@
 				5B99F7322C1330B5000B7B3B /* ModuleSelectionCurrencyPresenter.swift */,
 				5B99F7342C1330DC000B7B3B /* ModuleSelectionCurrencyRouter.swift */,
 				5B99F7362C1330E8000B7B3B /* ModuleSelectionCurrencyView.swift */,
+				5BB70C782C254AC800CDC6C3 /* ModuleSelectionCurrencyTableViewCell.swift */,
 			);
 			path = ModuleSelectionCurrency;
 			sourceTree = "<group>";
@@ -350,6 +353,7 @@
 				5BC4C2312BB543AE00E40CFB /* AppDelegate.swift in Sources */,
 				5BC4C2332BB543AE00E40CFB /* SceneDelegate.swift in Sources */,
 				5BBC95952BD64D790038E10E /* Extensions.swift in Sources */,
+				5BB70C792C254AC800CDC6C3 /* ModuleSelectionCurrencyTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

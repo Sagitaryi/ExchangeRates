@@ -71,5 +71,4 @@ class ModuleConverterCurrencyViewController: UIViewController {
     }
 }
 
-
 extension ModuleConverterCurrencyViewController: ModuleConverterCurrencyViewProtocol {}

@@ -9,17 +9,18 @@ import UIKit
 protocol ModuleSelectionCurrencyViewProtocol: AnyObject {
 //    func setupNavBar() -> UIBarButtonItem
 //    func updateButtonNavBar(button: UIBarButtonItem)
-//    func update(model: ModuleAlphaView.Model)
+    func update(model: ModuleSelectionCurrencyView.Model)
 //    func showError()
 //    func showEmpty()
 //    func startLoader()
-//    func stopLoader()
+    func stopLoader()
 }
 
 class ModuleSelectionCurrencyViewController: UIViewController {
     let networkClient = NetworkClient()
     private let presenter: ModuleSelectionCurrencyPresenterProtocol
     private lazy var customView = ModuleSelectionCurrencyView(presenter: presenter)
+//    private let table: UITableView = .init()
 
     init(presenter: ModuleSelectionCurrencyPresenterProtocol) {
         self.presenter = presenter
@@ -39,6 +40,8 @@ class ModuleSelectionCurrencyViewController: UIViewController {
         super.viewDidLoad()
 //        view.backgroundColor = .systemBlue
         setupNavBar()
+        presenter.viewDidLoad()
+//        table
     }
 
     func setupNavBar() {
@@ -77,4 +80,24 @@ class ModuleSelectionCurrencyViewController: UIViewController {
     }
 }
 
-extension ModuleSelectionCurrencyViewController: ModuleSelectionCurrencyViewProtocol {}
+extension ModuleSelectionCurrencyViewController: ModuleSelectionCurrencyViewProtocol {
+    func update(model: ModuleSelectionCurrencyView.Model) {
+        customView.update(model: model)
+    }
+
+    func stopLoader() {
+        customView.stopLoader()
+    }
+}
+
+// extension ModuleSelectionCurrencyViewController: UITableViewDataSource {
+//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        return 2
+//    }
+//
+//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        <#code#>
+//    }
+//
+//
+// }

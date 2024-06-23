@@ -51,4 +51,3 @@ final class ModuleConverterCurrencyPresenter: ModuleConverterCurrencyPresenterPr
         router.openModuleSelectionCurrency(with: "sdfs")
     }
 }
-}

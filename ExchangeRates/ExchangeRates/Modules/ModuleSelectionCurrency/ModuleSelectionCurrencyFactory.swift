@@ -11,7 +11,6 @@ final class ModuleSelectionCurrencyFactory {
         let networkClient = NetworkClient()
 
         let router = ModuleSelectionCurrencyRouter(
-
             factory: ModuleSelectionCurrencyFactory()
         )
 
