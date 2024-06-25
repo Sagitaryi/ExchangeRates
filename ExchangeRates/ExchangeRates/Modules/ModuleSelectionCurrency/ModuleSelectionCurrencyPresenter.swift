@@ -10,6 +10,7 @@ import UIKit
 protocol ModuleSelectionCurrencyPresenterProtocol {
     var title: String { get }
     func viewDidLoad()
+    func tapCell(model: ModuleSelectionCurrencyView.Model?, index: Int, cell: ModuleSelectionCurrencyTableViewCell)
     func showNextVCTapButton()
 }
 
@@ -36,7 +37,6 @@ final class ModuleSelectionCurrencyPresenter: ModuleSelectionCurrencyPresenterPr
             view?.stopLoader()
             switch result {
             case let .success(data):
-                print(data)
                 let model: ModuleSelectionCurrencyView.Model = .init(items: createModelItem(symbolsModel: data))
                 view?.update(model: model)
             case let .failure(error):
@@ -47,10 +47,17 @@ final class ModuleSelectionCurrencyPresenter: ModuleSelectionCurrencyPresenterPr
 
     private func createModelItem(symbolsModel: SymbolsModel) -> [Item] {
         var items: [Item] = []
-        for currency in symbolsModel.symbols {
+        for currency in Array(symbolsModel.symbols).sorted(by: { $0.0 < $1.0 }) {
             items.append(Item(key: currency.key, value: currency.value, isSelected: false))
         }
         return items
+    }
+
+    func tapCell(model: ModuleSelectionCurrencyView.Model?, index: Int, cell _: ModuleSelectionCurrencyTableViewCell) {
+        guard var model = model else { return }
+        let isSelected = model.items[index].isSelected
+        model.items[index].isSelected = !isSelected
+        view?.update(model: model)
     }
 
     func showNextVCTapButton() {

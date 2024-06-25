@@ -1,11 +1,22 @@
 import UIKit
 
 class ModuleSelectionCurrencyTableViewCell: UITableViewCell {
-    var currency: UILabel = {
+    private enum ConstantConstraint: CGFloat {
+        case distanceToSide = 22
+        case spacingBetweenContent = 10
+        case sizeCheckbox = 20
+    }
+
+    private var currency: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 18)
+        label.font = UIFont.systemFont(ofSize: 15)
         label.textColor = .black
         return label
+    }()
+
+    private var checkBox: UIImageView = {
+        var imageView = UIImageView()
+        return imageView
     }()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -20,19 +31,28 @@ class ModuleSelectionCurrencyTableViewCell: UITableViewCell {
 
     private func setupCell() {
         currency.translatesAutoresizingMaskIntoConstraints = false
+        checkBox.translatesAutoresizingMaskIntoConstraints = false
+
         addSubview(currency)
+        addSubview(checkBox)
+
         NSLayoutConstraint.activate([
-            currency.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-            currency.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
+            currency.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: ConstantConstraint.distanceToSide.rawValue),
+            currency.trailingAnchor.constraint(equalTo: checkBox.leadingAnchor, constant: -ConstantConstraint.spacingBetweenContent.rawValue),
             currency.centerYAnchor.constraint(equalTo: centerYAnchor),
+            checkBox.leadingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -40),
+            checkBox.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -18),
+            checkBox.centerYAnchor.constraint(equalTo: centerYAnchor),
         ])
     }
 
     func configure(item: Item) {
         currency.text = "\(item.key) - \(item.value)"
+        showCheckBox(isSelected: item.isSelected)
     }
 
-//    func configure(symbols: String) {
-//        currency.text = symbols
-//    }
+    func showCheckBox(isSelected: Bool) {
+        let nameImage = isSelected ? "checkmark" : ""
+        checkBox.image = UIImage(systemName: nameImage)
+    }
 }

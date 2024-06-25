@@ -13,12 +13,12 @@ final class ModuleSelectionCurrencyView: UIView {
     // Модель через которую передают все изменения во View
 
     struct Model {
-        let items: [Item]
+        var items: [Item]
 
         struct Item {
             let key: String
             let value: String
-            let isSelected: Bool
+            var isSelected: Bool
         }
     }
 
@@ -113,4 +113,14 @@ extension ModuleSelectionCurrencyView: UITableViewDataSource {
     }
 }
 
-extension ModuleSelectionCurrencyView: UITableViewDelegate {}
+extension ModuleSelectionCurrencyView: UITableViewDelegate {
+    func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        guard let isSelected = model?.items[indexPath.row].isSelected else { return }
+//        model?.items[indexPath.row].isSelected = !isSelected
+//
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? ModuleSelectionCurrencyTableViewCell else { fatalError() }
+        ////
+//        cell.showCheckBox(isSelected: model?.items[indexPath.row].isSelected ?? false)
+        presenter.tapCell(model: model, index: indexPath.row, cell: cell)
+    }
+}

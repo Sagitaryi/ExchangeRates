@@ -27,6 +27,8 @@
 		5BB787D02BBD30070009A870 /* SymbolsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB787CF2BBD30070009A870 /* SymbolsService.swift */; };
 		5BB787D22BBD30900009A870 /* RatesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB787D12BBD30900009A870 /* RatesService.swift */; };
 		5BBC95952BD64D790038E10E /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBC95942BD64D790038E10E /* Extensions.swift */; };
+		5BC0571F2C296661000C5385 /* DataStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC0571E2C296660000C5385 /* DataStorageService.swift */; };
+		5BC057212C2981BD000C5385 /* CurrenciesReceived.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC057202C2981BD000C5385 /* CurrenciesReceived.swift */; };
 		5BC4C2312BB543AE00E40CFB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC4C2302BB543AE00E40CFB /* AppDelegate.swift */; };
 		5BC4C2332BB543AE00E40CFB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC4C2322BB543AE00E40CFB /* SceneDelegate.swift */; };
 		5BC4C2352BB543AE00E40CFB /* ModuleConverterCurrencyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC4C2342BB543AE00E40CFB /* ModuleConverterCurrencyViewController.swift */; };
@@ -57,6 +59,8 @@
 		5BB787D72BBD6AE60009A870 /* RatesResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatesResponseDTO.swift; sourceTree = "<group>"; };
 		5BB787D82BBD6AE80009A870 /* SymbolsResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolsResponseDTO.swift; sourceTree = "<group>"; };
 		5BBC95942BD64D790038E10E /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		5BC0571E2C296660000C5385 /* DataStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStorageService.swift; sourceTree = "<group>"; };
+		5BC057202C2981BD000C5385 /* CurrenciesReceived.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrenciesReceived.swift; sourceTree = "<group>"; };
 		5BC4C22D2BB543AE00E40CFB /* ExchangeRates.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExchangeRates.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BC4C2302BB543AE00E40CFB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5BC4C2322BB543AE00E40CFB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -100,6 +104,7 @@
 		5BB787D32BBD36B70009A870 /* General */ = {
 			isa = PBXGroup;
 			children = (
+				5BC0571D2C296637000C5385 /* Services */,
 				5BBC95932BD64D5D0038E10E /* Extensions */,
 				5BED9B412BBFFDA8007AEB1F /* Models */,
 			);
@@ -121,6 +126,14 @@
 				5BBC95942BD64D790038E10E /* Extensions.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		5BC0571D2C296637000C5385 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				5BC0571E2C296660000C5385 /* DataStorageService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		5BC2989C2BBC037B004928B2 /* Services */ = {
@@ -214,6 +227,7 @@
 			children = (
 				5B01685E2BBFE13E00950730 /* RatesModel.swift */,
 				5B01685A2BBFDA8D00950730 /* SymbolsModel.swift */,
+				5BC057202C2981BD000C5385 /* CurrenciesReceived.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -352,6 +366,8 @@
 				5B99F7352C1330DC000B7B3B /* ModuleSelectionCurrencyRouter.swift in Sources */,
 				5BC4C2312BB543AE00E40CFB /* AppDelegate.swift in Sources */,
 				5BC4C2332BB543AE00E40CFB /* SceneDelegate.swift in Sources */,
+				5BC0571F2C296661000C5385 /* DataStorageService.swift in Sources */,
+				5BC057212C2981BD000C5385 /* CurrenciesReceived.swift in Sources */,
 				5BBC95952BD64D790038E10E /* Extensions.swift in Sources */,
 				5BB70C792C254AC800CDC6C3 /* ModuleSelectionCurrencyTableViewCell.swift in Sources */,
 			);

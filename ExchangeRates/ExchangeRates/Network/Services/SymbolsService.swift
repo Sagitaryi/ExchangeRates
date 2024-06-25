@@ -5,18 +5,20 @@ protocol SymbolsServiceProtocol {
 }
 
 final class SymbolsService: NetworkService, SymbolsServiceProtocol {
-    private var model: SymbolsModel?
+    let keyStoredUserDefault = "currenciesReceived"
 
     func fetchSymbols(queue: DispatchQueue = .main, completion: @escaping (Result<SymbolsModel, NetworkClientError>) -> Void) {
-        if let model = model {
-            queue.async {
-                print(11111)
-                completion(.success(model))
+        if let currenciesReceived = UserDefaults.standard.value(CurrenciesReceived.self, forKey: keyStoredUserDefault) {
+            if Calendar.current.isDateInToday(currenciesReceived.date) {
+                queue.async {
+                    completion(.success(currenciesReceived.symbols))
+                    print("Get data from UserDefault")
+                }
             }
             return
         }
+        print("Get data from API")
 
-        print(22222)
         guard case var .success(urlRequest) = SymbolsRequestBuilder().makeRequest() else {
             queue.async {
                 completion(.failure(.request))
@@ -26,13 +28,14 @@ final class SymbolsService: NetworkService, SymbolsServiceProtocol {
 
         addingTokenToURLRequest(urlRequest: &urlRequest)
 
-        networkClient.fetch(request: urlRequest) { (result: Result<SymbolsResponseDTO, NetworkClientError>) in
+        networkClient.fetch(request: urlRequest) { [self] (result: Result<SymbolsResponseDTO, NetworkClientError>) in
             let symbolsModel: Result<SymbolsModel, NetworkClientError>
 
             switch result {
             case let .success(responseData):
                 if let model = SymbolsModel(response: responseData) {
-                    self.model = model
+                    let currenciesReceived: CurrenciesReceived = .init(date: Date(), symbols: model)
+                    storeDefaultData(value: currenciesReceived, key: keyStoredUserDefault)
                     symbolsModel = .success(model)
                 } else {
                     symbolsModel = .failure(.incorrectData)
@@ -66,5 +69,11 @@ final class SymbolsRequestBuilder {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         return .success(request)
+    }
+}
+
+extension SymbolsService: DataStorageServiceProtocol {
+    func storeDefaultData(value: Encodable, key: String) {
+        DataStorageService().storeDefaultData(value: value, key: key)
     }
 }
