@@ -4,8 +4,26 @@ protocol SymbolsServiceProtocol {
     func fetchSymbols(queue: DispatchQueue, completion: @escaping (Result<SymbolsModel, NetworkClientError>) -> Void)
 }
 
+class SymbolsServiceCacheble: SymbolsServiceProtocol {
+    
+    init(service: SymbolsService, cache: XXX) {
+                
+    }
+    
+    func fetchSymbols(queue: DispatchQueue, completion: @escaping (Result<SymbolsModel, NetworkClientError>) -> Void) {
+        if cache.get(XX, 14) xxx {
+            
+            
+        } else {
+            
+        }
+    }
+}
+
 final class SymbolsService: NetworkService, SymbolsServiceProtocol {
     let keyStoredUserDefault = "currenciesReceived"
+    
+    // TODO: !!! SymbolsRequestBuilder в init
 
     func fetchSymbols(queue: DispatchQueue = .main, completion: @escaping (Result<SymbolsModel, NetworkClientError>) -> Void) {
         if let currenciesReceived = UserDefaults.standard.value(CurrenciesReceived.self, forKey: keyStoredUserDefault) {
@@ -15,7 +33,7 @@ final class SymbolsService: NetworkService, SymbolsServiceProtocol {
                     print("Get data from UserDefault")
                 }
             }
-            return
+            return // TODO: !!!! Ошибка, completion НЕ ВЫЗЫВАЕТСЯ !!!
         }
         print("Get data from API")
 

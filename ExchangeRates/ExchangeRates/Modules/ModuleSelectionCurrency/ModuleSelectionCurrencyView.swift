@@ -121,6 +121,9 @@ extension ModuleSelectionCurrencyView: UITableViewDelegate {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? ModuleSelectionCurrencyTableViewCell else { fatalError() }
         ////
 //        cell.showCheckBox(isSelected: model?.items[indexPath.row].isSelected ?? false)
+        
+        // TODO: это не верно
+        // presenter.tapCell( просто ячейку index)
         presenter.tapCell(model: model, index: indexPath.row, cell: cell)
     }
 }

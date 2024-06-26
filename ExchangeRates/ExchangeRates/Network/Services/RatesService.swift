@@ -45,7 +45,7 @@ final class RatesService: NetworkService, RatesServiceProtocol {
                     self.model = model
                     ratesModel = .success(model)
                 } else {
-                    ratesModel = .failure(.incorrectData) // TODO: не вызовется completion, зависнет этот кусок кода тут лучше тогда if let ... else  ...
+                    ratesModel = .failure(.incorrectData)
                 }
             case let .failure(error):
                 ratesModel = .failure(error)

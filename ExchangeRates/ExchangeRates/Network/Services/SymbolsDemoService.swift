@@ -1,11 +1,8 @@
 import Foundation
 
-protocol SymbolsDemoServiceProtocol {
-    func fetchSymbols(completion: @escaping (Result<SymbolsModel, NetworkClientError>) -> Void)
-}
-
-final class SymbolsDemoService: SymbolsDemoServiceProtocol {
-    func fetchSymbols(completion: @escaping (Result<SymbolsModel, NetworkClientError>) -> Void) {
+final class SymbolsDemoService: SymbolsServiceProtocol {
+    
+    func fetchSymbols(queue: DispatchQueue, completion: @escaping (Result<SymbolsModel, NetworkClientError>) -> Void) {
         completion(.success(Constants.model))
     }
 }

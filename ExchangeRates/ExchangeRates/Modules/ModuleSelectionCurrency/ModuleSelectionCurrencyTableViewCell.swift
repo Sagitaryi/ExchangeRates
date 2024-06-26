@@ -1,12 +1,16 @@
 import UIKit
 
 class ModuleSelectionCurrencyTableViewCell: UITableViewCell {
+    
+    // TODO: на static let ...
     private enum ConstantConstraint: CGFloat {
         case distanceToSide = 22
         case spacingBetweenContent = 10
         case sizeCheckbox = 20
+        
+        // static let x = 10
     }
-
+    
     private var currencyLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 15)
@@ -29,10 +33,12 @@ class ModuleSelectionCurrencyTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // TODO: В private extension
     private func setupCell() {
         currencyLabel.translatesAutoresizingMaskIntoConstraints = false
         checkBoxImageView.translatesAutoresizingMaskIntoConstraints = false
 
+        // TODO: в content View
         addSubview(currencyLabel)
         addSubview(checkBoxImageView)
 
