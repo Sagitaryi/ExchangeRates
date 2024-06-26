@@ -13,13 +13,14 @@ final class ModuleConverterCurrencyView: UIView {
         return barButtonItem
     }()
 
-//    private lazy var button: UIButton = {
-//        let button = UIButton(type: .system)
-//        button.setTitle("Tap me please!", for: .normal)
-//        button.addTarget(self, action: #selector(onTapped), for: .touchUpInside)
-//        return button
-//    }()
-//
+    lazy var tableView: UITableView = {
+        let table = UITableView()
+        table.register(ModuleConverterCurrencyTableViewCell.self, forCellReuseIdentifier: "Cell")
+        table.delegate = self
+        table.dataSource = self
+        return table
+    }()
+
 //    private lazy var label: UILabel = {
 //        let label = UILabel()
 //        label.font = .boldSystemFont(ofSize: 25)
@@ -74,33 +75,19 @@ private extension ModuleConverterCurrencyView {
     }
 
     func setupSubviews() {
+        addSubview(tableView)
 //        addSubview(button)
 //        addSubview(label)
 //        addSubview(navBar)
     }
 
     func setupConstraints() {
-//        button.translatesAutoresizingMaskIntoConstraints = false
-//        label.translatesAutoresizingMaskIntoConstraints = false
-//        navBar.translatesAutoresizingMaskIntoConstraints = false
-
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            //            button.heightAnchor.constraint(equalToConstant: 45.0),
-//            button.widthAnchor.constraint(equalToConstant: 150.0),
-//            button.centerXAnchor.constraint(equalTo: centerXAnchor),
-//            button.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -20.0),
-//
-//            label.centerYAnchor.constraint(equalTo: centerYAnchor),
-//            label.centerXAnchor.constraint(equalTo: centerXAnchor),
-
-//            navBar.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 0),
-//            navBar.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: 0),
-//            navBar.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 0),
-//            navBar.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 92),
-//            heightAnchor.constraint(equalToConstant: 92.0),
-//            navBar.widthAnchor.constraint(equalToConstant: 390.0),
-//            navBar.centerXAnchor.constraint(equalTo: centerXAnchor),
-//            navBar.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: 0.0),
+            tableView.topAnchor.constraint(equalTo: topAnchor, constant: 0),
+            tableView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0),
+            tableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
+            tableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
         ])
     }
 
@@ -113,4 +100,56 @@ private extension ModuleConverterCurrencyView {
     func editTapped() {
         presenter.showNextVCTapButton()
     }
+}
+
+extension ModuleConverterCurrencyView: UITableViewDataSource {
+    func numberOfSections(in _: UITableView) -> Int {
+        return 2
+    }
+
+    func tableView(_: UITableView, titleForHeaderInSection section: Int) -> String? {
+        let nameSection: String
+        switch section {
+        case 0:
+            nameSection = "From:"
+        case 1:
+            nameSection = "To:"
+        default:
+            nameSection = ""
+        }
+        return nameSection
+    }
+
+    func tableView(_: UITableView, numberOfRowsInSection section: Int) -> Int {
+        let numberOfRows: Int
+        switch section {
+        case 0:
+            numberOfRows = 1
+        case 1:
+            numberOfRows = 5
+        default:
+            numberOfRows = 0
+        }
+        return numberOfRows
+    }
+
+    func tableView(_: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? ModuleConverterCurrencyTableViewCell else { fatalError() }
+//        cell.anteTextField.delegate = self
+//        guard let item = model?.items[indexPath.row] else { return UITableViewCell() }
+        cell.configure(item: "DFh")
+        return cell
+    }
+}
+
+extension ModuleConverterCurrencyView: UITableViewDelegate {
+//    func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
+    ////        guard let isSelected = model?.items[indexPath.row].isSelected else { return }
+    ////        model?.items[indexPath.row].isSelected = !isSelected
+    ////
+//        guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? ModuleSelectionCurrencyTableViewCell else { fatalError() }
+//        ////
+    ////        cell.showCheckBox(isSelected: model?.items[indexPath.row].isSelected ?? false)
+//        presenter.tapCell(model: model, index: indexPath.row, cell: cell)
+//    }
 }

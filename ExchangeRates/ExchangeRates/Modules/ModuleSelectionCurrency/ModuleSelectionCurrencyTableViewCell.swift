@@ -7,14 +7,14 @@ class ModuleSelectionCurrencyTableViewCell: UITableViewCell {
         case sizeCheckbox = 20
     }
 
-    private var currency: UILabel = {
+    private var currencyLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 15)
         label.textColor = .black
         return label
     }()
 
-    private var checkBox: UIImageView = {
+    private var checkBoxImageView: UIImageView = {
         var imageView = UIImageView()
         return imageView
     }()
@@ -30,29 +30,29 @@ class ModuleSelectionCurrencyTableViewCell: UITableViewCell {
     }
 
     private func setupCell() {
-        currency.translatesAutoresizingMaskIntoConstraints = false
-        checkBox.translatesAutoresizingMaskIntoConstraints = false
+        currencyLabel.translatesAutoresizingMaskIntoConstraints = false
+        checkBoxImageView.translatesAutoresizingMaskIntoConstraints = false
 
-        addSubview(currency)
-        addSubview(checkBox)
+        addSubview(currencyLabel)
+        addSubview(checkBoxImageView)
 
         NSLayoutConstraint.activate([
-            currency.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: ConstantConstraint.distanceToSide.rawValue),
-            currency.trailingAnchor.constraint(equalTo: checkBox.leadingAnchor, constant: -ConstantConstraint.spacingBetweenContent.rawValue),
-            currency.centerYAnchor.constraint(equalTo: centerYAnchor),
-            checkBox.leadingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -40),
-            checkBox.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -18),
-            checkBox.centerYAnchor.constraint(equalTo: centerYAnchor),
+            currencyLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: ConstantConstraint.distanceToSide.rawValue),
+            currencyLabel.trailingAnchor.constraint(equalTo: checkBoxImageView.leadingAnchor, constant: -ConstantConstraint.spacingBetweenContent.rawValue),
+            currencyLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            checkBoxImageView.leadingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -40),
+            checkBoxImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -18),
+            checkBoxImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
         ])
     }
 
     func configure(item: Item) {
-        currency.text = "\(item.key) - \(item.value)"
+        currencyLabel.text = "\(item.key) - \(item.value)"
         showCheckBox(isSelected: item.isSelected)
     }
 
     func showCheckBox(isSelected: Bool) {
         let nameImage = isSelected ? "checkmark" : ""
-        checkBox.image = UIImage(systemName: nameImage)
+        checkBoxImageView.image = UIImage(systemName: nameImage)
     }
 }

@@ -22,6 +22,7 @@
 		5B99F7392C133110000B7B3B /* ModuleSelectionCurrencyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99F7382C133110000B7B3B /* ModuleSelectionCurrencyViewController.swift */; };
 		5B9B880C2BD408F000ADEF15 /* SymbolsDemoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9B880B2BD408F000ADEF15 /* SymbolsDemoService.swift */; };
 		5BACC1452BDBB3C5007422DD /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BACC1442BDBB3C5007422DD /* NetworkService.swift */; };
+		5BB667802C2BEE4700F98B2D /* ModuleConverterCurrencyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB6677F2C2BEE4700F98B2D /* ModuleConverterCurrencyTableViewCell.swift */; };
 		5BB70C792C254AC800CDC6C3 /* ModuleSelectionCurrencyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB70C782C254AC800CDC6C3 /* ModuleSelectionCurrencyTableViewCell.swift */; };
 		5BB787C22BBD26520009A870 /* NetworkClientError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB787C12BBD26520009A870 /* NetworkClientError.swift */; };
 		5BB787D02BBD30070009A870 /* SymbolsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB787CF2BBD30070009A870 /* SymbolsService.swift */; };
@@ -52,6 +53,7 @@
 		5B99F7382C133110000B7B3B /* ModuleSelectionCurrencyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleSelectionCurrencyViewController.swift; sourceTree = "<group>"; };
 		5B9B880B2BD408F000ADEF15 /* SymbolsDemoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolsDemoService.swift; sourceTree = "<group>"; };
 		5BACC1442BDBB3C5007422DD /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		5BB6677F2C2BEE4700F98B2D /* ModuleConverterCurrencyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleConverterCurrencyTableViewCell.swift; sourceTree = "<group>"; };
 		5BB70C782C254AC800CDC6C3 /* ModuleSelectionCurrencyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleSelectionCurrencyTableViewCell.swift; sourceTree = "<group>"; };
 		5BB787C12BBD26520009A870 /* NetworkClientError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClientError.swift; sourceTree = "<group>"; };
 		5BB787CF2BBD30070009A870 /* SymbolsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolsService.swift; sourceTree = "<group>"; };
@@ -205,6 +207,7 @@
 				5B70BDD82C0AFE0800B15191 /* ModuleConverterCurrencyRouter.swift */,
 				5B70BDDA2C0AFE1600B15191 /* ModuleConverterCurrencyView.swift */,
 				5B70BDDC2C0AFE2C00B15191 /* ModuleConverterCurrencyFactory.swift */,
+				5BB6677F2C2BEE4700F98B2D /* ModuleConverterCurrencyTableViewCell.swift */,
 			);
 			path = ModuleConverterCurrency;
 			sourceTree = "<group>";
@@ -352,6 +355,7 @@
 				5BC4C2352BB543AE00E40CFB /* ModuleConverterCurrencyViewController.swift in Sources */,
 				5B01685D2BBFDB2900950730 /* RatesResponseDTO.swift in Sources */,
 				5BB787D02BBD30070009A870 /* SymbolsService.swift in Sources */,
+				5BB667802C2BEE4700F98B2D /* ModuleConverterCurrencyTableViewCell.swift in Sources */,
 				5B99F7372C1330E8000B7B3B /* ModuleSelectionCurrencyView.swift in Sources */,
 				5B70BDDB2C0AFE1600B15191 /* ModuleConverterCurrencyView.swift in Sources */,
 				5B9B880C2BD408F000ADEF15 /* SymbolsDemoService.swift in Sources */,
