@@ -1,30 +1,24 @@
-//
-//  ModuleSelectionCurrencyPresenter.swift
-//  ExchangeRates
-//
-//  Created by Алексей Чумаков on 07.06.2024.
-//
-
 import UIKit
 
-protocol ModuleSelectionCurrencyPresenterProtocol {
+protocol SelectionCurrencyPresenterProtocol {
     var title: String { get }
     func viewDidLoad()
-    func tapCell(model: ModuleSelectionCurrencyView.Model?, index: Int, cell: ModuleSelectionCurrencyTableViewCell)
-    func showNextVCTapButton()
+    func tapCell(model: SelectionCurrencyView.Model?, index: Int, cell: SelectionCurrencyTableViewCell)
+//    func showNextVCTapButton()
 }
 
-final class ModuleSelectionCurrencyPresenter: ModuleSelectionCurrencyPresenterProtocol {
-    weak var view: ModuleSelectionCurrencyViewProtocol?
+final class SelectionCurrencyPresenter: SelectionCurrencyPresenterProtocol {
+    weak var view: SelectionCurrencyViewProtocol?
 
     private let networkClient: NetworkClientProtocol
-    private let router: ModuleSelectionCurrencyRouterProtocol
+    private let router: SelectionCurrencyRouterProtocol
+    private var model: SelectionCurrencyView.Model?
 
     var title: String { "Add currency" }
 
     init(
         networkClient: NetworkClientProtocol,
-        router: ModuleSelectionCurrencyRouterProtocol
+        router: SelectionCurrencyRouterProtocol
     ) {
         self.networkClient = networkClient
         self.router = router
@@ -37,7 +31,7 @@ final class ModuleSelectionCurrencyPresenter: ModuleSelectionCurrencyPresenterPr
             view?.stopLoader()
             switch result {
             case let .success(data):
-                let model: ModuleSelectionCurrencyView.Model = .init(items: createModelItem(symbolsModel: data))
+                let model: SelectionCurrencyView.Model = .init(items: createModelItem(symbolsModel: data))
                 view?.update(model: model)
             case let .failure(error):
                 print(error)
@@ -53,15 +47,15 @@ final class ModuleSelectionCurrencyPresenter: ModuleSelectionCurrencyPresenterPr
         return items
     }
 
-    func tapCell(model: ModuleSelectionCurrencyView.Model?, index: Int, cell _: ModuleSelectionCurrencyTableViewCell) {
+    func tapCell(model: SelectionCurrencyView.Model?, index: Int, cell _: SelectionCurrencyTableViewCell) {
         guard var model = model else { return }
         let isSelected = model.items[index].isSelected
         model.items[index].isSelected = !isSelected
         view?.update(model: model)
     }
 
-    func showNextVCTapButton() {
-        // открыть модуль Beta и передать туда параметры
-//        router.openModuleSelectionCurrency(with: "sdfs")
-    }
+//    func showNextVCTapButton() {
+    // открыть следующий модуль и передать туда параметры
+//        router.openSelectionCurrency(with: "sdfs")
+//    }
 }

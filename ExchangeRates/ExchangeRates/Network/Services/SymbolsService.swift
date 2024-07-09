@@ -4,25 +4,35 @@ protocol SymbolsServiceProtocol {
     func fetchSymbols(queue: DispatchQueue, completion: @escaping (Result<SymbolsModel, NetworkClientError>) -> Void)
 }
 
-class SymbolsServiceCacheble: SymbolsServiceProtocol {
-    
-    init(service: SymbolsService, cache: XXX) {
-                
-    }
-    
-    func fetchSymbols(queue: DispatchQueue, completion: @escaping (Result<SymbolsModel, NetworkClientError>) -> Void) {
-        if cache.get(XX, 14) xxx {
-            
-            
-        } else {
-            
-        }
-    }
-}
+// class SymbolsServiceCacheble: SymbolsServiceProtocol {
+//
+//    init(service: SymbolsService, cache: XXX) {
+//
+//    }
+//
+//    func fetchSymbols(queue: DispatchQueue, completion: @escaping (Result<SymbolsModel, NetworkClientError>) -> Void) {
+//        if cache.get(XX, 14) xxx {
+//
+//
+//        } else {
+//
+//        }
+//    }
+// }
 
 final class SymbolsService: NetworkService, SymbolsServiceProtocol {
     let keyStoredUserDefault = "currenciesReceived"
-    
+//    let urlRequest: URLRequest
+
+//    init() {
+//
+    ////        self.urlRequest = SymbolsRequestBuilder().makeRequest()
+    ////        guard case var .success(urlRequest) = SymbolsRequestBuilder().makeRequest() else {
+    ////            queue.async {
+    ////                completion(.failure(.request))
+    ////            }
+//    }
+
     // TODO: !!! SymbolsRequestBuilder в init
 
     func fetchSymbols(queue: DispatchQueue = .main, completion: @escaping (Result<SymbolsModel, NetworkClientError>) -> Void) {
@@ -32,8 +42,8 @@ final class SymbolsService: NetworkService, SymbolsServiceProtocol {
                     completion(.success(currenciesReceived.symbols))
                     print("Get data from UserDefault")
                 }
+                return
             }
-            return // TODO: !!!! Ошибка, completion НЕ ВЫЗЫВАЕТСЯ !!!
         }
         print("Get data from API")
 

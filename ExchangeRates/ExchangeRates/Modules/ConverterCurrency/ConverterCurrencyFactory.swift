@@ -1,19 +1,19 @@
 import UIKit
 
-final class ModuleConverterCurrencyFactory {
+final class ConverterCurrencyFactory {
     func make() -> UIViewController {
         /// Только Factory может наполнять Presenter реальными сервисами и другими зависимостями
         let networkClient = NetworkClient()
 
-        let router = ModuleConverterCurrencyRouter(
-            factory: ModuleSelectionCurrencyFactory()
+        let router = ConverterCurrencyRouter(
+            factory: SelectionCurrencyFactory()
         )
 
-        let presenter = ModuleConverterCurrencyPresenter(
+        let presenter = ConverterCurrencyPresenter(
             networkClient: networkClient,
             router: router
         )
-        let vc = ModuleConverterCurrencyViewController(presenter: presenter)
+        let vc = ConverterCurrencyViewController(presenter: presenter)
 
         presenter.view = vc
         router.setRootViewController(root: vc)

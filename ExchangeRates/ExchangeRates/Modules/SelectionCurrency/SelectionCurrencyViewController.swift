@@ -6,23 +6,23 @@
 //
 import UIKit
 
-protocol ModuleSelectionCurrencyViewProtocol: AnyObject {
+protocol SelectionCurrencyViewProtocol: AnyObject {
 //    func setupNavBar() -> UIBarButtonItem
 //    func updateButtonNavBar(button: UIBarButtonItem)
-    func update(model: ModuleSelectionCurrencyView.Model)
+    func update(model: SelectionCurrencyView.Model)
 //    func showError()
 //    func showEmpty()
 //    func startLoader()
     func stopLoader()
 }
 
-class ModuleSelectionCurrencyViewController: UIViewController {
+class SelectionCurrencyViewController: UIViewController {
     let networkClient = NetworkClient()
-    private let presenter: ModuleSelectionCurrencyPresenterProtocol
-    private lazy var customView = ModuleSelectionCurrencyView(presenter: presenter)
+    private let presenter: SelectionCurrencyPresenterProtocol
+    private lazy var customView = SelectionCurrencyView(presenter: presenter)
 //    private let table: UITableView = .init()
 
-    init(presenter: ModuleSelectionCurrencyPresenterProtocol) {
+    init(presenter: SelectionCurrencyPresenterProtocol) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
     }
@@ -80,8 +80,8 @@ class ModuleSelectionCurrencyViewController: UIViewController {
     }
 }
 
-extension ModuleSelectionCurrencyViewController: ModuleSelectionCurrencyViewProtocol {
-    func update(model: ModuleSelectionCurrencyView.Model) {
+extension SelectionCurrencyViewController: SelectionCurrencyViewProtocol {
+    func update(model: SelectionCurrencyView.Model) {
         customView.update(model: model)
     }
 
@@ -90,7 +90,7 @@ extension ModuleSelectionCurrencyViewController: ModuleSelectionCurrencyViewProt
     }
 }
 
-// extension ModuleSelectionCurrencyViewController: UITableViewDataSource {
+// extension SelectionCurrencyViewController: UITableViewDataSource {
 //    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 //        return 2
 //    }

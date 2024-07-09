@@ -1,5 +1,5 @@
 //
-//  ModuleSelectionCurrencyRouter.swift
+//  SelectionCurrencyRouter.swift
 //  ExchangeRates
 //
 //  Created by Алексей Чумаков on 07.06.2024.
@@ -8,18 +8,18 @@
 import UIKit
 
 // Роутер, который открывает все переходы с модуля Alpha
-protocol ModuleSelectionCurrencyRouterProtocol: AnyObject {
+protocol SelectionCurrencyRouterProtocol: AnyObject {
     // Модуль Alpha показывает модуль Beta и передает в него параметры.
-    func openModuleSelectionCurrency(with param: String)
+    func openSelectionCurrency(with param: String)
 }
 
-final class ModuleSelectionCurrencyRouter: ModuleSelectionCurrencyRouterProtocol {
-//    private let factory: ModuleSelectionCurrencyFactory
-    private let factory: ModuleSelectionCurrencyFactory
+final class SelectionCurrencyRouter: SelectionCurrencyRouterProtocol {
+//    private let factory: CurrencyFactory
+    private let factory: SelectionCurrencyFactory
 
     private weak var root: UIViewController?
 
-    init(factory: ModuleSelectionCurrencyFactory) {
+    init(factory: SelectionCurrencyFactory) {
         self.factory = factory
     }
 
@@ -28,8 +28,8 @@ final class ModuleSelectionCurrencyRouter: ModuleSelectionCurrencyRouterProtocol
     }
 
 //     Модуль Alpha показывает модуль Beta и передает в него параметры.
-    func openModuleSelectionCurrency(with param: String) {
-        let context = ModuleSelectionCurrencyFactory.Context(
+    func openSelectionCurrency(with param: String) {
+        let context = SelectionCurrencyFactory.Context(
             someParam: param,
             someValue: 100
         )

@@ -1,6 +1,6 @@
 import UIKit
 
-protocol ModuleConverterCurrencyViewProtocol: AnyObject {
+protocol ConverterCurrencyViewProtocol: AnyObject {
     //    func setupNavBar() -> UIBarButtonItem
     //    func updateButtonNavBar(button: UIBarButtonItem)
     //    func update(model: ModuleAlphaView.Model)
@@ -10,12 +10,12 @@ protocol ModuleConverterCurrencyViewProtocol: AnyObject {
     //    func stopLoader()
 }
 
-class ModuleConverterCurrencyViewController: UIViewController {
+class ConverterCurrencyViewController: UIViewController {
     let networkClient = NetworkClient()
-    private let presenter: ModuleConverterCurrencyPresenterProtocol
-    private lazy var customView = ModuleConverterCurrencyView(presenter: presenter)
+    private let presenter: ConverterCurrencyPresenterProtocol
+    private lazy var customView = ConverterCurrencyView(presenter: presenter)
 
-    init(presenter: ModuleConverterCurrencyPresenterProtocol) {
+    init(presenter: ConverterCurrencyPresenterProtocol) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
     }
@@ -71,4 +71,4 @@ class ModuleConverterCurrencyViewController: UIViewController {
     }
 }
 
-extension ModuleConverterCurrencyViewController: ModuleConverterCurrencyViewProtocol {}
+extension ConverterCurrencyViewController: ConverterCurrencyViewProtocol {}

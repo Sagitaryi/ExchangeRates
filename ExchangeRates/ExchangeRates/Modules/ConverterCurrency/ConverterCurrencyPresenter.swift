@@ -1,6 +1,6 @@
 import UIKit
 
-protocol ModuleConverterCurrencyPresenterProtocol {
+protocol ConverterCurrencyPresenterProtocol {
     var title: String { get }
 //    var analiticScreenName: String { get }
 //
@@ -8,11 +8,11 @@ protocol ModuleConverterCurrencyPresenterProtocol {
     func showNextVCTapButton()
 }
 
-final class ModuleConverterCurrencyPresenter: ModuleConverterCurrencyPresenterProtocol {
-    weak var view: ModuleConverterCurrencyViewProtocol?
+final class ConverterCurrencyPresenter: ConverterCurrencyPresenterProtocol {
+    weak var view: ConverterCurrencyViewProtocol?
 
     private let networkClient: NetworkClientProtocol
-    private let router: ModuleConverterCurrencyRouterProtocol
+    private let router: ConverterCurrencyRouterProtocol
 
     var title: String { "Currencies" }
 
@@ -20,7 +20,7 @@ final class ModuleConverterCurrencyPresenter: ModuleConverterCurrencyPresenterPr
 
     init(
         networkClient: NetworkClientProtocol,
-        router: ModuleConverterCurrencyRouterProtocol
+        router: ConverterCurrencyRouterProtocol
     ) {
         self.networkClient = networkClient
         self.router = router
@@ -48,6 +48,6 @@ final class ModuleConverterCurrencyPresenter: ModuleConverterCurrencyPresenterPr
 //
     func showNextVCTapButton() {
         // открыть модуль Beta и передать туда параметры
-        router.openModuleSelectionCurrency(with: "sdfs")
+        router.openSelectionCurrency(with: "sdfs")
     }
 }

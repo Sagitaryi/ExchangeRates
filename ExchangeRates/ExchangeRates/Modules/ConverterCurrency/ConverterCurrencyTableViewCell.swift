@@ -1,6 +1,6 @@
 import UIKit
 
-class ModuleConverterCurrencyTableViewCell: UITableViewCell {
+class ConverterCurrencyTableViewCell: UITableViewCell {
     private enum ConstantConstraint: CGFloat {
         case distanceToSide = 22
         case spacingBetweenContent = 10

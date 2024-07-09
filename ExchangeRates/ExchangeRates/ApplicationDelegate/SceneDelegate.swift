@@ -7,7 +7,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = .init(windowScene: windowScene)
 
-        let converterModule = ModuleConverterCurrencyFactory().make()
+        let converterModule = ConverterCurrencyFactory().make()
 
         let nav = UINavigationController(rootViewController: converterModule)
         nav.navigationBar.prefersLargeTitles = true

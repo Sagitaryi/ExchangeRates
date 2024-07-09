@@ -1,16 +1,15 @@
 import UIKit
 
-class ModuleSelectionCurrencyTableViewCell: UITableViewCell {
-    
+class SelectionCurrencyTableViewCell: UITableViewCell {
     // TODO: на static let ...
     private enum ConstantConstraint: CGFloat {
         case distanceToSide = 22
         case spacingBetweenContent = 10
         case sizeCheckbox = 20
-        
+
         // static let x = 10
     }
-    
+
     private var currencyLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 15)

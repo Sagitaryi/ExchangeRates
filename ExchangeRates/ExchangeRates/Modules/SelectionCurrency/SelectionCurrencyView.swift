@@ -1,17 +1,9 @@
-//
-//  ModuleSelectionCurrencyView.swift
-//  ExchangeRates
-//
-//  Created by Алексей Чумаков on 07.06.2024.
-//
-
 import UIKit
 
-typealias Item = ModuleSelectionCurrencyView.Model.Item
+typealias Item = SelectionCurrencyView.Model.Item
 
-final class ModuleSelectionCurrencyView: UIView {
+final class SelectionCurrencyView: UIView {
     // Модель через которую передают все изменения во View
-
     struct Model {
         var items: [Item]
 
@@ -26,15 +18,15 @@ final class ModuleSelectionCurrencyView: UIView {
 
     lazy var tableView: UITableView = {
         let table = UITableView()
-        table.register(ModuleSelectionCurrencyTableViewCell.self, forCellReuseIdentifier: "Cell")
+        table.register(SelectionCurrencyTableViewCell.self, forCellReuseIdentifier: "Cell")
         table.delegate = self
         table.dataSource = self
         return table
     }()
 
-    private let presenter: ModuleSelectionCurrencyPresenterProtocol
+    private let presenter: SelectionCurrencyPresenterProtocol
 
-    init(presenter: ModuleSelectionCurrencyPresenterProtocol) {
+    init(presenter: SelectionCurrencyPresenterProtocol) {
         self.presenter = presenter
         super.init(frame: .zero)
         commonInit()
@@ -67,7 +59,7 @@ final class ModuleSelectionCurrencyView: UIView {
     }
 }
 
-private extension ModuleSelectionCurrencyView {
+private extension SelectionCurrencyView {
     func commonInit() {
         backgroundColor = .white
         setupSubviews()
@@ -99,13 +91,13 @@ private extension ModuleSelectionCurrencyView {
 //    }
 }
 
-extension ModuleSelectionCurrencyView: UITableViewDataSource {
+extension SelectionCurrencyView: UITableViewDataSource {
     func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
         return model?.items.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? ModuleSelectionCurrencyTableViewCell else { fatalError() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? SelectionCurrencyTableViewCell else { fatalError() }
 
         guard let item = model?.items[indexPath.row] else { return UITableViewCell() }
         cell.configure(item: item)
@@ -113,15 +105,15 @@ extension ModuleSelectionCurrencyView: UITableViewDataSource {
     }
 }
 
-extension ModuleSelectionCurrencyView: UITableViewDelegate {
+extension SelectionCurrencyView: UITableViewDelegate {
     func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
 //        guard let isSelected = model?.items[indexPath.row].isSelected else { return }
 //        model?.items[indexPath.row].isSelected = !isSelected
 //
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? ModuleSelectionCurrencyTableViewCell else { fatalError() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? SelectionCurrencyTableViewCell else { fatalError() }
         ////
 //        cell.showCheckBox(isSelected: model?.items[indexPath.row].isSelected ?? false)
-        
+
         // TODO: это не верно
         // presenter.tapCell( просто ячейку index)
         presenter.tapCell(model: model, index: indexPath.row, cell: cell)

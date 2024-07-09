@@ -1,6 +1,6 @@
 import UIKit
 
-final class ModuleConverterCurrencyView: UIView {
+final class ConverterCurrencyView: UIView {
     // Модель через которую передают все изменения во View
     struct Model {
         let text: String
@@ -15,7 +15,7 @@ final class ModuleConverterCurrencyView: UIView {
 
     lazy var tableView: UITableView = {
         let table = UITableView()
-        table.register(ModuleConverterCurrencyTableViewCell.self, forCellReuseIdentifier: "Cell")
+        table.register(ConverterCurrencyTableViewCell.self, forCellReuseIdentifier: "Cell")
         table.delegate = self
         table.dataSource = self
         return table
@@ -28,9 +28,9 @@ final class ModuleConverterCurrencyView: UIView {
 //        return label
 //    }()
 
-    private let presenter: ModuleConverterCurrencyPresenterProtocol
+    private let presenter: ConverterCurrencyPresenterProtocol
 
-    init(presenter: ModuleConverterCurrencyPresenterProtocol) {
+    init(presenter: ConverterCurrencyPresenterProtocol) {
         self.presenter = presenter
         super.init(frame: .zero)
         commonInit()
@@ -67,7 +67,7 @@ final class ModuleConverterCurrencyView: UIView {
     }
 }
 
-private extension ModuleConverterCurrencyView {
+private extension ConverterCurrencyView {
     func commonInit() {
         backgroundColor = .white
         setupSubviews()
@@ -102,7 +102,7 @@ private extension ModuleConverterCurrencyView {
     }
 }
 
-extension ModuleConverterCurrencyView: UITableViewDataSource {
+extension ConverterCurrencyView: UITableViewDataSource {
     func numberOfSections(in _: UITableView) -> Int {
         return 2
     }
@@ -134,7 +134,7 @@ extension ModuleConverterCurrencyView: UITableViewDataSource {
     }
 
     func tableView(_: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? ModuleConverterCurrencyTableViewCell else { fatalError() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? ConverterCurrencyTableViewCell else { fatalError() }
 //        cell.anteTextField.delegate = self
 //        guard let item = model?.items[indexPath.row] else { return UITableViewCell() }
         cell.configure(item: "DFh")
@@ -142,12 +142,12 @@ extension ModuleConverterCurrencyView: UITableViewDataSource {
     }
 }
 
-extension ModuleConverterCurrencyView: UITableViewDelegate {
+extension ConverterCurrencyView: UITableViewDelegate {
 //    func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
     ////        guard let isSelected = model?.items[indexPath.row].isSelected else { return }
     ////        model?.items[indexPath.row].isSelected = !isSelected
     ////
-//        guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? ModuleSelectionCurrencyTableViewCell else { fatalError() }
+//        guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? SelectionCurrencyTableViewCell else { fatalError() }
 //        ////
     ////        cell.showCheckBox(isSelected: model?.items[indexPath.row].isSelected ?? false)
 //        presenter.tapCell(model: model, index: indexPath.row, cell: cell)

@@ -1,17 +1,17 @@
 import UIKit
 
 // Роутер, который открывает все переходы с модуля Alpha
-protocol ModuleConverterCurrencyRouterProtocol: AnyObject {
+protocol ConverterCurrencyRouterProtocol: AnyObject {
     // Модуль Alpha показывает модуль Beta и передает в него параметры.
-    func openModuleSelectionCurrency(with param: String)
+    func openSelectionCurrency(with param: String)
 }
 
-final class ModuleConverterCurrencyRouter: ModuleConverterCurrencyRouterProtocol {
-    private let factory: ModuleSelectionCurrencyFactory
+final class ConverterCurrencyRouter: ConverterCurrencyRouterProtocol {
+    private let factory: SelectionCurrencyFactory
 
     private weak var root: UIViewController?
 
-    init(factory: ModuleSelectionCurrencyFactory) {
+    init(factory: SelectionCurrencyFactory) {
         self.factory = factory
     }
 
@@ -20,8 +20,8 @@ final class ModuleConverterCurrencyRouter: ModuleConverterCurrencyRouterProtocol
     }
 
 //     Модуль Alpha показывает модуль Beta и передает в него параметры.
-    func openModuleSelectionCurrency(with param: String) {
-        let context = ModuleSelectionCurrencyFactory.Context(
+    func openSelectionCurrency(with param: String) {
+        let context = SelectionCurrencyFactory.Context(
             someParam: param,
             someValue: 100
         )

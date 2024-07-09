@@ -1,6 +1,6 @@
 import UIKit
 
-final class ModuleSelectionCurrencyFactory {
+final class SelectionCurrencyFactory {
     struct Context {
         let someParam: String
         let someValue: Int
@@ -10,18 +10,18 @@ final class ModuleSelectionCurrencyFactory {
         /// Только Factory может наполнять Presenter реальными сервисами и другими зависимостями
         let networkClient = NetworkClient()
 
-        let router = ModuleSelectionCurrencyRouter(
-            factory: ModuleSelectionCurrencyFactory()
+        let router = SelectionCurrencyRouter(
+            factory: SelectionCurrencyFactory()
         )
 
-        let presenter = ModuleSelectionCurrencyPresenter(
+        let presenter = SelectionCurrencyPresenter(
             networkClient: networkClient,
             router: router
         )
-        let vc = ModuleSelectionCurrencyViewController(presenter: presenter)
+        let vc = SelectionCurrencyViewController(presenter: presenter)
 
         presenter.view = vc
-        router.setRootViewController(root: vc)
+//        router.setRootViewController(root: vc)
 
         return vc
     }
