@@ -10,11 +10,10 @@ import UIKit
 // Роутер, который открывает все переходы с модуля Alpha
 protocol SelectionCurrencyRouterProtocol: AnyObject {
     // Модуль Alpha показывает модуль Beta и передает в него параметры.
-    func openSelectionCurrency(with param: String)
+//    func openSelectionCurrency(with param: String)
 }
 
 final class SelectionCurrencyRouter: SelectionCurrencyRouterProtocol {
-//    private let factory: CurrencyFactory
     private let factory: SelectionCurrencyFactory
 
     private weak var root: UIViewController?
@@ -28,13 +27,13 @@ final class SelectionCurrencyRouter: SelectionCurrencyRouterProtocol {
     }
 
 //     Модуль Alpha показывает модуль Beta и передает в него параметры.
-    func openSelectionCurrency(with param: String) {
-        let context = SelectionCurrencyFactory.Context(
-            someParam: param,
-            someValue: 100
-        )
-
-        let viewController = factory.make()
-        root?.navigationController?.pushViewController(viewController, animated: true)
-    }
+//    func openSelectionCurrency(with param: String) {
+//        let context = SelectionCurrencyFactory.Context(
+//            someParam: param,
+//            someValue: 100
+//        )
+//
+//        let viewController = factory.make()
+//        root?.navigationController?.pushViewController(viewController, animated: true)
+//    }
 }

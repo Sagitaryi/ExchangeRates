@@ -3,7 +3,10 @@ import UIKit
 // Роутер, который открывает все переходы с модуля Alpha
 protocol ConverterCurrencyRouterProtocol: AnyObject {
     // Модуль Alpha показывает модуль Beta и передает в него параметры.
-    func openSelectionCurrency(with param: String)
+    func openSelectionCurrency(currency: ConvertibleCurrencyModel?,
+                               completion: @escaping (ConvertibleCurrencyModel) -> Void)
+    func openSelectionCurrencyList(currencyList: [ConvertibleCurrencyModel?]?,
+                                   completion: @escaping ([ConvertibleCurrencyModel]) -> Void)
 }
 
 final class ConverterCurrencyRouter: ConverterCurrencyRouterProtocol {
@@ -19,14 +22,18 @@ final class ConverterCurrencyRouter: ConverterCurrencyRouterProtocol {
         self.root = root
     }
 
-//     Модуль Alpha показывает модуль Beta и передает в него параметры.
-    func openSelectionCurrency(with param: String) {
-        let context = SelectionCurrencyFactory.Context(
-            someParam: param,
-            someValue: 100
-        )
+    //     Модуль Alpha показывает модуль Beta и передает в него параметры.
+    func openSelectionCurrency(currency: ConvertibleCurrencyModel?,
+                               completion: @escaping (ConvertibleCurrencyModel) -> Void)
+    {
+        let viewController = factory.makeCurrencyVC(currency: currency, completion: completion)
+        root?.navigationController?.pushViewController(viewController, animated: true)
+    }
 
-        let viewController = factory.make()
+    func openSelectionCurrencyList(currencyList: [ConvertibleCurrencyModel?]?,
+                                   completion: @escaping ([ConvertibleCurrencyModel]) -> Void)
+    {
+        let viewController = factory.makeListVC(currencyList: currencyList, completion: completion)
         root?.navigationController?.pushViewController(viewController, animated: true)
     }
 }

@@ -1,15 +1,10 @@
-//
-//  ModuleSelectionCurrencyViewController.swift
-//  ExchangeRates
-//
-//  Created by Алексей Чумаков on 07.06.2024.
-//
 import UIKit
 
 protocol SelectionCurrencyViewProtocol: AnyObject {
 //    func setupNavBar() -> UIBarButtonItem
 //    func updateButtonNavBar(button: UIBarButtonItem)
     func update(model: SelectionCurrencyView.Model)
+    func updateStateSingleCellSelectionMode(state: Bool)
 //    func showError()
 //    func showEmpty()
 //    func startLoader()
@@ -82,11 +77,15 @@ class SelectionCurrencyViewController: UIViewController {
 
 extension SelectionCurrencyViewController: SelectionCurrencyViewProtocol {
     func update(model: SelectionCurrencyView.Model) {
-        customView.update(model: model)
+        customView.updateTable(model: model)
     }
 
     func stopLoader() {
         customView.stopLoader()
+    }
+
+    func updateStateSingleCellSelectionMode(state: Bool) {
+        customView.updateStateSingleCellSelectionMode(state: state)
     }
 }
 

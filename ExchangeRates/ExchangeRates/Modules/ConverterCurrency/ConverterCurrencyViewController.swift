@@ -3,7 +3,8 @@ import UIKit
 protocol ConverterCurrencyViewProtocol: AnyObject {
     //    func setupNavBar() -> UIBarButtonItem
     //    func updateButtonNavBar(button: UIBarButtonItem)
-    //    func update(model: ModuleAlphaView.Model)
+    func updateConvertibleCurrency(model: ConvertibleCurrencyModel?)
+    func updateListExchangeCurrencies(model: [ConvertibleCurrencyModel?])
     //    func showError()
     //    func showEmpty()
     //    func startLoader()
@@ -26,12 +27,12 @@ class ConverterCurrencyViewController: UIViewController {
     }
 
     override func loadView() {
+        presenter.viewDidLoad()
         view = customView
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        //        view.backgroundColor = .systemBlue
         setupNavBar()
     }
 
@@ -71,4 +72,12 @@ class ConverterCurrencyViewController: UIViewController {
     }
 }
 
-extension ConverterCurrencyViewController: ConverterCurrencyViewProtocol {}
+extension ConverterCurrencyViewController: ConverterCurrencyViewProtocol {
+    func updateConvertibleCurrency(model: ConvertibleCurrencyModel?) {
+        customView.updateConvertibleCurrency(model: model)
+    }
+
+    func updateListExchangeCurrencies(model: [ConvertibleCurrencyModel?]) {
+        customView.updateListExchangeCurrencies(model: model)
+    }
+}

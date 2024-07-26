@@ -4,7 +4,7 @@ class ConverterCurrencyTableViewCell: UITableViewCell {
     private enum ConstantConstraint: CGFloat {
         case distanceToSide = 22
         case spacingBetweenContent = 10
-        case sizeCountryFlagImageView = 20
+        case sizeCountryFlagImageView = 25
         case sizeAnteTextField = 60
     }
 
@@ -16,24 +16,41 @@ class ConverterCurrencyTableViewCell: UITableViewCell {
 
     private var currencyLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 15)
+        label.font = UIFont.boldSystemFont(ofSize: 17)
+//        label.backgroundColor = .blue
         label.textColor = .black
+//        label.textAlignment
+//        label.contentMode = .bottomRight
         return label
     }()
 
     private var descriptionCurrencyLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 10)
+        label.font = UIFont.boldSystemFont(ofSize: 12)
+        label.textColor = .lightGray
+        return label
+    }()
+
+    private var totalUnitsCurrencyLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 17)
         label.textColor = .black
         return label
     }()
 
-    var anteTextField: UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "6656"
-//        textField.delegate = textField
-        return textField
+    private var rateCurrencyLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = .lightGray
+        return label
     }()
+
+//    var betTextField: UITextField = {
+//        let textField = UITextField()
+//        textField.placeholder = "6656"
+    ////        textField.delegate = textField
+//        return textField
+//    }()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -49,42 +66,71 @@ class ConverterCurrencyTableViewCell: UITableViewCell {
         countryFlagImageView.translatesAutoresizingMaskIntoConstraints = false
         currencyLabel.translatesAutoresizingMaskIntoConstraints = false
         descriptionCurrencyLabel.translatesAutoresizingMaskIntoConstraints = false
-        anteTextField.translatesAutoresizingMaskIntoConstraints = false
+        totalUnitsCurrencyLabel.translatesAutoresizingMaskIntoConstraints = false
+        rateCurrencyLabel.translatesAutoresizingMaskIntoConstraints = false
 
-        addSubview(countryFlagImageView)
-        addSubview(currencyLabel)
-//        addSubview(descriptionCurrencyLabel)
-        addSubview(anteTextField)
+        contentView.addSubview(countryFlagImageView)
+        contentView.addSubview(currencyLabel)
+        contentView.addSubview(descriptionCurrencyLabel)
+        contentView.addSubview(totalUnitsCurrencyLabel)
+        contentView.addSubview(rateCurrencyLabel)
 
         NSLayoutConstraint.activate([
             countryFlagImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: ConstantConstraint.distanceToSide.rawValue),
+            countryFlagImageView.heightAnchor.constraint(equalToConstant: 20),
             countryFlagImageView.widthAnchor.constraint(equalToConstant: ConstantConstraint.sizeCountryFlagImageView.rawValue),
             countryFlagImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
+//
+            totalUnitsCurrencyLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
+            totalUnitsCurrencyLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 0),
+            totalUnitsCurrencyLabel.leadingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -100),
+            totalUnitsCurrencyLabel.bottomAnchor.constraint(equalTo: centerYAnchor),
 
-            anteTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -ConstantConstraint.distanceToSide.rawValue),
-            anteTextField.widthAnchor.constraint(equalToConstant: ConstantConstraint.sizeAnteTextField.rawValue),
-            anteTextField.leadingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -(ConstantConstraint.distanceToSide.rawValue + ConstantConstraint.sizeAnteTextField.rawValue)),
-            anteTextField.centerYAnchor.constraint(equalTo: centerYAnchor),
+            rateCurrencyLabel.topAnchor.constraint(equalTo: centerYAnchor),
+            rateCurrencyLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 0),
+            rateCurrencyLabel.leadingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -100),
+            rateCurrencyLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0),
 
-            currencyLabel.leadingAnchor.constraint(equalTo: countryFlagImageView.trailingAnchor, constant: ConstantConstraint.spacingBetweenContent.rawValue),
-            currencyLabel.trailingAnchor.constraint(equalTo: anteTextField.leadingAnchor, constant: ConstantConstraint.distanceToSide.rawValue),
-            currencyLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            currencyLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 2),
+            currencyLabel.leadingAnchor.constraint(equalTo: countryFlagImageView.trailingAnchor,
+                                                   constant: ConstantConstraint.spacingBetweenContent.rawValue),
+            currencyLabel.trailingAnchor.constraint(equalTo: rateCurrencyLabel.leadingAnchor,
+                                                    constant: ConstantConstraint.distanceToSide.rawValue),
+            currencyLabel.bottomAnchor.constraint(equalTo: centerYAnchor),
+//
+            descriptionCurrencyLabel.topAnchor.constraint(equalTo: centerYAnchor),
+            descriptionCurrencyLabel.leadingAnchor.constraint(equalTo: countryFlagImageView.trailingAnchor,
+                                                              constant: ConstantConstraint.spacingBetweenContent.rawValue),
+            descriptionCurrencyLabel.trailingAnchor.constraint(equalTo: rateCurrencyLabel.leadingAnchor,
+                                                               constant: ConstantConstraint.distanceToSide.rawValue),
+            descriptionCurrencyLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0),
 
-//            descriptionCurrencyLabel.leadingAnchor.constraint(equalTo: countryFlagImageView.trailingAnchor, constant: ConstantConstraint.spacingBetweenContent.rawValue),
-//            descriptionCurrencyLabel.rightAnchor.constraint(equalTo: anteTextField.leadingAnchor, constant: ConstantConstraint.distanceToSide.rawValue),
-
-//            currency.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: ConstantConstraint.distanceToSide.rawValue),
-//            currency.trailingAnchor.constraint(equalTo: checkBox.leadingAnchor, constant: -ConstantConstraint.spacingBetweenContent.rawValue),
-//            currency.centerYAnchor.constraint(equalTo: centerYAnchor),
-//            checkBox.leadingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -40),
-//            checkBox.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -18),
-//            checkBox.centerYAnchor.constraint(equalTo: centerYAnchor),
         ])
 //        print(anteTextField.leadingAnchor)
     }
 
-    func configure(item: String) {
-        currencyLabel.text = item
+    func configure(model: [ConvertibleCurrencyModel?], index: Int) {
+        if let model = model[index] {
+            countryFlagImageView.image = model.flag
+            currencyLabel.text = model.key
+            descriptionCurrencyLabel.text = model.value
+            totalUnitsCurrencyLabel.text = model.value
+            guard let rate = model.rate else { return }
+            rateCurrencyLabel.text = String(rate)
+        }
+
+//
+//        if let dsfg = model.rates[index].flag {
+//            countryFlagImageView.image = dsfg /* model.rates[index].flag */
+//        }
+//        currencyLabel.text = model.rates[index].key
+//        descriptionCurrencyLabel.text = model.rates[index].value
+//        totalUnitsCurrencyLabel.text = String(model.rates[index].quantity)
+//        rateCurrencyLabel.text = String(model.rates[index].rate)
+
+//        let dsf = model.rates[index].keys
+//        let fdg = dsf.first
+//        currencyLabel.text = item
 //        showCheckBox(isSelected: item.isSelected)
     }
 

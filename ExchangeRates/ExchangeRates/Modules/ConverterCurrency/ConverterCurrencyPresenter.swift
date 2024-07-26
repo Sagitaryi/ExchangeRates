@@ -2,10 +2,10 @@ import UIKit
 
 protocol ConverterCurrencyPresenterProtocol {
     var title: String { get }
-//    var analiticScreenName: String { get }
 //
-//    func viewDidLoad()
-    func showNextVCTapButton()
+    func viewDidLoad()
+    func showConvertibleCurrencyVCTapButton()
+    func showCurrencyListVCTapButton()
 }
 
 final class ConverterCurrencyPresenter: ConverterCurrencyPresenterProtocol {
@@ -14,9 +14,12 @@ final class ConverterCurrencyPresenter: ConverterCurrencyPresenterProtocol {
     private let networkClient: NetworkClientProtocol
     private let router: ConverterCurrencyRouterProtocol
 
-    var title: String { "Currencies" }
+    private var convertibleCurrency: ConvertibleCurrencyModel?
+    private var currencyList: [ConvertibleCurrencyModel?]?
 
-//    var analiticScreenName: String { "module_a_screen_name" }
+    var startingCurrencyModel: SymbolsModel = .init(symbols: ["AED": "United Arab Emirates Dirham"])
+
+    var title: String { "Currencies" }
 
     init(
         networkClient: NetworkClientProtocol,
@@ -26,28 +29,40 @@ final class ConverterCurrencyPresenter: ConverterCurrencyPresenterProtocol {
         self.router = router
     }
 
-//    func viewDidLoad() {
-//        view?.stopLoader()
-//        service.requestData { [weak self] (result: Result<String, Error>) in
-//            guard let self else { return }
-//            view?.stopLoader()
+    func response(base: String, symbols: [String]) {
+//                view?.stopLoader()
+        let ratesService = RatesService(networkClient: networkClient)
+        ratesService.fetchRates(base: base, symbols: symbols) { result in
+            switch result {
+            case let .success(model):
+                print(model)
+            case let .failure(error):
+                print(error)
+            }
+        }
+    }
+
+    func viewDidLoad() {
+        convertibleCurrency = .init(model: startingCurrencyModel)
+        view?.updateConvertibleCurrency(model: convertibleCurrency)
+    }
+
+    func updateConvertibleCurrency(model: ConvertibleCurrencyModel?) {
+        view?.updateConvertibleCurrency(model: model)
+    }
+
+    func updateListExchangeCurrencies(model: [ConvertibleCurrencyModel]) {
+        view?.updateListExchangeCurrencies(model: model)
+    }
+
 //
-//            switch result {
-//            case let .success(model):
-//                let model = ModuleAlphaView.Model(
-//                    text: model,
-//                    buttonText: "Go Go Go"
-//                )
-//                view?.update(model: model)
-//                break
-//            case .failure:
-//                view?.showError()
-//            }
-//        }
-//    }
-//
-    func showNextVCTapButton() {
+    func showConvertibleCurrencyVCTapButton() {
         // открыть модуль Beta и передать туда параметры
-        router.openSelectionCurrency(with: "sdfs")
+        router.openSelectionCurrency(currency: convertibleCurrency, completion: updateConvertibleCurrency(model:))
+    }
+
+    func showCurrencyListVCTapButton() {
+        // открыть модуль Beta и передать туда параметры
+        router.openSelectionCurrencyList(currencyList: currencyList, completion: updateListExchangeCurrencies(model:))
     }
 }

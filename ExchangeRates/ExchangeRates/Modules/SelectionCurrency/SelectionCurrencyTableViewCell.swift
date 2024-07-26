@@ -2,12 +2,10 @@ import UIKit
 
 class SelectionCurrencyTableViewCell: UITableViewCell {
     // TODO: на static let ...
-    private enum ConstantConstraint: CGFloat {
-        case distanceToSide = 22
-        case spacingBetweenContent = 10
-        case sizeCheckbox = 20
-
-        // static let x = 10
+    private enum ConstantConstraint {
+        static let distanceToSide: CGFloat = 22
+        static let spacingBetweenContent: CGFloat = 10
+        static let sizeCheckbox: CGFloat = 20
     }
 
     private var currencyLabel: UILabel = {
@@ -17,10 +15,10 @@ class SelectionCurrencyTableViewCell: UITableViewCell {
         return label
     }()
 
-    private var checkBoxImageView: UIImageView = {
-        var imageView = UIImageView()
-        return imageView
-    }()
+//    private var checkBoxImageView: UIImageView = {
+//        var imageView = UIImageView()
+//        return imageView
+//    }()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -32,32 +30,39 @@ class SelectionCurrencyTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // TODO: В private extension
-    private func setupCell() {
-        currencyLabel.translatesAutoresizingMaskIntoConstraints = false
-        checkBoxImageView.translatesAutoresizingMaskIntoConstraints = false
-
-        // TODO: в content View
-        addSubview(currencyLabel)
-        addSubview(checkBoxImageView)
-
-        NSLayoutConstraint.activate([
-            currencyLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: ConstantConstraint.distanceToSide.rawValue),
-            currencyLabel.trailingAnchor.constraint(equalTo: checkBoxImageView.leadingAnchor, constant: -ConstantConstraint.spacingBetweenContent.rawValue),
-            currencyLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            checkBoxImageView.leadingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -40),
-            checkBoxImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -18),
-            checkBoxImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
-        ])
-    }
-
     func configure(item: Item) {
         currencyLabel.text = "\(item.key) - \(item.value)"
         showCheckBox(isSelected: item.isSelected)
     }
 
-    func showCheckBox(isSelected: Bool) {
-        let nameImage = isSelected ? "checkmark" : ""
-        checkBoxImageView.image = UIImage(systemName: nameImage)
+    func showCheckBox(isSelected _: Bool) {
+//        let nameImage = isSelected ? "checkmark" : ""
+//        checkBoxImageView.image = UIImage(systemName: nameImage)
+    }
+}
+
+private extension SelectionCurrencyTableViewCell {
+    // TODO: В private extension
+    private func setupCell() {
+        currencyLabel.translatesAutoresizingMaskIntoConstraints = false
+//        checkBoxImageView.translatesAutoresizingMaskIntoConstraints = false
+
+        // TODO: в content View
+        contentView.addSubview(currencyLabel)
+//        contentView.addSubview(checkBoxImageView)
+
+        NSLayoutConstraint.activate([
+            currencyLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
+                                                   constant: ConstantConstraint.distanceToSide),
+            currencyLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+                                                    constant: -ConstantConstraint.spacingBetweenContent),
+            currencyLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+//            checkBoxImageView.leadingAnchor.constraint(equalTo: contentView.trailingAnchor,
+//                                                       constant: -(ConstantConstraint.distanceToSide +
+//                                                           ConstantConstraint.sizeCheckbox)),
+//            checkBoxImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+//                                                        constant: -ConstantConstraint.distanceToSide),
+//            checkBoxImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
+        ])
     }
 }

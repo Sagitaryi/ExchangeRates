@@ -15,6 +15,7 @@ final class SelectionCurrencyView: UIView {
     }
 
     private var model: Model?
+    private var isSingleCellSelectionMode: Bool?
 
     lazy var tableView: UITableView = {
         let table = UITableView()
@@ -37,9 +38,13 @@ final class SelectionCurrencyView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func update(model: Model) {
+    func updateTable(model: Model) {
         self.model = model
         tableView.reloadData()
+    }
+
+    func updateStateSingleCellSelectionMode(state: Bool) {
+        isSingleCellSelectionMode = state
     }
 
     func showError() {
@@ -79,16 +84,6 @@ private extension SelectionCurrencyView {
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
         ])
     }
-
-//    @objc
-//    func onTapped() {
-    ////        presenter.tapButton()
-//    }
-
-//    @objc
-//    func editTapped() {
-//        presenter.showNextVCTapButton()
-//    }
 }
 
 extension SelectionCurrencyView: UITableViewDataSource {
@@ -97,7 +92,8 @@ extension SelectionCurrencyView: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? SelectionCurrencyTableViewCell else { fatalError() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as?
+            SelectionCurrencyTableViewCell else { fatalError() }
 
         guard let item = model?.items[indexPath.row] else { return UITableViewCell() }
         cell.configure(item: item)
@@ -107,15 +103,18 @@ extension SelectionCurrencyView: UITableViewDataSource {
 
 extension SelectionCurrencyView: UITableViewDelegate {
     func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        guard let isSelected = model?.items[indexPath.row].isSelected else { return }
-//        model?.items[indexPath.row].isSelected = !isSelected
-//
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? SelectionCurrencyTableViewCell else { fatalError() }
-        ////
-//        cell.showCheckBox(isSelected: model?.items[indexPath.row].isSelected ?? false)
+        if tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark {
+            tableView.cellForRow(at: indexPath)?.accessoryType = .none
+        } else {
+            tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+        }
+        presenter.tapCell(index: indexPath.row)
+//        guard tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) is
+//            SelectionCurrencyTableViewCell else { fatalError() }
+    }
 
-        // TODO: это не верно
-        // presenter.tapCell( просто ячейку index)
-        presenter.tapCell(model: model, index: indexPath.row, cell: cell)
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        guard isSingleCellSelectionMode == true else { return }
+        tableView.cellForRow(at: indexPath)?.accessoryType = .none
     }
 }
