@@ -8,14 +8,13 @@ final class SelectionCurrencyView: UIView {
         var items: [Item]
 
         struct Item {
-            let key: String
-            let value: String
+            let currencyKey: String
+            let currencyName: String
             var isSelected: Bool
         }
     }
 
     private var model: Model?
-    private var isSingleCellSelectionMode: Bool?
 
     lazy var tableView: UITableView = {
         let table = UITableView()
@@ -38,13 +37,9 @@ final class SelectionCurrencyView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func updateTable(model: Model) {
+    func update(model: Model) {
         self.model = model
         tableView.reloadData()
-    }
-
-    func updateStateSingleCellSelectionMode(state: Bool) {
-        isSingleCellSelectionMode = state
     }
 
     func showError() {
@@ -97,24 +92,17 @@ extension SelectionCurrencyView: UITableViewDataSource {
 
         guard let item = model?.items[indexPath.row] else { return UITableViewCell() }
         cell.configure(item: item)
+        if item.isSelected {
+            cell.accessoryType = .checkmark
+        } else {
+            cell.accessoryType = .none
+        }
         return cell
     }
 }
 
 extension SelectionCurrencyView: UITableViewDelegate {
     func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark {
-            tableView.cellForRow(at: indexPath)?.accessoryType = .none
-        } else {
-            tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-        }
         presenter.tapCell(index: indexPath.row)
-//        guard tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) is
-//            SelectionCurrencyTableViewCell else { fatalError() }
-    }
-
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        guard isSingleCellSelectionMode == true else { return }
-        tableView.cellForRow(at: indexPath)?.accessoryType = .none
     }
 }

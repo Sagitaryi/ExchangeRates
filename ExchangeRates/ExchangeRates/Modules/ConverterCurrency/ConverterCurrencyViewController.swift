@@ -3,12 +3,12 @@ import UIKit
 protocol ConverterCurrencyViewProtocol: AnyObject {
     //    func setupNavBar() -> UIBarButtonItem
     //    func updateButtonNavBar(button: UIBarButtonItem)
-    func updateConvertibleCurrency(model: ConvertibleCurrencyModel?)
-    func updateListExchangeCurrencies(model: [ConvertibleCurrencyModel?])
+    func updateConvertibleCurrency(model: ConverterCurrencyView.ConvertibleCurrencyModel)
+    func updateListExchangeCurrencies(model: ConverterCurrencyView.ConvertibleCurrencyListModel)
     //    func showError()
     //    func showEmpty()
-    //    func startLoader()
-    //    func stopLoader()
+    func startLoader()
+    func stopLoader()
 }
 
 class ConverterCurrencyViewController: UIViewController {
@@ -73,11 +73,19 @@ class ConverterCurrencyViewController: UIViewController {
 }
 
 extension ConverterCurrencyViewController: ConverterCurrencyViewProtocol {
-    func updateConvertibleCurrency(model: ConvertibleCurrencyModel?) {
+    func startLoader() {
+        customView.startLoader()
+    }
+
+    func stopLoader() {
+        customView.stopLoader()
+    }
+
+    func updateConvertibleCurrency(model: ConverterCurrencyView.ConvertibleCurrencyModel) {
         customView.updateConvertibleCurrency(model: model)
     }
 
-    func updateListExchangeCurrencies(model: [ConvertibleCurrencyModel?]) {
+    func updateListExchangeCurrencies(model: ConverterCurrencyView.ConvertibleCurrencyListModel) {
         customView.updateListExchangeCurrencies(model: model)
     }
 }

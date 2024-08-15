@@ -1,6 +1,6 @@
 import UIKit
 
-class ConverterCurrencyTableViewCell: UITableViewCell {
+final class ConverterCurrencyTableViewCell: UITableViewCell {
     private enum ConstantConstraint: CGFloat {
         case distanceToSide = 22
         case spacingBetweenContent = 10
@@ -106,18 +106,17 @@ class ConverterCurrencyTableViewCell: UITableViewCell {
             descriptionCurrencyLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0),
 
         ])
-//        print(anteTextField.leadingAnchor)
     }
 
-    func configure(model: [ConvertibleCurrencyModel?], index: Int) {
-        if let model = model[index] {
-            countryFlagImageView.image = model.flag
-            currencyLabel.text = model.key
-            descriptionCurrencyLabel.text = model.value
-            totalUnitsCurrencyLabel.text = model.value
-            guard let rate = model.rate else { return }
-            rateCurrencyLabel.text = String(rate)
-        }
+    func configure(model: ConverterCurrencyView.ConvertibleCurrencyListModel, index: Int) {
+//        if let model = model[index] {
+        countryFlagImageView.image = model.items[index].flag
+        currencyLabel.text = model.items[index].currencyKey
+        descriptionCurrencyLabel.text = model.items[index].currencyName
+        totalUnitsCurrencyLabel.text = String(model.items[index].amount)
+//            guard let rate = model.rate else { return }
+        rateCurrencyLabel.text = String(model.items[index].rate)
+//        }
 
 //
 //        if let dsfg = model.rates[index].flag {

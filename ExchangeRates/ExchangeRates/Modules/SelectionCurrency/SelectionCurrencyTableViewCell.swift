@@ -1,13 +1,6 @@
 import UIKit
 
-class SelectionCurrencyTableViewCell: UITableViewCell {
-    // TODO: на static let ...
-    private enum ConstantConstraint {
-        static let distanceToSide: CGFloat = 22
-        static let spacingBetweenContent: CGFloat = 10
-        static let sizeCheckbox: CGFloat = 20
-    }
-
+final class SelectionCurrencyTableViewCell: UITableViewCell {
     private var currencyLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 15)
@@ -31,8 +24,8 @@ class SelectionCurrencyTableViewCell: UITableViewCell {
     }
 
     func configure(item: Item) {
-        currencyLabel.text = "\(item.key) - \(item.value)"
-        showCheckBox(isSelected: item.isSelected)
+        currencyLabel.text = "\(item.currencyKey) - \(item.currencyName)"
+//        showCheckBox(isSelected: item.isSelected)
     }
 
     func showCheckBox(isSelected _: Bool) {
@@ -42,12 +35,16 @@ class SelectionCurrencyTableViewCell: UITableViewCell {
 }
 
 private extension SelectionCurrencyTableViewCell {
-    // TODO: В private extension
+    private enum ConstantConstraint {
+        static let distanceToSide: CGFloat = 22
+        static let spacingBetweenContent: CGFloat = 10
+        static let sizeCheckbox: CGFloat = 20
+    }
+
     private func setupCell() {
         currencyLabel.translatesAutoresizingMaskIntoConstraints = false
 //        checkBoxImageView.translatesAutoresizingMaskIntoConstraints = false
 
-        // TODO: в content View
         contentView.addSubview(currencyLabel)
 //        contentView.addSubview(checkBoxImageView)
 

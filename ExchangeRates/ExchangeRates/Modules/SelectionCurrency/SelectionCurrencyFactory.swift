@@ -1,12 +1,12 @@
 import UIKit
 
 final class SelectionCurrencyFactory {
-    struct Context {
-        let someParam: String
-        let someValue: Int
-    }
+//    struct ConvertibleCurrencyModel {
+//        let currency: String
+//        let someValue: Int
+//    }
 
-    func makeCurrencyVC(currency: ConvertibleCurrencyModel?, completion: @escaping (ConvertibleCurrencyModel) -> Void) -> UIViewController {
+    func makeCurrencyVC(currencyKey: CurrencyId, completion: @escaping (String, String) -> Void) -> UIViewController {
         /// Только Factory может наполнять Presenter реальными сервисами и другими зависимостями
         let networkClient = NetworkClient()
 
@@ -17,7 +17,7 @@ final class SelectionCurrencyFactory {
         let presenter = SelectionCurrencyPresenter(
             networkClient: networkClient,
             router: router,
-            convertibleCurrency: currency,
+            convertibleCurrency: currencyKey,
             isSingleCellSelectionMode: true
         )
         let vc = SelectionCurrencyViewController(presenter: presenter)
@@ -28,7 +28,7 @@ final class SelectionCurrencyFactory {
         return vc
     }
 
-    func makeListVC(currencyList: [ConvertibleCurrencyModel?]?, completion: @escaping ([ConvertibleCurrencyModel]) -> Void) -> UIViewController {
+    func makeListVC(currencyList: [CurrencyId: String], completion: @escaping ([CurrencyId: String]) -> Void) -> UIViewController {
         /// Только Factory может наполнять Presenter реальными сервисами и другими зависимостями
         let networkClient = NetworkClient()
 

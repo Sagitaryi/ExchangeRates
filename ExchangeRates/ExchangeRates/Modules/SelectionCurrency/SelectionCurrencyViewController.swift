@@ -4,7 +4,7 @@ protocol SelectionCurrencyViewProtocol: AnyObject {
 //    func setupNavBar() -> UIBarButtonItem
 //    func updateButtonNavBar(button: UIBarButtonItem)
     func update(model: SelectionCurrencyView.Model)
-    func updateStateSingleCellSelectionMode(state: Bool)
+//    func updateStateSingleCellSelectionMode(state: Bool)
 //    func showError()
 //    func showEmpty()
 //    func startLoader()
@@ -77,16 +77,16 @@ class SelectionCurrencyViewController: UIViewController {
 
 extension SelectionCurrencyViewController: SelectionCurrencyViewProtocol {
     func update(model: SelectionCurrencyView.Model) {
-        customView.updateTable(model: model)
+        customView.update(model: model)
     }
 
     func stopLoader() {
         customView.stopLoader()
     }
 
-    func updateStateSingleCellSelectionMode(state: Bool) {
-        customView.updateStateSingleCellSelectionMode(state: state)
-    }
+//    func updateStateSingleCellSelectionMode(state: Bool) {
+//        customView.updateStateSingleCellSelectionMode(state: state)
+//    }
 }
 
 // extension SelectionCurrencyViewController: UITableViewDataSource {

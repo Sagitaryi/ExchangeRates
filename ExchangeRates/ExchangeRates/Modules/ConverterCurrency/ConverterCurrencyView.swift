@@ -3,14 +3,27 @@ import UIKit
 final class ConverterCurrencyView: UIView {
     // Модель через которую передают все изменения во View
 
-//    struct ConvertibleCurrencyModel {
-//        let flag: UIImage
-//        let symbols: SymbolsModel
-//        let sum: Double
-//    }
+    struct ConvertibleCurrencyModel {
+        var flag: UIImage?
+        var currencyKey: String
+        var currencyName: String
+        var amount: Double = 0
+    }
+
+    struct ConvertibleCurrencyListModel {
+        let items: [Item]
+
+        struct Item {
+            var flag: UIImage?
+            var currencyKey: String
+            var currencyName: String
+            var amount: Double = 0
+            var rate: Double = 0
+        }
+    }
 
     private var convertibleCurrency: ConvertibleCurrencyModel?
-    private var currencyList: [ConvertibleCurrencyModel?]?
+    private var currencyList: ConvertibleCurrencyListModel?
 
     private lazy var editBarButtonItem: UIBarButtonItem = {
         let barButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(editTapped))
@@ -62,11 +75,14 @@ final class ConverterCurrencyView: UIView {
     private lazy var betTextField: UITextField = {
         let textField = UITextField()
         textField.borderStyle = .bezel
+        textField.keyboardType = .numberPad
         textField.layer.borderWidth = 1
         textField.layer.cornerRadius = 5
         textField.layer.borderColor = .init(red: 242, green: 242, blue: 247, alpha: 0.4)
-        guard let text = convertibleCurrency?.sum as? String else { return textField }
-        textField.text = text
+//        guard let text = convertibleCurrency?.sum as? String else { return textField }
+//        textField.text = text
+        textField.delegate = self
+
         return textField
     }()
 
@@ -104,22 +120,21 @@ final class ConverterCurrencyView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func updateConvertibleCurrency(model: ConvertibleCurrencyModel?) {
+    func updateConvertibleCurrency(model: ConvertibleCurrencyModel) {
         convertibleCurrency = model
-        guard let model = model else { return }
         countryFlagImageView.image = model.flag
-        convertibleCurrencyLabel.text = model.key
-        descriptionConvertibleCurrencyLabel.text = model.value
+        convertibleCurrencyLabel.text = model.currencyKey
+        descriptionConvertibleCurrencyLabel.text = model.currencyName
     }
 
-    func updateListExchangeCurrencies(model: [ConvertibleCurrencyModel?]) {
+    func updateListExchangeCurrencies(model: ConvertibleCurrencyListModel) {
         currencyList = model
-
-//        convertibleCurrency = model
-//        guard let model = convertibleCurrency else { return }
-//        countryFlagImageView.image = model.flag
-//        convertibleCurrencyLabel.text = model.key
-//        descriptionConvertibleCurrencyLabel.text = model.value
+        tableWithCurrencyView.reloadData()
+        //        convertibleCurrency = model
+        //        guard let model = convertibleCurrency else { return }
+        //        countryFlagImageView.image = model.flag
+        //        convertibleCurrencyLabel.text = model.key
+        //        descriptionConvertibleCurrencyLabel.text = model.value
     }
 
     func addButtonEditNavBar() -> UIBarButtonItem {
@@ -208,7 +223,7 @@ private extension ConverterCurrencyView {
             betTextField.topAnchor.constraint(equalTo: blockConvertibleCurrencyView.topAnchor, constant: 2),
             betTextField.trailingAnchor.constraint(equalTo: blockConvertibleCurrencyView.trailingAnchor, constant: -3),
             betTextField.bottomAnchor.constraint(equalTo: blockConvertibleCurrencyView.bottomAnchor, constant: -2),
-//            betTextField.centerYAnchor.constraint(equalTo: blockConvertibleCurrencyView.centerYAnchor),
+            //            betTextField.centerYAnchor.constraint(equalTo: blockConvertibleCurrencyView.centerYAnchor),
             betTextField.widthAnchor.constraint(equalToConstant: 124),
 
             convertibleCurrencyLabel.topAnchor.constraint(equalTo: blockConvertibleCurrencyView.topAnchor,
@@ -259,34 +274,41 @@ private extension ConverterCurrencyView {
     }
 }
 
+extension ConverterCurrencyView: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        guard let value = textField.text else { return false }
+        presenter.getAmountConvertibleCurrency(text: value)
+        return true
+    }
+}
+
 extension ConverterCurrencyView: UITableViewDataSource {
     func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
         guard let list = currencyList else { return 0 }
-        return list.count
+        return list.items.count
     }
 
     func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {
-        return 48
+        let heightRow: CGFloat = 48
+        return heightRow
     }
 
     func tableView(_: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableWithCurrencyView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? ConverterCurrencyTableViewCell else { fatalError() }
-
-        if let model = currencyList {
-            cell.configure(model: model, index: indexPath.row)
-        }
+        guard let model = currencyList else { return cell }
+        cell.configure(model: model, index: indexPath.row)
         return cell
     }
 }
 
 extension ConverterCurrencyView: UITableViewDelegate {
-//    func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
+    //    func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
     ////        guard let isSelected = model?.items[indexPath.row].isSelected else { return }
     ////        model?.items[indexPath.row].isSelected = !isSelected
     ////
-//        guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? SelectionCurrencyTableViewCell else { fatalError() }
-//        ////
+    //        guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? SelectionCurrencyTableViewCell else { fatalError() }
+    //        ////
     ////        cell.showCheckBox(isSelected: model?.items[indexPath.row].isSelected ?? false)
-//        presenter.tapCell(model: model, index: indexPath.row, cell: cell)
-//    }
+    //        presenter.tapCell(model: model, index: indexPath.row, cell: cell)
+    //    }
 }
