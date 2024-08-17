@@ -15,7 +15,6 @@ class SelectionCurrencyViewController: UIViewController {
     let networkClient = NetworkClient()
     private let presenter: SelectionCurrencyPresenterProtocol
     private lazy var customView = SelectionCurrencyView(presenter: presenter)
-//    private let table: UITableView = .init()
 
     init(presenter: SelectionCurrencyPresenterProtocol) {
         self.presenter = presenter
@@ -33,41 +32,13 @@ class SelectionCurrencyViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        view.backgroundColor = .systemBlue
         setupNavBar()
         presenter.viewDidLoad()
-//        table
     }
 
     func setupNavBar() {
         title = presenter.title
         navigationController?.hidesBarsOnSwipe = true
-//        navigationItem.rightBarButtonItem = customView.addButtonEditNavBar()
-    }
-
-    @IBAction func getAllCurrenciesButtonPressed(_: UIButton) {
-        let symbolsService = SymbolsService(networkClient: networkClient)
-        symbolsService.fetchSymbols { result in
-            switch result {
-            case let .success(data):
-                print(data)
-            case let .failure(error):
-                print(error)
-            }
-        }
-        print("end")
-    }
-
-    @IBAction func getExchangeRateButtonPressed(_: UIButton) {
-        let ratesService = RatesService(networkClient: networkClient)
-        ratesService.fetchRates(base: "EUR", symbols: ["USD", "RUB", "PHP", "PAB"]) { result in
-            switch result {
-            case let .success(model):
-                print(model)
-            case let .failure(error):
-                print(error)
-            }
-        }
     }
 
     deinit {
@@ -83,20 +54,4 @@ extension SelectionCurrencyViewController: SelectionCurrencyViewProtocol {
     func stopLoader() {
         customView.stopLoader()
     }
-
-//    func updateStateSingleCellSelectionMode(state: Bool) {
-//        customView.updateStateSingleCellSelectionMode(state: state)
-//    }
 }
-
-// extension SelectionCurrencyViewController: UITableViewDataSource {
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return 2
-//    }
-//
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        <#code#>
-//    }
-//
-//
-// }

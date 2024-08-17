@@ -6,6 +6,7 @@ protocol ConverterCurrencyPresenterProtocol {
     func showConvertibleCurrencyVCTapButton()
     func showCurrencyListVCTapButton()
     func getAmountConvertibleCurrency(text: String)
+    func getExchangeRateButtonPressed()
 }
 
 final class ConverterCurrencyPresenter: ConverterCurrencyPresenterProtocol {
@@ -14,9 +15,9 @@ final class ConverterCurrencyPresenter: ConverterCurrencyPresenterProtocol {
     private let networkClient: NetworkClientProtocol
     private let router: ConverterCurrencyRouterProtocol
 
-    private lazy var convertibleCurrency = createCurrencyModel(currencyID: "AED", currencyValue: "United Arab Emirates Dirham")
+    private lazy var convertibleCurrency = createCurrencyModel(currencyID: "RUB", currencyValue: "Russian Ruble")
 
-    private var sourceCurrencyList = ["AFN": "Afghan Afghani", "AMD": "Armenian Dram"]
+    private var sourceCurrencyList = ["EUR": "Euro", "USD": "United States Dollar", "KZT": "Kazakhstani Tenge"]
     private lazy var currencyList = createCurrencyListModel(currencies: sourceCurrencyList)
 
     var title: String { "Currencies" }
@@ -29,25 +30,28 @@ final class ConverterCurrencyPresenter: ConverterCurrencyPresenterProtocol {
         self.router = router
     }
 
-//    func response(base: String, symbols: [String]) {
-//        view?.stopLoader()
-//        let ratesService = RatesService(networkClient: networkClient)
-//        ratesService.fetchRates(base: base, symbols: symbols) { result in
-//            switch result {
-//            case let .success(model):
-//                print(model)
-//            case let .failure(error):
-//                print(error)
-//            }
-//        }
-//    }
+    func getExchangeRateButtonPressed() {
+        let ratesService = RatesService(networkClient: networkClient)
+        ratesService.fetchRates(base: convertibleCurrency.currencyKey, symbols: Array(sourceCurrencyList.keys)) { result in
+            switch result {
+            case let .success(model):
+                self.currencyList.lastDateReceivedData = model.date
+                for element in model.rates {
+                    if let index = self.currencyList.items.firstIndex(where: { $0.currencyKey == element.key }) {
+                        self.currencyList.items[index].rate = element.value
+                        self.currencyList.items[index].amount = self.convertibleCurrency.amount * element.value
+                    }
+                }
+                self.view?.updateListExchangeCurrencies(model: self.currencyList)
+            case let .failure(error):
+                print(error)
+            }
+        }
+    }
 
     func viewDidLoad() {
         view?.updateConvertibleCurrency(model: convertibleCurrency)
         view?.updateListExchangeCurrencies(model: currencyList)
-        print(sourceCurrencyList.keys)
-
-//        let dsfg: Dictionary<String, String>.Keys.
     }
 
     private func createCurrencyModel(currencyID: CurrencyId, currencyValue: String) -> ConverterCurrencyView.ConvertibleCurrencyModel {
@@ -60,6 +64,7 @@ final class ConverterCurrencyPresenter: ConverterCurrencyPresenterProtocol {
         if let amount = Double(text) {
             convertibleCurrency.amount = amount
             view?.updateConvertibleCurrency(model: convertibleCurrency)
+            getExchangeRateButtonPressed()
         } else {
             print("incorrect number")
         }
@@ -80,6 +85,17 @@ final class ConverterCurrencyPresenter: ConverterCurrencyPresenterProtocol {
         let model = createCurrencyModel(currencyID: currencyKey, currencyValue: currencyName)
         convertibleCurrency = model
         view?.updateConvertibleCurrency(model: model)
+        clearRateAndAmountFields()
+
+        func clearRateAndAmountFields() {
+            for element in currencyList.items {
+                if let index = currencyList.items.firstIndex(where: { $0.currencyKey == element.currencyKey }) {
+                    currencyList.items[index].rate = 0
+                    currencyList.items[index].amount = 0
+                }
+            }
+            view?.updateListExchangeCurrencies(model: currencyList)
+        }
     }
 
     func updateListExchangeCurrencies(model: [CurrencyId: String]) {

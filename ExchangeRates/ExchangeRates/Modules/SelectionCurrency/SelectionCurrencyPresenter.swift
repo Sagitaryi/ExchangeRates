@@ -95,7 +95,6 @@ final class SelectionCurrencyPresenter: SelectionCurrencyPresenterProtocol {
             model.items[index].isSelected = !isSelected
             self.model = model
             convertibleCurrencyList = model.items.filter { $0.isSelected == true }.reduce(into: [String: String]()) { $0[$1.currencyKey] = $1.currencyName }
-            print(convertibleCurrencyList)
             if let currencyList = convertibleCurrencyList {
                 completionList?(currencyList)
             }

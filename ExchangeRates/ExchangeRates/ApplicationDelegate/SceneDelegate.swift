@@ -12,12 +12,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let nav = UINavigationController(rootViewController: converterModule)
         nav.navigationBar.prefersLargeTitles = true
 
-//        let attrs = [
-//            NSAttributedString.Key.foregroundColor: UIColor.label,
-//            NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .title1),
-//        ]
-//        nav.navigationBar.largeTitleTextAttributes = attrs
-
         window?.rootViewController = nav
         window?.makeKeyAndVisible()
     }

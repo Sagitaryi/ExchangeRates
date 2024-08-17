@@ -1,11 +1,6 @@
 import UIKit
 
 final class SelectionCurrencyFactory {
-//    struct ConvertibleCurrencyModel {
-//        let currency: String
-//        let someValue: Int
-//    }
-
     func makeCurrencyVC(currencyKey: CurrencyId, completion: @escaping (String, String) -> Void) -> UIViewController {
         /// Только Factory может наполнять Presenter реальными сервисами и другими зависимостями
         let networkClient = NetworkClient()
