@@ -7,18 +7,19 @@ final class ConverterCurrencyView: UIView {
         var flag: UIImage?
         var currencyKey: String
         var currencyName: String
-        var amount: Double = 0
+        var amount: Double = 0 // TODO: String !! Все форматирование в Presenter'е !!!
     }
 
     struct ConvertibleCurrencyListModel {
         var items: [Item]
         var lastDateReceivedData: Date?
+        
         struct Item {
             var flag: UIImage?
             var currencyKey: String
             var currencyName: String
-            var amount: Double = 0
-            var rate: Double = 0
+            var amount: Double = 0 // TODO: String !! Все форматирование в Presenter'е !!!
+            var rate: Double = 0 // TODO: String !! Все форматирование в Presenter'е !!!
         }
     }
 
@@ -289,19 +290,19 @@ private extension ConverterCurrencyView {
 
     @objc
     func currencyTapped() {
-        presenter.showConvertibleCurrencyVCTapButton()
+        presenter.baseCurrencyTapped()
     }
 
     @objc
     func editTapped() {
-        presenter.showCurrencyListVCTapButton()
+        presenter.editButtonTapped()
     }
 }
 
 extension ConverterCurrencyView: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         guard let value = textField.text else { return false }
-        presenter.getAmountConvertibleCurrency(text: value)
+        presenter.updateAmount(text: value)
         return true
     }
 }

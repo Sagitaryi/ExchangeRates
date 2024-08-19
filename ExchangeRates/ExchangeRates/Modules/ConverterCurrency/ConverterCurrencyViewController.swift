@@ -3,7 +3,7 @@ import UIKit
 protocol ConverterCurrencyViewProtocol: AnyObject {
     //    func setupNavBar() -> UIBarButtonItem
     //    func updateButtonNavBar(button: UIBarButtonItem)
-    func updateConvertibleCurrency(model: ConverterCurrencyView.ConvertibleCurrencyModel)
+    func updateConvertibleCurrency(model: ConverterCurrencyView.ConvertibleCurrencyModel) // TODO: очень странный найминг моделей ConverterCurrencyView.Model, ConverterCurrencyView.ListModel
     func updateListExchangeCurrencies(model: ConverterCurrencyView.ConvertibleCurrencyListModel)
     //    func showError()
     //    func showEmpty()
@@ -11,8 +11,8 @@ protocol ConverterCurrencyViewProtocol: AnyObject {
     func stopLoader()
 }
 
-class ConverterCurrencyViewController: UIViewController {
-    let networkClient = NetworkClient()
+final class ConverterCurrencyViewController: UIViewController {
+  
     private let presenter: ConverterCurrencyPresenterProtocol
     private lazy var customView = ConverterCurrencyView(presenter: presenter)
 
@@ -27,17 +27,18 @@ class ConverterCurrencyViewController: UIViewController {
     }
 
     override func loadView() {
-        presenter.viewDidLoad()
         view = customView
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavBar()
+        presenter.viewDidLoad()
     }
 
     override func viewDidLayoutSubviews() {
-        navigationController?.hidesBarsOnSwipe = false
+        super.viewDidLayoutSubviews()
+        navigationController?.hidesBarsOnSwipe = false // TODO: очень странное место для метода
     }
 
     func setupNavBar() {

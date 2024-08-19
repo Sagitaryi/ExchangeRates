@@ -2,17 +2,20 @@ import UIKit
 
 protocol ConverterCurrencyPresenterProtocol {
     var title: String { get }
+    
     func viewDidLoad()
-    func showConvertibleCurrencyVCTapButton()
-    func showCurrencyListVCTapButton()
-    func getAmountConvertibleCurrency(text: String)
-    func getExchangeRateButtonPressed()
+    
+    func baseCurrencyTapped()
+    func editButtonTapped()
+    func updateAmount(text: String)
 }
 
 final class ConverterCurrencyPresenter: ConverterCurrencyPresenterProtocol {
     weak var view: ConverterCurrencyViewProtocol?
+    
+    var title: String { "Currencies" }
 
-    private let networkClient: NetworkClientProtocol
+    private let networkClient: NetworkClientProtocol // TODO: Сюда сервисы !!!
     private let router: ConverterCurrencyRouterProtocol
 
     private lazy var convertibleCurrency = createCurrencyModel(currencyID: "RUB", currencyValue: "Russian Ruble")
@@ -20,7 +23,6 @@ final class ConverterCurrencyPresenter: ConverterCurrencyPresenterProtocol {
     private var sourceCurrencyList = ["EUR": "Euro", "USD": "United States Dollar", "KZT": "Kazakhstani Tenge"]
     private lazy var currencyList = createCurrencyListModel(currencies: sourceCurrencyList)
 
-    var title: String { "Currencies" }
 
     init(
         networkClient: NetworkClientProtocol,
@@ -30,8 +32,65 @@ final class ConverterCurrencyPresenter: ConverterCurrencyPresenterProtocol {
         self.router = router
     }
 
+    func viewDidLoad() {
+        
+        view?.startLoader()
+        
+        let dg = DispatchGroup()
+        dg.enter()
+        
+        s1.req { xxx
+            
+            dg.leave()
+        }
+        
+        
+        dg.enter()
+        s2.req { yyy
+           
+            dg.leave()
+        }
+
+        
+        dg.notify(queue: .main) {
+            
+        }
+        
+        view?.updateConvertibleCurrency(model: convertibleCurrency)
+        view?.updateListExchangeCurrencies(model: currencyList)
+    }
+
+    func updateAmount(text: String) {
+        if let amount = Double(text) {
+            convertibleCurrency.amount = amount
+            view?.updateConvertibleCurrency(model: convertibleCurrency)
+            getExchangeRateButtonPressed()
+        } else {
+            print("incorrect number")
+        }
+    }
+
+    //
+    func baseCurrencyTapped() {
+        router.openSelectionCurrency(currencyKey: convertibleCurrency.currencyKey, completion: updateConvertibleCurrency(currencyKey:currencyName:))
+    }
+
+    func editButtonTapped() {
+        router.openSelectionCurrencyList(currencyList: sourceCurrencyList, completion: updateListExchangeCurrencies(model:))
+    }
+}
+
+private extension ConverterCurrencyPresenter {
+    
+    func updateListExchangeCurrencies(model: [CurrencyId: String]) {
+        sourceCurrencyList = model
+        let model = createCurrencyListModel(currencies: model)
+        currencyList = model
+        view?.updateListExchangeCurrencies(model: model)
+    }
+    
     func getExchangeRateButtonPressed() {
-        let ratesService = RatesService(networkClient: networkClient)
+        let ratesService = RatesService(networkClient: networkClient) // TODO: Нельзя 
         ratesService.fetchRates(base: convertibleCurrency.currencyKey, symbols: Array(sourceCurrencyList.keys)) { result in
             switch result {
             case let .success(model):
@@ -48,29 +107,14 @@ final class ConverterCurrencyPresenter: ConverterCurrencyPresenterProtocol {
             }
         }
     }
-
-    func viewDidLoad() {
-        view?.updateConvertibleCurrency(model: convertibleCurrency)
-        view?.updateListExchangeCurrencies(model: currencyList)
-    }
-
-    private func createCurrencyModel(currencyID: CurrencyId, currencyValue: String) -> ConverterCurrencyView.ConvertibleCurrencyModel {
+    
+    func createCurrencyModel(currencyID: CurrencyId, currencyValue: String) -> ConverterCurrencyView.ConvertibleCurrencyModel {
         let flag = UIImage(named: currencyID)
         let model: ConverterCurrencyView.ConvertibleCurrencyModel = .init(flag: flag, currencyKey: currencyID, currencyName: currencyValue)
         return model
     }
-
-    func getAmountConvertibleCurrency(text: String) {
-        if let amount = Double(text) {
-            convertibleCurrency.amount = amount
-            view?.updateConvertibleCurrency(model: convertibleCurrency)
-            getExchangeRateButtonPressed()
-        } else {
-            print("incorrect number")
-        }
-    }
-
-    private func createCurrencyListModel(currencies: [CurrencyId: String]) -> ConverterCurrencyView.ConvertibleCurrencyListModel {
+    
+    func createCurrencyListModel(currencies: [CurrencyId: String]) -> ConverterCurrencyView.ConvertibleCurrencyListModel {
         var items: [ConverterCurrencyView.ConvertibleCurrencyListModel.Item] = []
         for element in currencies {
             let flag = UIImage(named: element.key)
@@ -81,7 +125,7 @@ final class ConverterCurrencyPresenter: ConverterCurrencyPresenterProtocol {
         return model
     }
 
-    private func updateConvertibleCurrency(currencyKey: CurrencyId, currencyName: String) {
+    func updateConvertibleCurrency(currencyKey: CurrencyId, currencyName: String) {
         let model = createCurrencyModel(currencyID: currencyKey, currencyValue: currencyName)
         convertibleCurrency = model
         view?.updateConvertibleCurrency(model: model)
@@ -96,23 +140,5 @@ final class ConverterCurrencyPresenter: ConverterCurrencyPresenterProtocol {
             }
             view?.updateListExchangeCurrencies(model: currencyList)
         }
-    }
-
-    func updateListExchangeCurrencies(model: [CurrencyId: String]) {
-        sourceCurrencyList = model
-        let model = createCurrencyListModel(currencies: model)
-        currencyList = model
-        view?.updateListExchangeCurrencies(model: model)
-    }
-
-    //
-    func showConvertibleCurrencyVCTapButton() {
-        // открыть модуль Beta и передать туда параметры
-        router.openSelectionCurrency(currencyKey: convertibleCurrency.currencyKey, completion: updateConvertibleCurrency(currencyKey:currencyName:))
-    }
-
-    func showCurrencyListVCTapButton() {
-        // открыть модуль Beta и передать туда параметры
-        router.openSelectionCurrencyList(currencyList: sourceCurrencyList, completion: updateListExchangeCurrencies(model:))
     }
 }

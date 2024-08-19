@@ -4,7 +4,7 @@ final class ConverterCurrencyFactory {
     func make() -> UIViewController {
         /// Только Factory может наполнять Presenter реальными сервисами и другими зависимостями
         let networkClient = NetworkClient()
-
+        
         let router = ConverterCurrencyRouter(
             factory: SelectionCurrencyFactory()
         )

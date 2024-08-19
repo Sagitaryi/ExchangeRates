@@ -5,7 +5,7 @@ protocol SymbolsServiceProtocol {
 }
 
 final class SymbolsService: NetworkService, SymbolsServiceProtocol {
-    let keyStoredUserDefault = "currenciesReceived"
+    private let keyStoredUserDefault = "currenciesReceived"
 
     func fetchSymbols(queue: DispatchQueue = .main, completion: @escaping (Result<SymbolsModel, NetworkClientError>) -> Void) {
         if let currenciesReceived = UserDefaults.standard.value(CurrenciesReceived.self, forKey: keyStoredUserDefault) {

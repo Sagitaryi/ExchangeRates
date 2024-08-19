@@ -12,12 +12,19 @@ final class SelectionCurrencyPresenter: SelectionCurrencyPresenterProtocol {
     weak var view: SelectionCurrencyViewProtocol?
 
     private let networkClient: NetworkClientProtocol
-    private let router: SelectionCurrencyRouterProtocol
-    private var model: SelectionCurrencyView.Model?
+    
+    private var model: SelectionCurrencyView.Model? // TODO:
+    
     private var convertibleCurrency: CurrencyId?
     private var convertibleCurrencyList: [CurrencyId: String]?
 
     private let isSingleCellSelectionMode: Bool
+    
+    private var selected = Set<CurrencyId>()
+    
+    var onChanged: ((Set<CurrencyId>) -> Void)?
+    
+    
     var completionCurrency: ((String, String) -> Void)?
     var completionList: (([CurrencyId: String]) -> Void)?
 
@@ -25,13 +32,11 @@ final class SelectionCurrencyPresenter: SelectionCurrencyPresenterProtocol {
 
     init(
         networkClient: NetworkClientProtocol,
-        router: SelectionCurrencyRouterProtocol,
         convertibleCurrency: String? = nil,
         convertibleCurrencyList: [CurrencyId: String]? = nil,
         isSingleCellSelectionMode: Bool
     ) {
         self.networkClient = networkClient
-        self.router = router
         self.convertibleCurrency = convertibleCurrency
         self.convertibleCurrencyList = convertibleCurrencyList
         self.isSingleCellSelectionMode = isSingleCellSelectionMode
