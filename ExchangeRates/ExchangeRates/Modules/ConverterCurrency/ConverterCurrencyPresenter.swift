@@ -5,7 +5,7 @@ protocol ConverterCurrencyPresenterProtocol {
     func viewDidLoad()
     func showConvertibleCurrencyVCTapButton()
     func showCurrencyListVCTapButton()
-    func getAmountConvertibleCurrency(text: String)
+    func getAmountConvertibleCurrency(text: String, isRequestNeeded: Bool)
     func getExchangeRateButtonPressed()
 }
 
@@ -60,11 +60,13 @@ final class ConverterCurrencyPresenter: ConverterCurrencyPresenterProtocol {
         return model
     }
 
-    func getAmountConvertibleCurrency(text: String) {
+    func getAmountConvertibleCurrency(text: String, isRequestNeeded: Bool) {
         if let amount = Double(text) {
             convertibleCurrency.amount = amount
             view?.updateConvertibleCurrency(model: convertibleCurrency)
-            getExchangeRateButtonPressed()
+            if isRequestNeeded {
+                getExchangeRateButtonPressed()
+            }
         } else {
             print("incorrect number")
         }

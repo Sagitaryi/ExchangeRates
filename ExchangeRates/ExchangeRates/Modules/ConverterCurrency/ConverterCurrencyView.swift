@@ -301,7 +301,14 @@ private extension ConverterCurrencyView {
 extension ConverterCurrencyView: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         guard let value = textField.text else { return false }
-        presenter.getAmountConvertibleCurrency(text: value)
+        presenter.getAmountConvertibleCurrency(text: value, isRequestNeeded: true)
+        return true
+    }
+
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        print("true")
+        guard let value = textField.text else { return false }
+        presenter.getAmountConvertibleCurrency(text: value, isRequestNeeded: false)
         return true
     }
 }
@@ -327,4 +334,4 @@ extension ConverterCurrencyView: UITableViewDataSource {
     }
 }
 
-extension ConverterCurrencyView: UITableViewDelegate {}
+extension ConverterCurrencyView: UITableViewDelegate {} // TODO: можно ли перенести к View
