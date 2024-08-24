@@ -2,6 +2,7 @@ import Foundation
 
 class NetworkService {
     let networkClient: NetworkClientProtocol
+
     private let token = TokenProvider()
 
     init(networkClient: NetworkClientProtocol) {

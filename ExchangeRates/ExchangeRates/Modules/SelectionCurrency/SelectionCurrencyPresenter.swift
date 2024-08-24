@@ -2,7 +2,7 @@ import UIKit
 
 protocol SelectionCurrencyPresenterProtocol {
     var title: String { get }
-    var completionCurrency: ((String, String) -> Void)? { get }
+    var completionCurrency: ((CurrencyId, String) -> Void)? { get }
     var completionList: (([CurrencyId: String]) -> Void)? { get }
     func viewDidLoad()
     func tapCell(index: Int)
@@ -11,27 +11,31 @@ protocol SelectionCurrencyPresenterProtocol {
 final class SelectionCurrencyPresenter: SelectionCurrencyPresenterProtocol {
     weak var view: SelectionCurrencyViewProtocol?
 
-    private let networkClient: NetworkClientProtocol
-    private let router: SelectionCurrencyRouterProtocol
-    private var model: SelectionCurrencyView.Model?
+    var title: String { "Add currency" }
+
+    private let networkClient: NetworkClientProtocol // FIXME: убрать после того, как уйдет сервис Symbols
+
+    private var model: SelectionCurrencyView.Model? // TODO:
+
     private var convertibleCurrency: CurrencyId?
     private var convertibleCurrencyList: [CurrencyId: String]?
 
     private let isSingleCellSelectionMode: Bool
-    var completionCurrency: ((String, String) -> Void)?
-    var completionList: (([CurrencyId: String]) -> Void)?
 
-    var title: String { "Add currency" }
+    private var selected = Set<CurrencyId>()
+
+    var onChanged: ((Set<CurrencyId>) -> Void)?
+
+    var completionCurrency: ((CurrencyId, String) -> Void)?
+    var completionList: (([CurrencyId: String]) -> Void)?
 
     init(
         networkClient: NetworkClientProtocol,
-        router: SelectionCurrencyRouterProtocol,
         convertibleCurrency: String? = nil,
         convertibleCurrencyList: [CurrencyId: String]? = nil,
         isSingleCellSelectionMode: Bool
     ) {
         self.networkClient = networkClient
-        self.router = router
         self.convertibleCurrency = convertibleCurrency
         self.convertibleCurrencyList = convertibleCurrencyList
         self.isSingleCellSelectionMode = isSingleCellSelectionMode
@@ -39,7 +43,7 @@ final class SelectionCurrencyPresenter: SelectionCurrencyPresenterProtocol {
 
     func viewDidLoad() {
         view?.stopLoader()
-        let symbolsService = SymbolsService(networkClient: networkClient)
+        let symbolsService = SymbolsService(networkClient: networkClient) // FIXME: убрать
         symbolsService.fetchSymbols { [self] result in
             view?.stopLoader()
             switch result {
@@ -52,33 +56,6 @@ final class SelectionCurrencyPresenter: SelectionCurrencyPresenterProtocol {
                 print(error) // TODO: Что делать с ошибкой
             }
         }
-    }
-
-    private func indicateSelectedCurrency(resultingModel: SelectionCurrencyView.Model) -> SelectionCurrencyView.Model {
-        var model = resultingModel
-        if isSingleCellSelectionMode {
-            let index = model.items.firstIndex(where: { $0.currencyKey == convertibleCurrency })
-            if let index = index {
-                model.items[index].isSelected = true
-            }
-        } else {
-            if let currencyList = convertibleCurrencyList {
-                for element in currencyList.keys {
-                    if let index = model.items.firstIndex(where: { $0.currencyKey == element }) {
-                        model.items[index].isSelected = true
-                    }
-                }
-            }
-        }
-        return model
-    }
-
-    private func createModelItem(symbolsModel: SymbolsModel) -> [Item] {
-        var items: [Item] = []
-        for currency in Array(symbolsModel.symbols).sorted(by: { $0.0 < $1.0 }) {
-            items.append(Item(currencyKey: currency.key, currencyName: currency.value, isSelected: false))
-        }
-        return items
     }
 
     func tapCell(index: Int) {
@@ -100,5 +77,34 @@ final class SelectionCurrencyPresenter: SelectionCurrencyPresenterProtocol {
             }
         }
         view?.update(model: model)
+    }
+}
+
+private extension SelectionCurrencyPresenter {
+    func indicateSelectedCurrency(resultingModel: SelectionCurrencyView.Model) -> SelectionCurrencyView.Model {
+        var model = resultingModel
+        if isSingleCellSelectionMode {
+            let index = model.items.firstIndex(where: { $0.currencyKey == convertibleCurrency })
+            if let index = index {
+                model.items[index].isSelected = true
+            }
+        } else {
+            if let currencyList = convertibleCurrencyList {
+                for element in currencyList.keys {
+                    if let index = model.items.firstIndex(where: { $0.currencyKey == element }) {
+                        model.items[index].isSelected = true
+                    }
+                }
+            }
+        }
+        return model
+    }
+
+    func createModelItem(symbolsModel: SymbolsModel) -> [Item] {
+        var items: [Item] = []
+        for currency in Array(symbolsModel.symbols).sorted(by: { $0.0 < $1.0 }) {
+            items.append(Item(currencyKey: currency.key, currencyName: currency.value, isSelected: false))
+        }
+        return items
     }
 }

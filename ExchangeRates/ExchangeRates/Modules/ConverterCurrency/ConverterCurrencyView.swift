@@ -3,27 +3,28 @@ import UIKit
 final class ConverterCurrencyView: UIView {
     // Модель через которую передают все изменения во View
 
-    struct ConvertibleCurrencyModel {
+    struct SoldCurrencyModel {
         var flag: UIImage?
         var currencyKey: String
         var currencyName: String
-        var amount: Double = 0
+        var amount: String = "0" // TODO: String !! Все форматирование в Presenter'е !!!
     }
 
-    struct ConvertibleCurrencyListModel {
+    struct ListPurchasedCurrenciesModel {
         var items: [Item]
         var lastDateReceivedData: Date?
+
         struct Item {
             var flag: UIImage?
             var currencyKey: String
             var currencyName: String
-            var amount: Double = 0
-            var rate: Double = 0
+            var amount: Double = 0 // TODO: String !! Все форматирование в Presenter'е !!!
+            var rate: Double = 0 // TODO: String !! Все форматирование в Presenter'е !!!
         }
     }
 
-    private var convertibleCurrency: ConvertibleCurrencyModel?
-    private var currencyList: ConvertibleCurrencyListModel?
+    private var soldCurrency: SoldCurrencyModel?
+    private var listPurchasedCurrencies: ListPurchasedCurrenciesModel?
 
     private lazy var editBarButtonItem: UIBarButtonItem = {
         let barButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(editTapped))
@@ -35,7 +36,7 @@ final class ConverterCurrencyView: UIView {
         return view
     }()
 
-    private lazy var headerConvertibleCurrencyLabel: UILabel = {
+    private lazy var headerSoldCurrencyLabel: UILabel = {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 17)
         label.textColor = .gray
@@ -43,11 +44,11 @@ final class ConverterCurrencyView: UIView {
         return label
     }()
 
-    private lazy var blockConvertibleCurrencyView: UIView = {
+    private lazy var blockSoldCurrencyView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 5
         view.backgroundColor = .systemBlue
-        let recognizer = UITapGestureRecognizer(target: self, action: #selector(currencyTapped))
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(soldCurrencyTapped))
         view.addGestureRecognizer(recognizer)
         return view
     }()
@@ -58,14 +59,14 @@ final class ConverterCurrencyView: UIView {
         return imageView
     }()
 
-    private lazy var convertibleCurrencyLabel: UILabel = {
+    private lazy var soldCurrencyLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 17)
         label.textColor = .white
         return label
     }()
 
-    private lazy var descriptionConvertibleCurrencyLabel: UILabel = {
+    private lazy var descriptionSoldCurrencyLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 17)
         label.textColor = .white
@@ -84,7 +85,7 @@ final class ConverterCurrencyView: UIView {
         return textField
     }()
 
-    private lazy var headerExchangeCurrenciesLabel: UILabel = {
+    private lazy var headerPurchasedCurrenciesLabel: UILabel = {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 17)
         label.textColor = .gray
@@ -97,7 +98,7 @@ final class ConverterCurrencyView: UIView {
         return view
     }()
 
-    private lazy var tableWithCurrencyView: UITableView = {
+    private lazy var tableWithCurrenciesView: UITableView = {
         let tableview = UITableView()
         tableview.register(ConverterCurrencyTableViewCell.self, forCellReuseIdentifier: "Cell")
         tableview.delegate = self
@@ -131,19 +132,19 @@ final class ConverterCurrencyView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func updateConvertibleCurrency(model: ConvertibleCurrencyModel) {
-        convertibleCurrency = model
+    func updateSoldCurrency(model: SoldCurrencyModel) {
+        soldCurrency = model
         countryFlagImageView.image = model.flag
-        convertibleCurrencyLabel.text = model.currencyKey
-        descriptionConvertibleCurrencyLabel.text = model.currencyName
+        soldCurrencyLabel.text = model.currencyKey
+        descriptionSoldCurrencyLabel.text = model.currencyName
     }
 
-    func updateListExchangeCurrencies(model: ConvertibleCurrencyListModel) {
-        currencyList = model
-        if let date = currencyList?.lastDateReceivedData {
+    func updateListPurchasedCurrencies(model: ListPurchasedCurrenciesModel) {
+        listPurchasedCurrencies = model
+        if let date = listPurchasedCurrencies?.lastDateReceivedData {
             dateReceivedDataLabel.text = "Last update: \(date)"
         }
-        tableWithCurrencyView.reloadData()
+        tableWithCurrenciesView.reloadData()
     }
 
     func addButtonEditNavBar() -> UIBarButtonItem {
@@ -176,17 +177,17 @@ private extension ConverterCurrencyView {
 
     func setupSubviews() {
         addSubview(topBlockContentView)
-        topBlockContentView.addSubview(headerConvertibleCurrencyLabel)
-        topBlockContentView.addSubview(blockConvertibleCurrencyView)
-        topBlockContentView.addSubview(headerExchangeCurrenciesLabel)
+        topBlockContentView.addSubview(headerSoldCurrencyLabel)
+        topBlockContentView.addSubview(blockSoldCurrencyView)
+        topBlockContentView.addSubview(headerPurchasedCurrenciesLabel)
 
-        blockConvertibleCurrencyView.addSubview(countryFlagImageView)
-        blockConvertibleCurrencyView.addSubview(convertibleCurrencyLabel)
-        blockConvertibleCurrencyView.addSubview(descriptionConvertibleCurrencyLabel)
-        blockConvertibleCurrencyView.addSubview(betTextField)
+        blockSoldCurrencyView.addSubview(countryFlagImageView)
+        blockSoldCurrencyView.addSubview(soldCurrencyLabel)
+        blockSoldCurrencyView.addSubview(descriptionSoldCurrencyLabel)
+        blockSoldCurrencyView.addSubview(betTextField)
 
         addSubview(middleBlockContentView)
-        middleBlockContentView.addSubview(tableWithCurrencyView)
+        middleBlockContentView.addSubview(tableWithCurrenciesView)
 
         addSubview(footterBlockDateReceivedDataView)
         footterBlockDateReceivedDataView.addSubview(dateReceivedDataLabel)
@@ -194,13 +195,13 @@ private extension ConverterCurrencyView {
 
     func setupConstraints() {
         topBlockContentView.translatesAutoresizingMaskIntoConstraints = false
-        headerConvertibleCurrencyLabel.translatesAutoresizingMaskIntoConstraints = false
-        blockConvertibleCurrencyView.translatesAutoresizingMaskIntoConstraints = false
+        headerSoldCurrencyLabel.translatesAutoresizingMaskIntoConstraints = false
+        blockSoldCurrencyView.translatesAutoresizingMaskIntoConstraints = false
         countryFlagImageView.translatesAutoresizingMaskIntoConstraints = false
-        convertibleCurrencyLabel.translatesAutoresizingMaskIntoConstraints = false
-        descriptionConvertibleCurrencyLabel.translatesAutoresizingMaskIntoConstraints = false
+        soldCurrencyLabel.translatesAutoresizingMaskIntoConstraints = false
+        descriptionSoldCurrencyLabel.translatesAutoresizingMaskIntoConstraints = false
         betTextField.translatesAutoresizingMaskIntoConstraints = false
-        headerExchangeCurrenciesLabel.translatesAutoresizingMaskIntoConstraints = false
+        headerPurchasedCurrenciesLabel.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
             topBlockContentView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
@@ -208,56 +209,56 @@ private extension ConverterCurrencyView {
             topBlockContentView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
             topBlockContentView.heightAnchor.constraint(equalToConstant: 118),
 
-            headerConvertibleCurrencyLabel.topAnchor.constraint(equalTo: topBlockContentView.topAnchor, constant: 8),
-            headerConvertibleCurrencyLabel.leadingAnchor.constraint(equalTo: topBlockContentView.leadingAnchor,
-                                                                    constant: 16),
-            headerConvertibleCurrencyLabel.trailingAnchor.constraint(equalTo: topBlockContentView.trailingAnchor,
-                                                                     constant: 16),
+            headerSoldCurrencyLabel.topAnchor.constraint(equalTo: topBlockContentView.topAnchor, constant: 8),
+            headerSoldCurrencyLabel.leadingAnchor.constraint(equalTo: topBlockContentView.leadingAnchor,
+                                                             constant: 16),
+            headerSoldCurrencyLabel.trailingAnchor.constraint(equalTo: topBlockContentView.trailingAnchor,
+                                                              constant: 16),
 
-            blockConvertibleCurrencyView.topAnchor.constraint(equalTo: headerConvertibleCurrencyLabel.bottomAnchor,
-                                                              constant: 9),
-            blockConvertibleCurrencyView.leadingAnchor.constraint(equalTo: topBlockContentView.leadingAnchor,
-                                                                  constant: 16),
-            blockConvertibleCurrencyView.trailingAnchor.constraint(equalTo: topBlockContentView.trailingAnchor,
-                                                                   constant: -16),
-            blockConvertibleCurrencyView.bottomAnchor.constraint(equalTo: headerExchangeCurrenciesLabel.topAnchor,
-                                                                 constant: -9),
+            blockSoldCurrencyView.topAnchor.constraint(equalTo: headerSoldCurrencyLabel.bottomAnchor,
+                                                       constant: 9),
+            blockSoldCurrencyView.leadingAnchor.constraint(equalTo: topBlockContentView.leadingAnchor,
+                                                           constant: 16),
+            blockSoldCurrencyView.trailingAnchor.constraint(equalTo: topBlockContentView.trailingAnchor,
+                                                            constant: -16),
+            blockSoldCurrencyView.bottomAnchor.constraint(equalTo: headerPurchasedCurrenciesLabel.topAnchor,
+                                                          constant: -9),
 
-            countryFlagImageView.leadingAnchor.constraint(equalTo: blockConvertibleCurrencyView.leadingAnchor,
+            countryFlagImageView.leadingAnchor.constraint(equalTo: blockSoldCurrencyView.leadingAnchor,
                                                           constant: 8),
             countryFlagImageView.heightAnchor.constraint(equalToConstant: 12),
             countryFlagImageView.widthAnchor.constraint(equalToConstant: 16),
-            countryFlagImageView.topAnchor.constraint(equalTo: blockConvertibleCurrencyView.topAnchor, constant: 15),
-            countryFlagImageView.bottomAnchor.constraint(equalTo: blockConvertibleCurrencyView.bottomAnchor,
+            countryFlagImageView.topAnchor.constraint(equalTo: blockSoldCurrencyView.topAnchor, constant: 15),
+            countryFlagImageView.bottomAnchor.constraint(equalTo: blockSoldCurrencyView.bottomAnchor,
                                                          constant: -15),
 
-            betTextField.topAnchor.constraint(equalTo: blockConvertibleCurrencyView.topAnchor, constant: 2),
-            betTextField.trailingAnchor.constraint(equalTo: blockConvertibleCurrencyView.trailingAnchor, constant: -3),
-            betTextField.bottomAnchor.constraint(equalTo: blockConvertibleCurrencyView.bottomAnchor, constant: -2),
+            betTextField.topAnchor.constraint(equalTo: blockSoldCurrencyView.topAnchor, constant: 2),
+            betTextField.trailingAnchor.constraint(equalTo: blockSoldCurrencyView.trailingAnchor, constant: -3),
+            betTextField.bottomAnchor.constraint(equalTo: blockSoldCurrencyView.bottomAnchor, constant: -2),
             betTextField.widthAnchor.constraint(equalToConstant: 124),
 
-            convertibleCurrencyLabel.topAnchor.constraint(equalTo: blockConvertibleCurrencyView.topAnchor,
-                                                          constant: 0),
-            convertibleCurrencyLabel.leadingAnchor.constraint(equalTo: countryFlagImageView.trailingAnchor,
-                                                              constant: 15),
-            convertibleCurrencyLabel.trailingAnchor.constraint(equalTo: betTextField.leadingAnchor, constant: -15),
+            soldCurrencyLabel.topAnchor.constraint(equalTo: blockSoldCurrencyView.topAnchor,
+                                                   constant: 0),
+            soldCurrencyLabel.leadingAnchor.constraint(equalTo: countryFlagImageView.trailingAnchor,
+                                                       constant: 15),
+            soldCurrencyLabel.trailingAnchor.constraint(equalTo: betTextField.leadingAnchor, constant: -15),
 
-            descriptionConvertibleCurrencyLabel.topAnchor.constraint(equalTo: convertibleCurrencyLabel.bottomAnchor,
-                                                                     constant: 0),
-            descriptionConvertibleCurrencyLabel.leadingAnchor.constraint(equalTo: convertibleCurrencyLabel.leadingAnchor),
-            descriptionConvertibleCurrencyLabel.trailingAnchor.constraint(equalTo:
-                convertibleCurrencyLabel.trailingAnchor),
+            descriptionSoldCurrencyLabel.topAnchor.constraint(equalTo: soldCurrencyLabel.bottomAnchor,
+                                                              constant: 0),
+            descriptionSoldCurrencyLabel.leadingAnchor.constraint(equalTo: soldCurrencyLabel.leadingAnchor),
+            descriptionSoldCurrencyLabel.trailingAnchor.constraint(equalTo:
+                soldCurrencyLabel.trailingAnchor),
 
-            headerExchangeCurrenciesLabel.topAnchor.constraint(equalTo: topBlockContentView.topAnchor, constant: 88),
-            headerExchangeCurrenciesLabel.leadingAnchor.constraint(equalTo: topBlockContentView.leadingAnchor,
-                                                                   constant: 16),
-            headerExchangeCurrenciesLabel.trailingAnchor.constraint(equalTo: topBlockContentView.trailingAnchor,
+            headerPurchasedCurrenciesLabel.topAnchor.constraint(equalTo: topBlockContentView.topAnchor, constant: 88),
+            headerPurchasedCurrenciesLabel.leadingAnchor.constraint(equalTo: topBlockContentView.leadingAnchor,
                                                                     constant: 16),
+            headerPurchasedCurrenciesLabel.trailingAnchor.constraint(equalTo: topBlockContentView.trailingAnchor,
+                                                                     constant: 16),
 
         ])
 
         middleBlockContentView.translatesAutoresizingMaskIntoConstraints = false
-        tableWithCurrencyView.translatesAutoresizingMaskIntoConstraints = false
+        tableWithCurrenciesView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
             middleBlockContentView.topAnchor.constraint(equalTo: topBlockContentView.bottomAnchor),
@@ -265,11 +266,11 @@ private extension ConverterCurrencyView {
             middleBlockContentView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
             middleBlockContentView.bottomAnchor.constraint(equalTo: footterBlockDateReceivedDataView.topAnchor, constant: -16),
 
-            tableWithCurrencyView.topAnchor.constraint(equalTo: middleBlockContentView.topAnchor, constant: 4),
-            tableWithCurrencyView.leadingAnchor.constraint(equalTo: middleBlockContentView.leadingAnchor, constant: 0),
-            tableWithCurrencyView.trailingAnchor.constraint(equalTo: middleBlockContentView.trailingAnchor,
-                                                            constant: -16),
-            tableWithCurrencyView.bottomAnchor.constraint(equalTo: middleBlockContentView.bottomAnchor),
+            tableWithCurrenciesView.topAnchor.constraint(equalTo: middleBlockContentView.topAnchor, constant: 4),
+            tableWithCurrenciesView.leadingAnchor.constraint(equalTo: middleBlockContentView.leadingAnchor, constant: 0),
+            tableWithCurrenciesView.trailingAnchor.constraint(equalTo: middleBlockContentView.trailingAnchor,
+                                                              constant: -16),
+            tableWithCurrenciesView.bottomAnchor.constraint(equalTo: middleBlockContentView.bottomAnchor),
         ])
 
         footterBlockDateReceivedDataView.translatesAutoresizingMaskIntoConstraints = false
@@ -288,34 +289,31 @@ private extension ConverterCurrencyView {
     }
 
     @objc
-    func currencyTapped() {
-        presenter.showConvertibleCurrencyVCTapButton()
+    func soldCurrencyTapped() {
+        presenter.soldCurrencyTapped()
     }
 
     @objc
     func editTapped() {
-        presenter.showCurrencyListVCTapButton()
+        presenter.editButtonTapped()
     }
 }
 
 extension ConverterCurrencyView: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         guard let value = textField.text else { return false }
-        presenter.getAmountConvertibleCurrency(text: value, isRequestNeeded: true)
-        return true
-    }
-
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        print("true")
-        guard let value = textField.text else { return false }
-        presenter.getAmountConvertibleCurrency(text: value, isRequestNeeded: false)
+//    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+//        print("true")
+//        guard let value = textField.text else { return false }
+//        presenter.getAmountConvertibleCurrency(text: value, isRequestNeeded: false)
+        presenter.updateAmount(text: value)
         return true
     }
 }
 
 extension ConverterCurrencyView: UITableViewDataSource {
     func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-        guard let list = currencyList else { return 0 }
+        guard let list = listPurchasedCurrencies else { return 0 }
         return list.items.count
     }
 
@@ -325,9 +323,9 @@ extension ConverterCurrencyView: UITableViewDataSource {
     }
 
     func tableView(_: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableWithCurrencyView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? ConverterCurrencyTableViewCell else { fatalError() }
-        guard let model = currencyList else { return cell }
-        if let baseCurrency = convertibleCurrency?.currencyKey {
+        guard let cell = tableWithCurrenciesView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? ConverterCurrencyTableViewCell else { fatalError() }
+        guard let model = listPurchasedCurrencies else { return cell }
+        if let baseCurrency = soldCurrency?.currencyKey {
             cell.configure(baseCurrency: baseCurrency, model: model, index: indexPath.row)
         }
         return cell

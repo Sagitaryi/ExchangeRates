@@ -2,119 +2,150 @@ import UIKit
 
 protocol ConverterCurrencyPresenterProtocol {
     var title: String { get }
+
     func viewDidLoad()
-    func showConvertibleCurrencyVCTapButton()
-    func showCurrencyListVCTapButton()
-    func getAmountConvertibleCurrency(text: String, isRequestNeeded: Bool)
-    func getExchangeRateButtonPressed()
+
+    func soldCurrencyTapped()
+    func editButtonTapped()
+    func updateAmount(text: String)
 }
 
 final class ConverterCurrencyPresenter: ConverterCurrencyPresenterProtocol {
     weak var view: ConverterCurrencyViewProtocol?
 
-    private let networkClient: NetworkClientProtocol
-    private let router: ConverterCurrencyRouterProtocol
-
-    private lazy var convertibleCurrency = createCurrencyModel(currencyID: "RUB", currencyValue: "Russian Ruble")
-
-    private var sourceCurrencyList = ["EUR": "Euro", "USD": "United States Dollar", "KZT": "Kazakhstani Tenge"]
-    private lazy var currencyList = createCurrencyListModel(currencies: sourceCurrencyList)
-
     var title: String { "Currencies" }
 
+    private let ratesService: RatesServiceProtocol
+    private let router: ConverterCurrencyRouterProtocol
+
+    private lazy var soldCurrency = createSoldCurrencyModel(currencyID: "RUB", currencyValue: "Russian Ruble")
+
+    private var sourcePurchasedCurrencyList = ["EUR": "Euro", "USD": "United States Dollar", "KZT": "Kazakhstani Tenge"]
+    private lazy var listPurchasedCurrencies = createPurchasedCurrenciesListModel(currencies: sourcePurchasedCurrencyList)
+
     init(
-        networkClient: NetworkClientProtocol,
+        ratesService: RatesServiceProtocol,
         router: ConverterCurrencyRouterProtocol
     ) {
-        self.networkClient = networkClient
+        self.ratesService = ratesService
         self.router = router
     }
 
-    func getExchangeRateButtonPressed() {
-        let ratesService = RatesService(networkClient: networkClient)
-        ratesService.fetchRates(base: convertibleCurrency.currencyKey, symbols: Array(sourceCurrencyList.keys)) { result in
+    func viewDidLoad() {
+        view?.startLoader()
+        //        let dg = DispatchGroup()
+        //        dg.enter()
+        //
+        //        s1.req { xxx
+        //
+        //            dg.leave()
+        //        }
+        //
+        //
+        //        dg.enter()
+        //        s2.req { yyy
+        //
+        //            dg.leave()
+        //        }
+        //
+        //
+        //        dg.notify(queue: .main) {
+        //
+        //        }
+
+        view?.updateSoldCurrency(model: soldCurrency)
+        view?.updateListPurchasedCurrencies(model: listPurchasedCurrencies)
+    }
+
+    func updateAmount(text: String) {
+        if let amount = Double(text) {
+            soldCurrency.amount = String(amount) // !!!
+            view?.updateSoldCurrency(model: soldCurrency)
+            updateRate()
+        } else {
+            print("incorrect number")
+        }
+    }
+
+    //
+    func soldCurrencyTapped() {
+        router.openSelectionCurrency(currencyKey: soldCurrency.currencyKey, completion: updateSoldCurrency(currencyKey:currencyName:))
+    }
+
+    func editButtonTapped() {
+        router.openSelectionCurrencyList(currencyList: sourcePurchasedCurrencyList, completion: updatePurchasedCurrenciesList(model:))
+    }
+}
+
+private extension ConverterCurrencyPresenter {
+    func updatePurchasedCurrenciesList(model: [CurrencyId: String]) {
+        sourcePurchasedCurrencyList = model
+        let model = createPurchasedCurrenciesListModel(currencies: model)
+        listPurchasedCurrencies = model
+        view?.updateListPurchasedCurrencies(model: model)
+    }
+
+    func updateRate() {
+        ratesService.fetchRates(base: soldCurrency.currencyKey, symbols: Array(sourcePurchasedCurrencyList.keys), queue: .main) { result in
             switch result {
             case let .success(model):
-                self.currencyList.lastDateReceivedData = model.date
+                self.listPurchasedCurrencies.lastDateReceivedData = model.date
                 for element in model.rates {
-                    if let index = self.currencyList.items.firstIndex(where: { $0.currencyKey == element.key }) {
-                        self.currencyList.items[index].rate = element.value
-                        self.currencyList.items[index].amount = self.convertibleCurrency.amount * element.value
+                    if let index = self.listPurchasedCurrencies.items.firstIndex(where: { $0.currencyKey == element.key }) {
+                        self.listPurchasedCurrencies.items[index].rate = element.value
+                        self.listPurchasedCurrencies.items[index].amount = (Double(self.soldCurrency.amount) ?? 0) * element.value // !!!
                     }
                 }
-                self.view?.updateListExchangeCurrencies(model: self.currencyList)
+                self.view?.updateListPurchasedCurrencies(model: self.listPurchasedCurrencies)
             case let .failure(error):
                 print(error)
             }
         }
     }
 
-    func viewDidLoad() {
-        view?.updateConvertibleCurrency(model: convertibleCurrency)
-        view?.updateListExchangeCurrencies(model: currencyList)
-    }
-
-    private func createCurrencyModel(currencyID: CurrencyId, currencyValue: String) -> ConverterCurrencyView.ConvertibleCurrencyModel {
+    func createSoldCurrencyModel(currencyID: CurrencyId, currencyValue: String) -> ConverterCurrencyView.SoldCurrencyModel {
         let flag = UIImage(named: currencyID)
-        let model: ConverterCurrencyView.ConvertibleCurrencyModel = .init(flag: flag, currencyKey: currencyID, currencyName: currencyValue)
+        let model: ConverterCurrencyView.SoldCurrencyModel = .init(flag: flag, currencyKey: currencyID, currencyName: currencyValue)
         return model
     }
 
-    func getAmountConvertibleCurrency(text: String, isRequestNeeded: Bool) {
-        if let amount = Double(text) {
-            convertibleCurrency.amount = amount
-            view?.updateConvertibleCurrency(model: convertibleCurrency)
-            if isRequestNeeded {
-                getExchangeRateButtonPressed()
-            }
-        } else {
-            print("incorrect number")
-        }
-    }
+//    func updateAmountSoldCurrency(text: String, isRequestNeeded: Bool) {
+//        if let amount = Double(text) {
+//            soldCurrency.amount = String(amount) // !!!
+//            view?.updateSoldCurrency(model: soldCurrency)
+//            if isRequestNeeded {
+//                updateRate()
+//            }
+//        } else {
+//            print("incorrect number")
+//        }
+//    }
 
-    private func createCurrencyListModel(currencies: [CurrencyId: String]) -> ConverterCurrencyView.ConvertibleCurrencyListModel {
-        var items: [ConverterCurrencyView.ConvertibleCurrencyListModel.Item] = []
+    func createPurchasedCurrenciesListModel(currencies: [CurrencyId: String]) -> ConverterCurrencyView.ListPurchasedCurrenciesModel {
+        var items: [ConverterCurrencyView.ListPurchasedCurrenciesModel.Item] = []
         for element in currencies {
             let flag = UIImage(named: element.key)
-            let item: ConverterCurrencyView.ConvertibleCurrencyListModel.Item = .init(flag: flag, currencyKey: element.key, currencyName: element.value)
+            let item: ConverterCurrencyView.ListPurchasedCurrenciesModel.Item = .init(flag: flag, currencyKey: element.key, currencyName: element.value)
             items.append(item)
         }
-        let model: ConverterCurrencyView.ConvertibleCurrencyListModel = .init(items: items.sorted(by: { $0.currencyKey < $1.currencyKey }))
+        let model: ConverterCurrencyView.ListPurchasedCurrenciesModel = .init(items: items.sorted(by: { $0.currencyKey < $1.currencyKey }))
         return model
     }
 
-    private func updateConvertibleCurrency(currencyKey: CurrencyId, currencyName: String) {
-        let model = createCurrencyModel(currencyID: currencyKey, currencyValue: currencyName)
-        convertibleCurrency = model
-        view?.updateConvertibleCurrency(model: model)
+    func updateSoldCurrency(currencyKey: CurrencyId, currencyName: String) {
+        let model = createSoldCurrencyModel(currencyID: currencyKey, currencyValue: currencyName)
+        soldCurrency = model
+        view?.updateSoldCurrency(model: model)
         clearRateAndAmountFields()
+    }
 
-        func clearRateAndAmountFields() {
-            for element in currencyList.items {
-                if let index = currencyList.items.firstIndex(where: { $0.currencyKey == element.currencyKey }) {
-                    currencyList.items[index].rate = 0
-                    currencyList.items[index].amount = 0
-                }
+    func clearRateAndAmountFields() {
+        for element in listPurchasedCurrencies.items {
+            if let index = listPurchasedCurrencies.items.firstIndex(where: { $0.currencyKey == element.currencyKey }) {
+                listPurchasedCurrencies.items[index].rate = 0
+                listPurchasedCurrencies.items[index].amount = 0
             }
-            view?.updateListExchangeCurrencies(model: currencyList)
         }
-    }
-
-    func updateListExchangeCurrencies(model: [CurrencyId: String]) {
-        sourceCurrencyList = model
-        let model = createCurrencyListModel(currencies: model)
-        currencyList = model
-        view?.updateListExchangeCurrencies(model: model)
-    }
-
-    //
-    func showConvertibleCurrencyVCTapButton() {
-        // открыть модуль Beta и передать туда параметры
-        router.openSelectionCurrency(currencyKey: convertibleCurrency.currencyKey, completion: updateConvertibleCurrency(currencyKey:currencyName:))
-    }
-
-    func showCurrencyListVCTapButton() {
-        // открыть модуль Beta и передать туда параметры
-        router.openSelectionCurrencyList(currencyList: sourceCurrencyList, completion: updateListExchangeCurrencies(model:))
+        view?.updateListPurchasedCurrencies(model: listPurchasedCurrencies)
     }
 }

@@ -4,7 +4,6 @@ protocol SelectionCurrencyViewProtocol: AnyObject {
 //    func setupNavBar() -> UIBarButtonItem
 //    func updateButtonNavBar(button: UIBarButtonItem)
     func update(model: SelectionCurrencyView.Model)
-//    func updateStateSingleCellSelectionMode(state: Bool)
 //    func showError()
 //    func showEmpty()
 //    func startLoader()
@@ -12,7 +11,6 @@ protocol SelectionCurrencyViewProtocol: AnyObject {
 }
 
 class SelectionCurrencyViewController: UIViewController {
-    let networkClient = NetworkClient()
     private let presenter: SelectionCurrencyPresenterProtocol
     private lazy var customView = SelectionCurrencyView(presenter: presenter)
 
@@ -38,7 +36,6 @@ class SelectionCurrencyViewController: UIViewController {
 
     func setupNavBar() {
         title = presenter.title
-        navigationController?.hidesBarsOnSwipe = true
     }
 
     deinit {

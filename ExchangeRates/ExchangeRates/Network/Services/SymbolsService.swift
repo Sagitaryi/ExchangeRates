@@ -4,8 +4,30 @@ protocol SymbolsServiceProtocol {
     func fetchSymbols(queue: DispatchQueue, completion: @escaping (Result<SymbolsModel, NetworkClientError>) -> Void)
 }
 
+// final class SymbolsServiceWithCache: SymbolsServiceProtocol {
+//    private let keyStoredUserDefault = "currenciesReceived"
+//    private let service: SymbolsServiceProtocol
+//
+//    init(service: SymbolsService) {
+//        self.service = service
+//    }
+//
+//    func fetchSymbols(queue: DispatchQueue, completion: @escaping (Result<SymbolsModel, NetworkClientError>) -> Void) {
+//        if let currenciesReceived = UserDefaults.standard.value(CurrenciesReceived.self, forKey: keyStoredUserDefault) {
+//            if Calendar.current.isDateInToday(currenciesReceived.date) {
+//                queue.async {
+//                    completion(.success(currenciesReceived.symbols))
+//                    print("Get data from UserDefault")
+//                }
+//                return
+//            }
+//        }
+//        service.fetchSymbols(queue: .main, completion: <#T##(Result<SymbolsModel, NetworkClientError>) -> Void#>)
+//    }
+// }
+
 final class SymbolsService: NetworkService, SymbolsServiceProtocol {
-    let keyStoredUserDefault = "currenciesReceived"
+    private let keyStoredUserDefault = "currenciesReceived"
 
     func fetchSymbols(queue: DispatchQueue = .main, completion: @escaping (Result<SymbolsModel, NetworkClientError>) -> Void) {
         if let currenciesReceived = UserDefaults.standard.value(CurrenciesReceived.self, forKey: keyStoredUserDefault) {

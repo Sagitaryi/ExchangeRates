@@ -28,6 +28,7 @@
 		5BB787D02BBD30070009A870 /* SymbolsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB787CF2BBD30070009A870 /* SymbolsService.swift */; };
 		5BB787D22BBD30900009A870 /* RatesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB787D12BBD30900009A870 /* RatesService.swift */; };
 		5BBC95952BD64D790038E10E /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBC95942BD64D790038E10E /* Extensions.swift */; };
+		5BBF4A762C7889230053B115 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBF4A752C7889230053B115 /* Settings.swift */; };
 		5BC0571F2C296661000C5385 /* DataStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC0571E2C296660000C5385 /* DataStorageService.swift */; };
 		5BC057212C2981BD000C5385 /* CurrenciesReceived.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC057202C2981BD000C5385 /* CurrenciesReceived.swift */; };
 		5BC4C2312BB543AE00E40CFB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC4C2302BB543AE00E40CFB /* AppDelegate.swift */; };
@@ -61,6 +62,7 @@
 		5BB787D72BBD6AE60009A870 /* RatesResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatesResponseDTO.swift; sourceTree = "<group>"; };
 		5BB787D82BBD6AE80009A870 /* SymbolsResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolsResponseDTO.swift; sourceTree = "<group>"; };
 		5BBC95942BD64D790038E10E /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		5BBF4A752C7889230053B115 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		5BC0571E2C296660000C5385 /* DataStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStorageService.swift; sourceTree = "<group>"; };
 		5BC057202C2981BD000C5385 /* CurrenciesReceived.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrenciesReceived.swift; sourceTree = "<group>"; };
 		5BC4C22D2BB543AE00E40CFB /* ExchangeRates.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExchangeRates.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -118,6 +120,7 @@
 			children = (
 				5BC4C2392BB543B100E40CFB /* Assets.xcassets */,
 				5BC4C23B2BB543B100E40CFB /* LaunchScreen.storyboard */,
+				5BBF4A752C7889230053B115 /* Settings.swift */,
 			);
 			path = Resourses;
 			sourceTree = "<group>";
@@ -346,6 +349,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5BBF4A762C7889230053B115 /* Settings.swift in Sources */,
 				5B01685C2BBFDAF000950730 /* SymbolsResponseDTO.swift in Sources */,
 				8E09634F2BD41887001244DF /* TokenProvider.swift in Sources */,
 				5B70BDD72C0AFDF900B15191 /* ConverterCurrencyPresenter.swift in Sources */,

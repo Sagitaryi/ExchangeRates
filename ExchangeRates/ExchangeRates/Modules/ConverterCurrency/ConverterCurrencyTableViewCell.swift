@@ -11,7 +11,6 @@ final class ConverterCurrencyTableViewCell: UITableViewCell {
 
     private var countryFlagImageView: UIImageView = {
         var imageView = UIImageView()
-        imageView.image = UIImage(systemName: "heart")
         return imageView
     }()
 
@@ -101,7 +100,7 @@ final class ConverterCurrencyTableViewCell: UITableViewCell {
         ])
     }
 
-    func configure(baseCurrency: CurrencyId, model: ConverterCurrencyView.ConvertibleCurrencyListModel, index: Int) {
+    func configure(baseCurrency: CurrencyId, model: ConverterCurrencyView.ListPurchasedCurrenciesModel, index: Int) {
         countryFlagImageView.image = model.items[index].flag
         currencyLabel.text = model.items[index].currencyKey
         descriptionCurrencyLabel.text = model.items[index].currencyName
