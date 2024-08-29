@@ -104,7 +104,7 @@ final class ConverterCurrencyTableViewCell: UITableViewCell {
         countryFlagImageView.image = model.items[index].flag
         currencyLabel.text = model.items[index].currencyKey
         descriptionCurrencyLabel.text = model.items[index].currencyName
-        totalUnitsCurrencyLabel.text = String(model.items[index].amount)
-        rateCurrencyLabel.text = String("1 \(baseCurrency) = \(model.items[index].rate) \(model.items[index].currencyKey)")
+        totalUnitsCurrencyLabel.text = model.items[index].amount
+        rateCurrencyLabel.text = "1 \(baseCurrency) = \(model.items[index].rate) \(model.items[index].currencyKey)"
     }
 }

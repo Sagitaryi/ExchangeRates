@@ -32,7 +32,7 @@ final class ConverterCurrencyViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavBar()
-        presenter.viewDidLoad()
+        presenter.viewDidLoad() // FIXME: перенести в стоплоадер?
     }
 
     func setupNavBar() {
@@ -44,10 +44,12 @@ final class ConverterCurrencyViewController: UIViewController {
 
 extension ConverterCurrencyViewController: ConverterCurrencyViewProtocol {
     func startLoader() {
+        navigationController?.setNavigationBarHidden(true, animated: false)
         customView.startLoader()
     }
 
     func stopLoader() {
+        navigationController?.setNavigationBarHidden(false, animated: false)
         customView.stopLoader()
     }
 

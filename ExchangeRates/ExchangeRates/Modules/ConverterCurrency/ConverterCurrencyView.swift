@@ -7,7 +7,7 @@ final class ConverterCurrencyView: UIView {
         var flag: UIImage?
         var currencyKey: String
         var currencyName: String
-        var amount: String = "0" // TODO: String !! Все форматирование в Presenter'е !!!
+        var amount: String = "0"
     }
 
     struct ListPurchasedCurrenciesModel {
@@ -18,8 +18,8 @@ final class ConverterCurrencyView: UIView {
             var flag: UIImage?
             var currencyKey: String
             var currencyName: String
-            var amount: Double = 0 // TODO: String !! Все форматирование в Presenter'е !!!
-            var rate: Double = 0 // TODO: String !! Все форматирование в Presenter'е !!!
+            var amount: String = "0"
+            var rate: String = "0"
         }
     }
 
@@ -29,6 +29,33 @@ final class ConverterCurrencyView: UIView {
     private lazy var editBarButtonItem: UIBarButtonItem = {
         let barButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(editTapped))
         return barButtonItem
+    }()
+
+    private lazy var loaderView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .systemGray
+        return view
+    }()
+
+    private lazy var loaderImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.image = UIImage(named: "objmen-valjut")
+        return imageView
+    }()
+
+    private lazy var headerLoaderLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "Futura-Medium", size: 45)
+        label.textColor = .white
+        label.text = "CURRENCY"
+        return label
+    }()
+
+    private lazy var activityIndicator: UIActivityIndicatorView = {
+        let spinner = UIActivityIndicatorView(style: .large)
+        spinner.startAnimating()
+        return spinner
     }()
 
     private lazy var topBlockContentView: UIView = {
@@ -75,13 +102,13 @@ final class ConverterCurrencyView: UIView {
 
     private lazy var betTextField: UITextField = {
         let textField = UITextField()
-        textField.borderStyle = .bezel
+        textField.borderStyle = .roundedRect
         textField.keyboardType = .numberPad
         textField.layer.borderWidth = 1
         textField.layer.cornerRadius = 5
         textField.layer.borderColor = .init(red: 242, green: 242, blue: 247, alpha: 0.4)
+        textField.placeholder = "Enter the amount..."
         textField.delegate = self
-
         return textField
     }()
 
@@ -161,10 +188,13 @@ final class ConverterCurrencyView: UIView {
 
     func startLoader() {
         // Показываем скелетон или лоадер
+        setupSubviewLoader()
+        setupConstraintsLoader()
     }
 
     func stopLoader() {
         // Скрываем все
+        loaderView.removeFromSuperview()
     }
 }
 
@@ -173,6 +203,13 @@ private extension ConverterCurrencyView {
         backgroundColor = .white
         setupSubviews()
         setupConstraints()
+    }
+
+    func setupSubviewLoader() {
+        addSubview(loaderView)
+        loaderView.addSubview(loaderImageView)
+        loaderView.addSubview(headerLoaderLabel)
+        loaderView.addSubview(activityIndicator)
     }
 
     func setupSubviews() {
@@ -191,6 +228,33 @@ private extension ConverterCurrencyView {
 
         addSubview(footterBlockDateReceivedDataView)
         footterBlockDateReceivedDataView.addSubview(dateReceivedDataLabel)
+    }
+
+    func setupConstraintsLoader() {
+        loaderView.translatesAutoresizingMaskIntoConstraints = false
+        loaderImageView.translatesAutoresizingMaskIntoConstraints = false
+        headerLoaderLabel.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            loaderView.topAnchor.constraint(equalTo: topAnchor),
+            loaderView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            loaderView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            loaderView.trailingAnchor.constraint(equalTo: trailingAnchor),
+
+            loaderImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            loaderImageView.bottomAnchor.constraint(equalTo: headerLoaderLabel.topAnchor, constant: -30),
+            loaderImageView.widthAnchor.constraint(equalToConstant: 60),
+            loaderImageView.heightAnchor.constraint(equalToConstant: 60),
+
+            headerLoaderLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            headerLoaderLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+
+            activityIndicator.centerXAnchor.constraint(equalTo: centerXAnchor),
+            activityIndicator.topAnchor.constraint(equalTo: headerLoaderLabel.bottomAnchor, constant: 30),
+            activityIndicator.heightAnchor.constraint(equalToConstant: 80),
+            activityIndicator.widthAnchor.constraint(equalToConstant: 80),
+        ])
     }
 
     func setupConstraints() {
