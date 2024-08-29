@@ -27,6 +27,7 @@ final class ConverterCurrencyPresenter: ConverterCurrencyPresenterProtocol {
 
     private let rateDecimals: String
     private let amountDecimals: String
+
     private var soldCurrency: CurrencyId {
         didSet {
             if oldValue != soldCurrency {
@@ -78,10 +79,8 @@ final class ConverterCurrencyPresenter: ConverterCurrencyPresenterProtocol {
             switch result {
             case let .success(data):
                 symbolsModel = data
-//                soldCurrencyModel = createSoldCurrencyModel(currencyID: soldCurrency) // FIXME: убрать в notify
-//                print(data)
             case let .failure(error):
-                print(error) // TODO: Что делать с ошибкой
+                print(error)
             }
             group.leave()
         }
@@ -123,22 +122,23 @@ final class ConverterCurrencyPresenter: ConverterCurrencyPresenterProtocol {
 
     func soldCurrencyTapped() {
         guard let model = symbolsModel else { return }
-        router.openSelectionCurrency(currencyKey: soldCurrency, symbolsModel: model, completion: updateSoldCurrency(currencyKey:))
+        router.openSelectionCurrency(currencyKey: soldCurrency, symbolsModel: model, completion: updateSoldCurrency(onChanged:))
     }
 
     func editButtonTapped() {
         guard let model = symbolsModel else { return }
-        router.openSelectionCurrencyList(currencyList: purchasedCurrencyList, symbolsModel: model, completion: updatePurchasedCurrenciesList(currencyList:))
+        router.openSelectionCurrencyList(currencyList: purchasedCurrencyList, symbolsModel: model, completion: updatePurchasedCurrenciesList(onChanged:))
     }
 }
 
 private extension ConverterCurrencyPresenter {
-    func updateSoldCurrency(currencyKey: CurrencyId) {
-        soldCurrency = currencyKey
+    func updateSoldCurrency(onChanged: Set<CurrencyId>) {
+        guard let element = onChanged.first else { return }
+        soldCurrency = element
     }
 
-    func updatePurchasedCurrenciesList(currencyList: [CurrencyId]) {
-        purchasedCurrencyList = currencyList
+    func updatePurchasedCurrenciesList(onChanged: Set<CurrencyId>) {
+        purchasedCurrencyList = Array(onChanged.sorted(by: { $0 < $1 }))
     }
 
     func createSoldCurrencyModel(currencyID: CurrencyId) -> ConverterCurrencyView.SoldCurrencyModel {
@@ -171,12 +171,13 @@ private extension ConverterCurrencyPresenter {
         return model
     }
 
-    func updateRateModel() { // FIXME: использовать этот метод вместо updateRate
+    func updateRateModel() {
         ratesService.fetchRates(base: soldCurrency, symbols: purchasedCurrencyList, queue: .main) { [self] result in
             switch result {
             case let .success(data):
                 ratesModel = data
                 isRequestNeeded = false
+                print("Data obtained from the network ")
             case let .failure(error):
                 print(error)
             }

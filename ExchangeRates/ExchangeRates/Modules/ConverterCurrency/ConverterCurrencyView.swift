@@ -164,6 +164,7 @@ final class ConverterCurrencyView: UIView {
         countryFlagImageView.image = model.flag
         soldCurrencyLabel.text = model.currencyKey
         descriptionSoldCurrencyLabel.text = model.currencyName
+        betTextField.text = model.amount
     }
 
     func updateListPurchasedCurrencies(model: ListPurchasedCurrenciesModel) {
@@ -366,12 +367,12 @@ private extension ConverterCurrencyView {
 extension ConverterCurrencyView: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         guard let value = textField.text else { return false }
-//    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-//        print("true")
-//        guard let value = textField.text else { return false }
-//        presenter.getAmountConvertibleCurrency(text: value, isRequestNeeded: false)
         presenter.updateAmount(text: value)
         return true
+    }
+
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.text = ""
     }
 }
 
