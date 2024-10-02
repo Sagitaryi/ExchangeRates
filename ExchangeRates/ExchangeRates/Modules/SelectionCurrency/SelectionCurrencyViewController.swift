@@ -1,13 +1,7 @@
 import UIKit
 
 protocol SelectionCurrencyViewProtocol: AnyObject {
-//    func setupNavBar() -> UIBarButtonItem
-//    func updateButtonNavBar(button: UIBarButtonItem)
     func update(model: SelectionCurrencyView.Model)
-//    func showError()
-//    func showEmpty()
-//    func startLoader()
-    func stopLoader()
 }
 
 class SelectionCurrencyViewController: UIViewController {
@@ -46,9 +40,5 @@ class SelectionCurrencyViewController: UIViewController {
 extension SelectionCurrencyViewController: SelectionCurrencyViewProtocol {
     func update(model: SelectionCurrencyView.Model) {
         customView.update(model: model)
-    }
-
-    func stopLoader() {
-        customView.stopLoader()
     }
 }

@@ -5,6 +5,7 @@ protocol ConverterCurrencyViewProtocol: AnyObject {
     //    func updateButtonNavBar(button: UIBarButtonItem)
     func updateSoldCurrency(model: ConverterCurrencyView.SoldCurrencyModel)
     func updateListPurchasedCurrencies(model: ConverterCurrencyView.ListPurchasedCurrenciesModel)
+    func updateTableView(table: UITableView)
     //    func showError()
     //    func showEmpty()
     func startLoader()
@@ -59,5 +60,9 @@ extension ConverterCurrencyViewController: ConverterCurrencyViewProtocol {
 
     func updateListPurchasedCurrencies(model: ConverterCurrencyView.ListPurchasedCurrenciesModel) {
         customView.updateListPurchasedCurrencies(model: model)
+    }
+
+    func updateTableView(table: UITableView) {
+        customView.updateTableView(table: table)
     }
 }

@@ -9,25 +9,32 @@ protocol SelectionCurrencyPresenterProtocol {
 
 final class SelectionCurrencyPresenter: SelectionCurrencyPresenterProtocol {
     weak var view: SelectionCurrencyViewProtocol?
+    var onChanged: ((Set<CurrencyId>) -> Void)?
 
-    var title: String { "Add currency" }
+    var title: String {
+        let header: String
+        if isSingleCellSelectionMode {
+            header = "Add currency"
+        } else {
+            header = "Select currencies"
+        }
+        return header
+    }
 
     private let symbolsModel: SymbolsModel
     private var model: SelectionCurrencyView.Model = .init(items: [])
-
     private let isSingleCellSelectionMode: Bool
-
-    private var selected: Set<CurrencyId> // FIXME: ?
-
-    var onChanged: ((Set<CurrencyId>) -> Void)?
+    private var selected: Set<CurrencyId>
 
     init(
         selected: Set<CurrencyId>,
         symbolsModel: SymbolsModel,
+        onChanged: ((Set<CurrencyId>) -> Void)?,
         isSingleCellSelectionMode: Bool
     ) {
         self.selected = selected
         self.symbolsModel = symbolsModel
+        self.onChanged = onChanged
         self.isSingleCellSelectionMode = isSingleCellSelectionMode
     }
 

@@ -23,6 +23,7 @@ final class ConverterCurrencyPresenter: ConverterCurrencyPresenterProtocol {
 
     private let symbolsService: SymbolsServiceProtocol
     private let ratesService: RatesServiceProtocol
+    private let tableManager: TableManagerServiceProtocol = TableManagerService()
     private let router: ConverterCurrencyRouterProtocol
 
     private let rateDecimals: String
@@ -99,12 +100,26 @@ final class ConverterCurrencyPresenter: ConverterCurrencyPresenterProtocol {
         }
 
         group.notify(queue: DispatchQueue.main) { [self] in
-            view?.stopLoader()
+            view?.stopLoader() // FIXME: проверить расположение
             soldCurrencyModel = createSoldCurrencyModel(currencyID: soldCurrency)
             purchasedCurrencyListModel = createPurchasedCurrenciesListModel(purchasedCurrencyList: purchasedCurrencyList)
             view?.updateSoldCurrency(model: soldCurrencyModel)
             view?.updateListPurchasedCurrencies(model: purchasedCurrencyListModel)
+            updateTableView()
         }
+    }
+
+    func updateTableView() {
+        let tableView = UITableView()
+        tableView.backgroundColor = .red
+        tableManager.attachTable(tableView)
+        var modelsViewCell: [ConverterCurrencyTableViewCell.Model] = []
+        for item in purchasedCurrencyListModel.items {
+            modelsViewCell.append(.init(baseCurrency: soldCurrency, flag: item.flag, currencyKey: item.currencyKey, currencyName: item.currencyName, amount: item.amount, rate: item.rate))
+        }
+        print("modelsViewCell - \(modelsViewCell)")
+        tableManager.displayConverterCurrencyTableView(modelsViewCell: modelsViewCell)
+        view?.updateTableView(table: tableView)
     }
 
     func updateAmount(text: String) {
@@ -177,7 +192,6 @@ private extension ConverterCurrencyPresenter {
             case let .success(data):
                 ratesModel = data
                 isRequestNeeded = false
-                print("Data obtained from the network ")
             case let .failure(error):
                 print(error)
             }

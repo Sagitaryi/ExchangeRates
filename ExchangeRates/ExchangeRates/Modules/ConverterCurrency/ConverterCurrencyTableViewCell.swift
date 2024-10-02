@@ -9,6 +9,15 @@ final class ConverterCurrencyTableViewCell: UITableViewCell {
         case sizeRightContent = 200
     }
 
+    struct Model {
+        let baseCurrency: String
+        var flag: UIImage?
+        var currencyKey: String
+        var currencyName: String
+        var amount: String = "0"
+        var rate: String = "0"
+    }
+
     private var countryFlagImageView: UIImageView = {
         var imageView = UIImageView()
         return imageView
@@ -54,7 +63,27 @@ final class ConverterCurrencyTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func setupCell() {
+//
+//    func configure(baseCurrency: CurrencyId, model: ConverterCurrencyView.ListPurchasedCurrenciesModel, index: Int) {
+//        countryFlagImageView.image = model.items[index].flag
+//        currencyLabel.text = model.items[index].currencyKey
+//        descriptionCurrencyLabel.text = model.items[index].currencyName
+//        totalUnitsCurrencyLabel.text = model.items[index].amount
+//        rateCurrencyLabel.text = "1 \(baseCurrency) = \(model.items[index].rate) \(model.items[index].currencyKey)"
+//    }
+
+    func configure(model: ConverterCurrencyTableViewCell.Model) {
+//        print(model)
+        countryFlagImageView.image = model.flag
+        currencyLabel.text = model.currencyKey
+        descriptionCurrencyLabel.text = model.currencyName
+        totalUnitsCurrencyLabel.text = model.amount
+//        rateCurrencyLabel.text = "1 \(baseCurrency) = \(model.items[index].rate) \(model.items[index].currencyKey)"
+    }
+}
+
+private extension ConverterCurrencyTableViewCell {
+    func setupCell() {
         countryFlagImageView.translatesAutoresizingMaskIntoConstraints = false
         currencyLabel.translatesAutoresizingMaskIntoConstraints = false
         descriptionCurrencyLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -98,13 +127,5 @@ final class ConverterCurrencyTableViewCell: UITableViewCell {
             rateCurrencyLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0),
 
         ])
-    }
-
-    func configure(baseCurrency: CurrencyId, model: ConverterCurrencyView.ListPurchasedCurrenciesModel, index: Int) {
-        countryFlagImageView.image = model.items[index].flag
-        currencyLabel.text = model.items[index].currencyKey
-        descriptionCurrencyLabel.text = model.items[index].currencyName
-        totalUnitsCurrencyLabel.text = model.items[index].amount
-        rateCurrencyLabel.text = "1 \(baseCurrency) = \(model.items[index].rate) \(model.items[index].currencyKey)"
     }
 }

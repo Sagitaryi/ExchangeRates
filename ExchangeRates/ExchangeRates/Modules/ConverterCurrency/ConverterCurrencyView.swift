@@ -25,6 +25,7 @@ final class ConverterCurrencyView: UIView {
 
     private var soldCurrency: SoldCurrencyModel?
     private var listPurchasedCurrencies: ListPurchasedCurrenciesModel?
+//    private var tableManager: TableManagerServiceProtocol = TableManagerService()
 
     private lazy var editBarButtonItem: UIBarButtonItem = {
         let barButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(editTapped))
@@ -126,11 +127,34 @@ final class ConverterCurrencyView: UIView {
     }()
 
     private lazy var tableWithCurrenciesView: UITableView = {
-        let tableview = UITableView()
-        tableview.register(ConverterCurrencyTableViewCell.self, forCellReuseIdentifier: "Cell")
-        tableview.delegate = self
-        tableview.dataSource = self
-        return tableview
+        let tableView = UITableView()
+        /*
+         tableView.backgroundColor = .red
+         print(listPurchasedCurrencies)
+         tableManager.attachTable(tableView)
+         guard let model = listPurchasedCurrencies else { return tableView }
+         guard let baseCurrency = soldCurrency else { return tableView }
+         print(1111)
+         tableManager.displayConverterCurrencyTableView(model: model, baseCurrency: baseCurrency)
+          */
+
+//        guard let model = listPurchasedCurrencies?.items else { return }
+//        guard let baseCurrency = soldCurrency?.currencyKey else { return }
+//        let modelViewCell: ConverterCurrencyTableViewCell.Model = .init(baseCurrency: baseCurrency,
+//                                                                        flag: model.flag,
+//                                                                        currencyKey: model.currencyKey,
+//                                                                        currencyName: model.currencyName,
+//                                                                        amount: model.amount,
+//                                                                        rate: model.rate)
+//
+//        tableManager.displayConverterCurrencyTableView(model: <#T##ConverterCurrencyTableViewCell.Model#>)
+
+        // FIXME: v TM
+
+//        tableView.register(ConverterCurrencyTableViewCell.self, forCellReuseIdentifier: "Cell")
+//        tableView.delegate = self
+//        tableView.dataSource = self
+        return tableView
     }()
 
     private lazy var footterBlockDateReceivedDataView: UIView = {
@@ -168,10 +192,16 @@ final class ConverterCurrencyView: UIView {
     }
 
     func updateListPurchasedCurrencies(model: ListPurchasedCurrenciesModel) {
+        print("Model: \(model)")
         listPurchasedCurrencies = model
         if let date = listPurchasedCurrencies?.lastDateReceivedData {
             dateReceivedDataLabel.text = "Last update: \(date)"
         }
+        tableWithCurrenciesView.reloadData()
+    }
+
+    func updateTableView(table: UITableView) {
+        tableWithCurrenciesView = table
         tableWithCurrenciesView.reloadData()
     }
 
@@ -371,30 +401,38 @@ extension ConverterCurrencyView: UITextFieldDelegate {
         return true
     }
 
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        textField.text = ""
-    }
-}
-
-extension ConverterCurrencyView: UITableViewDataSource {
-    func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-        guard let list = listPurchasedCurrencies else { return 0 }
-        return list.items.count
-    }
-
     func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {
         let heightRow: CGFloat = 48
         return heightRow
     }
 
-    func tableView(_: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableWithCurrenciesView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? ConverterCurrencyTableViewCell else { fatalError() }
-        guard let model = listPurchasedCurrencies else { return cell }
-        if let baseCurrency = soldCurrency?.currencyKey {
-            cell.configure(baseCurrency: baseCurrency, model: model, index: indexPath.row)
-        }
-        return cell
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.text = ""
     }
 }
 
-extension ConverterCurrencyView: UITableViewDelegate {} // TODO: можно ли перенести к View
+// extension ConverterCurrencyView: UITableViewDataSource {
+//    func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
+//        guard let list = listPurchasedCurrencies else { return 0 }
+//        return list.items.count
+//    }
+//
+//    func tableView(_: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        guard let cell = tableWithCurrenciesView.dequeueReusableCell(withIdentifier: "Cell",
+//                                                                     for: indexPath) as? ConverterCurrencyTableViewCell else { fatalError() }
+//        guard let model = listPurchasedCurrencies?.items[indexPath.row] else { return cell }
+//        print(model)
+//
+//        guard let baseCurrency = soldCurrency?.currencyKey else { return cell }
+//        let modelViewCell: ConverterCurrencyTableViewCell.Model = .init(baseCurrency: baseCurrency,
+//                                                                        flag: model.flag,
+//                                                                        currencyKey: model.currencyKey,
+//                                                                        currencyName: model.currencyName,
+//                                                                        amount: model.amount,
+//                                                                        rate: model.rate)
+//        cell.configure(model: modelViewCell)
+//        return cell
+//    }
+// }
+//
+// extension ConverterCurrencyView: UITableViewDelegate {} // TODO: можно ли перенести к View

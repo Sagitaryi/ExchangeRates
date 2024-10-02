@@ -3,7 +3,6 @@ import UIKit
 typealias Item = SelectionCurrencyView.Model.Item
 
 final class SelectionCurrencyView: UIView {
-    // Модель через которую передают все изменения во View
     struct Model {
         var items: [Item]
 
@@ -16,7 +15,7 @@ final class SelectionCurrencyView: UIView {
 
     private var model: Model?
 
-    lazy var tableView: UITableView = {
+    private lazy var tableView: UITableView = {
         let table = UITableView()
         table.register(SelectionCurrencyTableViewCell.self, forCellReuseIdentifier: "Cell")
         table.delegate = self
@@ -40,22 +39,6 @@ final class SelectionCurrencyView: UIView {
     func update(model: Model) {
         self.model = model
         tableView.reloadData()
-    }
-
-    func showError() {
-        // Показываем View ошибки
-    }
-
-    func showEmpty() {
-        // Показываем какой-то View для Empty state
-    }
-
-    func startLoader() {
-        // Показываем скелетон или лоадер
-    }
-
-    func stopLoader() {
-        // Скрываем все
     }
 }
 
@@ -102,7 +85,8 @@ extension SelectionCurrencyView: UITableViewDataSource {
 }
 
 extension SelectionCurrencyView: UITableViewDelegate {
-    func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         presenter.tapCell(index: indexPath.row)
     }
 }

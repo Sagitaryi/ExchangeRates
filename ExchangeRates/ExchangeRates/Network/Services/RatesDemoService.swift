@@ -1,10 +1,3 @@
-//
-//  RatesDemoService.swift
-//  ExchangeRates
-//
-//  Created by Алексей Чумаков on 25.08.2024.
-//
-
 import Foundation
 
 final class RatesDemoService: RatesServiceProtocol {
@@ -24,18 +17,3 @@ private extension RatesDemoService {
         static let model = RatesModel(base: base, date: date, rates: rates)
     }
 }
-
-// {
-//  "base": "EUR",
-//  "date": "2024-08-25",
-//  "rates": {
-//    "PAB": 1.111912,
-//    "PHP": 63.056332,
-//    "RUB": 101.971956,
-//    "USD": 1.120762
-//  },
-//  "success": true,
-//  "timestamp": 1724593744
-//
-
-// model RatesModel(base: "RUB", date: 2024-08-24 17:00:00 +0000, rates: ["KZT": 5.270347, "USD": 0.010991, "EUR": 0.009807])

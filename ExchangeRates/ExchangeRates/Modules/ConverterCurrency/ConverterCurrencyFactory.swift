@@ -6,6 +6,8 @@ final class ConverterCurrencyFactory {
         let networkClient = NetworkClient()
         let symbolsService = SymbolsDemoService()
         let ratesService = RatesDemoService()
+//        let symbolsService = SymbolsService(networkClient: networkClient)
+//        let ratesService = RatesService(networkClient: networkClient)
 
         let router = ConverterCurrencyRouter(
             factory: SelectionCurrencyFactory()
