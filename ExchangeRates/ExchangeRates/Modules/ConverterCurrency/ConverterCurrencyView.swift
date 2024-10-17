@@ -25,32 +25,9 @@ final class ConverterCurrencyView: UIView {
 
     private lazy var loaderView: UIView = {
         let view = LoaderView()
-
-//        let view = UIView()
-//        view.backgroundColor = .systemGray
         return view
     }()
 
-//    private lazy var loaderImageView: UIImageView = {
-//        let imageView = UIImageView()
-//        imageView.contentMode = .scaleAspectFill
-//        imageView.image = UIImage(named: "obmen-valut")
-//        return imageView
-//    }()
-//
-//    private lazy var headerLoaderLabel: UILabel = {
-//        let label = UILabel()
-//        label.font = UIFont(name: "Futura-Medium", size: 45)
-//        label.textColor = .white
-//        label.text = "CURRENCY"
-//        return label
-//    }()
-//
-//    private lazy var activityIndicator: UIActivityIndicatorView = {
-//        let spinner = UIActivityIndicatorView(style: .large)
-//        spinner.startAnimating()
-//        return spinner
-//    }()
 
     private lazy var topBlockContentView: UIView = {
         let view = UIView()
