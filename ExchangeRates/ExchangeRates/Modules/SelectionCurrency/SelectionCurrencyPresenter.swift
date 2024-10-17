@@ -4,7 +4,7 @@ protocol SelectionCurrencyPresenterProtocol {
     var title: String { get }
     var onChanged: ((Set<CurrencyId>) -> Void)? { get }
     func viewDidLoad()
-    func tapCell(index: Int)
+    func tapRow(index: Int)
 }
 
 final class SelectionCurrencyPresenter: SelectionCurrencyPresenterProtocol {
@@ -13,16 +13,12 @@ final class SelectionCurrencyPresenter: SelectionCurrencyPresenterProtocol {
 
     var title: String {
         let header: String
-        if isSingleCellSelectionMode {
-            header = "Add currency"
-        } else {
-            header = "Select currencies"
-        }
+        header = isSingleCellSelectionMode ? "Add currency" : "Select currencies"
         return header
     }
 
     private let symbolsModel: SymbolsModel
-    private var model: SelectionCurrencyView.Model = .init(items: [])
+    private var model = [SelectionCurrencyTableViewCell.Model]()
     private let isSingleCellSelectionMode: Bool
     private var selected: Set<CurrencyId>
 
@@ -39,40 +35,52 @@ final class SelectionCurrencyPresenter: SelectionCurrencyPresenterProtocol {
     }
 
     func viewDidLoad() {
-        let model = createNewModel()
-        self.model = model
-        view?.update(model: model)
+        updateUI()
     }
 
-    func tapCell(index: Int) {
-        let pressedElement = model.items[index].currencyKey
+    func tapRow(index: Int) {
+        let pressedElement = model[index].currencyKey
+        print(pressedElement)
+
         if isSingleCellSelectionMode {
             selected.removeAll()
             selected.insert(pressedElement)
-            model = createNewModel()
-            view?.update(model: model)
+            updateUI()
         } else {
             if selected.contains(pressedElement) {
                 selected.remove(pressedElement)
             } else {
                 selected.insert(pressedElement)
             }
-            model = createNewModel()
-            view?.update(model: model)
         }
+        updateUI()
         onChanged?(selected)
     }
 }
 
 private extension SelectionCurrencyPresenter {
-    func createNewModel() -> SelectionCurrencyView.Model {
-        var model: SelectionCurrencyView.Model = .init(items: [])
+    func updateUI() {
+        guard symbolsModel.symbols.count > 0 else {
+//            view?.showEmpty()
+            return
+        }
+
+        var model = [SelectionCurrencyTableViewCell.Model]()
         for item in Array(symbolsModel.symbols).sorted(by: { $0.0 < $1.0 }) {
             let key = item.key
             let name = item.value
-            var isSelected = selected.contains(item.key)
-            model.items.append(.init(currencyKey: key, currencyName: name, isSelected: isSelected))
+            let isSelected = selected.contains(item.key)
+            model.append(
+                .init(
+                    currencyFullName: "\(key) - \(name)",
+                    currencyKey: key,
+                    currencyName: name,
+                    isSelected: isSelected
+                )
+            )
         }
-        return model
+        self.model = model
+        let viewModel = SelectionCurrencyView.Model(items: model)
+        view?.update(model: viewModel)
     }
 }

@@ -10,21 +10,12 @@ protocol RatesServiceProtocol {
 }
 
 final class RatesService: NetworkService, RatesServiceProtocol {
-    private var model: RatesModel?
-
     func fetchRates(
         base: CurrencyId,
         symbols: [CurrencyId],
         queue: DispatchQueue = .main,
         completion: @escaping (Result<RatesModel, NetworkClientError>) -> Void
     ) {
-        if let model = model {
-            queue.async {
-                completion(.success(model))
-            }
-            return
-        }
-
         guard case var .success(urlRequest) = RatesRequestBuilder()
             .makeRequest(base: base, symbols: symbols)
         else {
@@ -42,7 +33,6 @@ final class RatesService: NetworkService, RatesServiceProtocol {
             switch result {
             case let .success(data):
                 if let model = RatesModel(response: data) {
-                    self.model = model
                     ratesModel = .success(model)
                 } else {
                     ratesModel = .failure(.incorrectData)

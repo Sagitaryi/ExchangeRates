@@ -1,16 +1,18 @@
 import UIKit
 
 final class ConverterCurrencyTableViewCell: UITableViewCell {
+    static let id = "ConverterCurrencyTableViewCell"
+
     private enum ConstantConstraint: CGFloat {
         case distanceToSide = 22
         case spacingBetweenContent = 10
         case sizeCountryFlagImageView = 25
         case sizeAnteTextField = 60
-        case sizeRightContent = 200
+        case sizeRightContent = 150
     }
 
     struct Model {
-        let baseCurrency: String
+        let baseCurrency: CurrencyId
         var flag: UIImage?
         var currencyKey: String
         var currencyName: String
@@ -63,22 +65,12 @@ final class ConverterCurrencyTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-//
-//    func configure(baseCurrency: CurrencyId, model: ConverterCurrencyView.ListPurchasedCurrenciesModel, index: Int) {
-//        countryFlagImageView.image = model.items[index].flag
-//        currencyLabel.text = model.items[index].currencyKey
-//        descriptionCurrencyLabel.text = model.items[index].currencyName
-//        totalUnitsCurrencyLabel.text = model.items[index].amount
-//        rateCurrencyLabel.text = "1 \(baseCurrency) = \(model.items[index].rate) \(model.items[index].currencyKey)"
-//    }
-
-    func configure(model: ConverterCurrencyTableViewCell.Model) {
-//        print(model)
+    func configure(with model: ConverterCurrencyTableViewCell.Model) {
         countryFlagImageView.image = model.flag
         currencyLabel.text = model.currencyKey
         descriptionCurrencyLabel.text = model.currencyName
         totalUnitsCurrencyLabel.text = model.amount
-//        rateCurrencyLabel.text = "1 \(baseCurrency) = \(model.items[index].rate) \(model.items[index].currencyKey)"
+        rateCurrencyLabel.text = model.rate
     }
 }
 

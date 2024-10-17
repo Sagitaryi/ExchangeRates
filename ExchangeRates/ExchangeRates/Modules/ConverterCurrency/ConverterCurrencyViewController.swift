@@ -1,13 +1,9 @@
 import UIKit
 
 protocol ConverterCurrencyViewProtocol: AnyObject {
-    //    func setupNavBar() -> UIBarButtonItem
-    //    func updateButtonNavBar(button: UIBarButtonItem)
     func updateSoldCurrency(model: ConverterCurrencyView.SoldCurrencyModel)
-    func updateListPurchasedCurrencies(model: ConverterCurrencyView.ListPurchasedCurrenciesModel)
+    func updateTablePurchasedCurrencies(model: ConverterCurrencyView.Model, lastDateReceivedData: String)
     func updateTableView(table: UITableView)
-    //    func showError()
-    //    func showEmpty()
     func startLoader()
     func stopLoader()
 }
@@ -33,7 +29,7 @@ final class ConverterCurrencyViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavBar()
-        presenter.viewDidLoad() // FIXME: перенести в стоплоадер?
+        presenter.viewDidLoad()
     }
 
     func setupNavBar() {
@@ -58,8 +54,8 @@ extension ConverterCurrencyViewController: ConverterCurrencyViewProtocol {
         customView.updateSoldCurrency(model: model)
     }
 
-    func updateListPurchasedCurrencies(model: ConverterCurrencyView.ListPurchasedCurrenciesModel) {
-        customView.updateListPurchasedCurrencies(model: model)
+    func updateTablePurchasedCurrencies(model: ConverterCurrencyView.Model, lastDateReceivedData: String) {
+        customView.updateTablePurchasedCurrencies(model: model, lastDateReceivedData: lastDateReceivedData)
     }
 
     func updateTableView(table: UITableView) {

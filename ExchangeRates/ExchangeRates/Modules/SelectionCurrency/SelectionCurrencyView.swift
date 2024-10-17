@@ -1,25 +1,28 @@
 import UIKit
 
-typealias Item = SelectionCurrencyView.Model.Item
-
 final class SelectionCurrencyView: UIView {
     struct Model {
-        var items: [Item]
-
-        struct Item {
-            let currencyKey: String
-            let currencyName: String
-            var isSelected: Bool
-        }
+        let items: [SelectionCurrencyTableViewCell.Model]
     }
 
-    private var model: Model?
+    private let tableManager = SelectionCurrencyViewTableManager()
 
     private lazy var tableView: UITableView = {
         let table = UITableView()
-        table.register(SelectionCurrencyTableViewCell.self, forCellReuseIdentifier: "Cell")
-        table.delegate = self
-        table.dataSource = self
+        table.register(
+            SelectionCurrencyTableViewCell.self,
+            forCellReuseIdentifier: SelectionCurrencyTableViewCell.id
+        )
+        table.separatorInset = .zero
+        table.tableFooterView = UIView()
+        table.backgroundColor = .systemBackground
+        table.separatorStyle = .none
+        table.showsVerticalScrollIndicator = false
+
+        tableManager.set(tableView: table)
+        tableManager.onTapped = { [weak self] index in
+            self?.presenter.tapRow(index: index.row)
+        }
         return table
     }()
 
@@ -37,8 +40,7 @@ final class SelectionCurrencyView: UIView {
     }
 
     func update(model: Model) {
-        self.model = model
-        tableView.reloadData()
+        tableManager.bind(items: model.items)
     }
 }
 
@@ -61,32 +63,5 @@ private extension SelectionCurrencyView {
             tableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
         ])
-    }
-}
-
-extension SelectionCurrencyView: UITableViewDataSource {
-    func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-        return model?.items.count ?? 0
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as?
-            SelectionCurrencyTableViewCell else { fatalError() }
-
-        guard let item = model?.items[indexPath.row] else { return UITableViewCell() }
-        cell.configure(item: item)
-        if item.isSelected {
-            cell.accessoryType = .checkmark
-        } else {
-            cell.accessoryType = .none
-        }
-        return cell
-    }
-}
-
-extension SelectionCurrencyView: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        presenter.tapCell(index: indexPath.row)
     }
 }

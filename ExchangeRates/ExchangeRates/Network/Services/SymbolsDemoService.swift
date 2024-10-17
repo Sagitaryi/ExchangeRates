@@ -2,7 +2,7 @@ import Foundation
 
 final class SymbolsDemoService: SymbolsServiceProtocol {
     func fetchSymbols(queue _: DispatchQueue, completion: @escaping (Result<SymbolsModel, NetworkClientError>) -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
             completion(.success(Constants.model))
         }
     }

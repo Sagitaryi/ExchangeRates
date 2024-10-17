@@ -1,6 +1,15 @@
 import UIKit
 
 final class SelectionCurrencyTableViewCell: UITableViewCell {
+    static let id = "SelectionCurrencyTableViewCell"
+
+    struct Model {
+        let currencyFullName: String
+        let currencyKey: String
+        let currencyName: String
+        var isSelected: Bool
+    }
+
     private var currencyLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 15)
@@ -18,8 +27,9 @@ final class SelectionCurrencyTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(item: Item) {
-        currencyLabel.text = "\(item.currencyKey) - \(item.currencyName)"
+    func configure(with model: Model) {
+        currencyLabel.text = model.currencyFullName
+        accessoryType = model.isSelected ? .checkmark : .none
     }
 }
 

@@ -2,7 +2,7 @@ import Foundation
 
 final class RatesDemoService: RatesServiceProtocol {
     func fetchRates(base _: String, symbols _: [String], queue _: DispatchQueue, completion: @escaping (Result<RatesModel, NetworkClientError>) -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
             completion(.success(Constants.model))
         }
     }

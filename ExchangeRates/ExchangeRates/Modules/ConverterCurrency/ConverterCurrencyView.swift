@@ -5,27 +5,18 @@ final class ConverterCurrencyView: UIView {
 
     struct SoldCurrencyModel {
         var flag: UIImage?
-        var currencyKey: String
-        var currencyName: String
+        let currencyKey: String
+        let currencyName: String
         var amount: String = "0"
     }
 
-    struct ListPurchasedCurrenciesModel {
-        var items: [Item]
-        var lastDateReceivedData: Date?
-
-        struct Item {
-            var flag: UIImage?
-            var currencyKey: String
-            var currencyName: String
-            var amount: String = "0"
-            var rate: String = "0"
-        }
+    struct Model {
+        let items: [ConverterCurrencyTableViewCell.Model]
     }
 
     private var soldCurrency: SoldCurrencyModel?
-    private var listPurchasedCurrencies: ListPurchasedCurrenciesModel?
-//    private var tableManager: TableManagerServiceProtocol = TableManagerService()
+
+    private let tableManager = ConverterCurrencyViewTableManager()
 
     private lazy var editBarButtonItem: UIBarButtonItem = {
         let barButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(editTapped))
@@ -33,31 +24,33 @@ final class ConverterCurrencyView: UIView {
     }()
 
     private lazy var loaderView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .systemGray
+        let view = LoaderView()
+
+//        let view = UIView()
+//        view.backgroundColor = .systemGray
         return view
     }()
 
-    private lazy var loaderImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
-        imageView.image = UIImage(named: "objmen-valjut")
-        return imageView
-    }()
-
-    private lazy var headerLoaderLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont(name: "Futura-Medium", size: 45)
-        label.textColor = .white
-        label.text = "CURRENCY"
-        return label
-    }()
-
-    private lazy var activityIndicator: UIActivityIndicatorView = {
-        let spinner = UIActivityIndicatorView(style: .large)
-        spinner.startAnimating()
-        return spinner
-    }()
+//    private lazy var loaderImageView: UIImageView = {
+//        let imageView = UIImageView()
+//        imageView.contentMode = .scaleAspectFill
+//        imageView.image = UIImage(named: "obmen-valut")
+//        return imageView
+//    }()
+//
+//    private lazy var headerLoaderLabel: UILabel = {
+//        let label = UILabel()
+//        label.font = UIFont(name: "Futura-Medium", size: 45)
+//        label.textColor = .white
+//        label.text = "CURRENCY"
+//        return label
+//    }()
+//
+//    private lazy var activityIndicator: UIActivityIndicatorView = {
+//        let spinner = UIActivityIndicatorView(style: .large)
+//        spinner.startAnimating()
+//        return spinner
+//    }()
 
     private lazy var topBlockContentView: UIView = {
         let view = UIView()
@@ -127,34 +120,20 @@ final class ConverterCurrencyView: UIView {
     }()
 
     private lazy var tableWithCurrenciesView: UITableView = {
-        let tableView = UITableView()
-        /*
-         tableView.backgroundColor = .red
-         print(listPurchasedCurrencies)
-         tableManager.attachTable(tableView)
-         guard let model = listPurchasedCurrencies else { return tableView }
-         guard let baseCurrency = soldCurrency else { return tableView }
-         print(1111)
-         tableManager.displayConverterCurrencyTableView(model: model, baseCurrency: baseCurrency)
-          */
+        let table = UITableView()
 
-//        guard let model = listPurchasedCurrencies?.items else { return }
-//        guard let baseCurrency = soldCurrency?.currencyKey else { return }
-//        let modelViewCell: ConverterCurrencyTableViewCell.Model = .init(baseCurrency: baseCurrency,
-//                                                                        flag: model.flag,
-//                                                                        currencyKey: model.currencyKey,
-//                                                                        currencyName: model.currencyName,
-//                                                                        amount: model.amount,
-//                                                                        rate: model.rate)
-//
-//        tableManager.displayConverterCurrencyTableView(model: <#T##ConverterCurrencyTableViewCell.Model#>)
+        table.register(
+            ConverterCurrencyTableViewCell.self,
+            forCellReuseIdentifier: ConverterCurrencyTableViewCell.id
+        )
+        table.separatorInset = .zero
+        table.tableFooterView = UIView()
+        table.backgroundColor = .systemBackground
+        table.separatorStyle = .none
+        table.showsVerticalScrollIndicator = false
 
-        // FIXME: v TM
-
-//        tableView.register(ConverterCurrencyTableViewCell.self, forCellReuseIdentifier: "Cell")
-//        tableView.delegate = self
-//        tableView.dataSource = self
-        return tableView
+        tableManager.set(tableView: table)
+        return table
     }()
 
     private lazy var footterBlockDateReceivedDataView: UIView = {
@@ -191,13 +170,9 @@ final class ConverterCurrencyView: UIView {
         betTextField.text = model.amount
     }
 
-    func updateListPurchasedCurrencies(model: ListPurchasedCurrenciesModel) {
-        print("Model: \(model)")
-        listPurchasedCurrencies = model
-        if let date = listPurchasedCurrencies?.lastDateReceivedData {
-            dateReceivedDataLabel.text = "Last update: \(date)"
-        }
-        tableWithCurrenciesView.reloadData()
+    func updateTablePurchasedCurrencies(model: Model, lastDateReceivedData: String) {
+        dateReceivedDataLabel.text = lastDateReceivedData // "Last update: \(date)" // FIXME: проверить формат string
+        tableManager.bind(items: model.items)
     }
 
     func updateTableView(table: UITableView) {
@@ -218,14 +193,12 @@ final class ConverterCurrencyView: UIView {
     }
 
     func startLoader() {
-        // Показываем скелетон или лоадер
-        setupSubviewLoader()
+        addSubview(loaderView)
         setupConstraintsLoader()
     }
 
     func stopLoader() {
-        // Скрываем все
-        loaderView.removeFromSuperview()
+        loaderView.isHidden = true
     }
 }
 
@@ -234,13 +207,6 @@ private extension ConverterCurrencyView {
         backgroundColor = .white
         setupSubviews()
         setupConstraints()
-    }
-
-    func setupSubviewLoader() {
-        addSubview(loaderView)
-        loaderView.addSubview(loaderImageView)
-        loaderView.addSubview(headerLoaderLabel)
-        loaderView.addSubview(activityIndicator)
     }
 
     func setupSubviews() {
@@ -263,28 +229,12 @@ private extension ConverterCurrencyView {
 
     func setupConstraintsLoader() {
         loaderView.translatesAutoresizingMaskIntoConstraints = false
-        loaderImageView.translatesAutoresizingMaskIntoConstraints = false
-        headerLoaderLabel.translatesAutoresizingMaskIntoConstraints = false
-        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
             loaderView.topAnchor.constraint(equalTo: topAnchor),
             loaderView.bottomAnchor.constraint(equalTo: bottomAnchor),
             loaderView.leadingAnchor.constraint(equalTo: leadingAnchor),
             loaderView.trailingAnchor.constraint(equalTo: trailingAnchor),
-
-            loaderImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            loaderImageView.bottomAnchor.constraint(equalTo: headerLoaderLabel.topAnchor, constant: -30),
-            loaderImageView.widthAnchor.constraint(equalToConstant: 60),
-            loaderImageView.heightAnchor.constraint(equalToConstant: 60),
-
-            headerLoaderLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            headerLoaderLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-
-            activityIndicator.centerXAnchor.constraint(equalTo: centerXAnchor),
-            activityIndicator.topAnchor.constraint(equalTo: headerLoaderLabel.bottomAnchor, constant: 30),
-            activityIndicator.heightAnchor.constraint(equalToConstant: 80),
-            activityIndicator.widthAnchor.constraint(equalToConstant: 80),
         ])
     }
 
@@ -410,29 +360,3 @@ extension ConverterCurrencyView: UITextFieldDelegate {
         textField.text = ""
     }
 }
-
-// extension ConverterCurrencyView: UITableViewDataSource {
-//    func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-//        guard let list = listPurchasedCurrencies else { return 0 }
-//        return list.items.count
-//    }
-//
-//    func tableView(_: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        guard let cell = tableWithCurrenciesView.dequeueReusableCell(withIdentifier: "Cell",
-//                                                                     for: indexPath) as? ConverterCurrencyTableViewCell else { fatalError() }
-//        guard let model = listPurchasedCurrencies?.items[indexPath.row] else { return cell }
-//        print(model)
-//
-//        guard let baseCurrency = soldCurrency?.currencyKey else { return cell }
-//        let modelViewCell: ConverterCurrencyTableViewCell.Model = .init(baseCurrency: baseCurrency,
-//                                                                        flag: model.flag,
-//                                                                        currencyKey: model.currencyKey,
-//                                                                        currencyName: model.currencyName,
-//                                                                        amount: model.amount,
-//                                                                        rate: model.rate)
-//        cell.configure(model: modelViewCell)
-//        return cell
-//    }
-// }
-//
-// extension ConverterCurrencyView: UITableViewDelegate {} // TODO: можно ли перенести к View

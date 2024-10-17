@@ -18,12 +18,14 @@ final class ConverterCurrencyPresenter: ConverterCurrencyPresenterProtocol {
     private var symbolsModel: SymbolsModel?
     private var ratesModel: RatesModel?
 
-    private var soldCurrencyModel: ConverterCurrencyView.SoldCurrencyModel = .init(currencyKey: "", currencyName: "")
-    private var purchasedCurrencyListModel: ConverterCurrencyView.ListPurchasedCurrenciesModel = .init(items: [])
+    private var soldCurrencyModel: ConverterCurrencyView.SoldCurrencyModel = .init(
+        currencyKey: "",
+        currencyName: ""
+    )
 
     private let symbolsService: SymbolsServiceProtocol
     private let ratesService: RatesServiceProtocol
-    private let tableManager: TableManagerServiceProtocol = TableManagerService()
+    private let tableManager = ConverterCurrencyViewTableManager()
     private let router: ConverterCurrencyRouterProtocol
 
     private let rateDecimals: String
@@ -32,10 +34,10 @@ final class ConverterCurrencyPresenter: ConverterCurrencyPresenterProtocol {
     private var soldCurrency: CurrencyId {
         didSet {
             if oldValue != soldCurrency {
-                clearRateAndAmountFields()
                 soldCurrencyModel = createSoldCurrencyModel(currencyID: soldCurrency)
                 view?.updateSoldCurrency(model: soldCurrencyModel)
                 isRequestNeeded = true
+                updateTablePurchasedCurrencies()
             }
         }
     }
@@ -43,10 +45,8 @@ final class ConverterCurrencyPresenter: ConverterCurrencyPresenterProtocol {
     private var purchasedCurrencyList: [CurrencyId] {
         didSet {
             if oldValue != purchasedCurrencyList {
-                clearRateAndAmountFields()
-                updateRateModel()
-                purchasedCurrencyListModel = createPurchasedCurrenciesListModel(purchasedCurrencyList: purchasedCurrencyList)
-                view?.updateListPurchasedCurrencies(model: purchasedCurrencyListModel)
+                isRequestNeeded = true
+                updateTablePurchasedCurrencies()
             }
         }
     }
@@ -59,7 +59,6 @@ final class ConverterCurrencyPresenter: ConverterCurrencyPresenterProtocol {
         symbolsService: SymbolsServiceProtocol,
         ratesService: RatesServiceProtocol,
         router: ConverterCurrencyRouterProtocol
-
     ) {
         self.soldCurrency = soldCurrency
         self.purchasedCurrencyList = purchasedCurrencyList
@@ -100,60 +99,56 @@ final class ConverterCurrencyPresenter: ConverterCurrencyPresenterProtocol {
         }
 
         group.notify(queue: DispatchQueue.main) { [self] in
-            view?.stopLoader() // FIXME: проверить расположение
             soldCurrencyModel = createSoldCurrencyModel(currencyID: soldCurrency)
-            purchasedCurrencyListModel = createPurchasedCurrenciesListModel(purchasedCurrencyList: purchasedCurrencyList)
             view?.updateSoldCurrency(model: soldCurrencyModel)
-            view?.updateListPurchasedCurrencies(model: purchasedCurrencyListModel)
-            updateTableView()
+            updateTablePurchasedCurrencies()
+            view?.stopLoader()
         }
-    }
-
-    func updateTableView() {
-        let tableView = UITableView()
-        tableView.backgroundColor = .red
-        tableManager.attachTable(tableView)
-        var modelsViewCell: [ConverterCurrencyTableViewCell.Model] = []
-        for item in purchasedCurrencyListModel.items {
-            modelsViewCell.append(.init(baseCurrency: soldCurrency, flag: item.flag, currencyKey: item.currencyKey, currencyName: item.currencyName, amount: item.amount, rate: item.rate))
-        }
-        print("modelsViewCell - \(modelsViewCell)")
-        tableManager.displayConverterCurrencyTableView(modelsViewCell: modelsViewCell)
-        view?.updateTableView(table: tableView)
     }
 
     func updateAmount(text: String) {
-        if let amount = Double(text) {
-            soldCurrencyModel.amount = String(amount)
-            if isRequestNeeded {
-                updateRateModel()
-            }
-            purchasedCurrencyListModel = createPurchasedCurrenciesListModel(purchasedCurrencyList: purchasedCurrencyList)
-            view?.updateListPurchasedCurrencies(model: purchasedCurrencyListModel)
-        } else {
+        guard let amount = Double(text) else {
             print("incorrect number")
+            return
+        }
+
+        soldCurrencyModel.amount = String(amount)
+        if isRequestNeeded {
+            updateRatesCurrencies()
+        } else {
+            updateTablePurchasedCurrencies()
         }
     }
 
     func soldCurrencyTapped() {
         guard let model = symbolsModel else { return }
-        router.openSelectionCurrency(currencyKey: soldCurrency, symbolsModel: model, completion: updateSoldCurrency(onChanged:))
+        router.openSelectionCurrency(
+            currencyKey: soldCurrency,
+            symbolsModel: model
+        ) { [weak self] (changed: Set<CurrencyId>) in
+            self?.updateSoldCurrency(changed: changed)
+        }
     }
 
     func editButtonTapped() {
         guard let model = symbolsModel else { return }
-        router.openSelectionCurrencyList(currencyList: purchasedCurrencyList, symbolsModel: model, completion: updatePurchasedCurrenciesList(onChanged:))
+        router.openSelectionCurrencyList(
+            currencyList: purchasedCurrencyList,
+            symbolsModel: model
+        ) { [weak self] (changed: Set<CurrencyId>) in
+            self?.updatePurchasedCurrenciesList(changed: changed)
+        }
     }
 }
 
 private extension ConverterCurrencyPresenter {
-    func updateSoldCurrency(onChanged: Set<CurrencyId>) {
-        guard let element = onChanged.first else { return }
+    func updateSoldCurrency(changed: Set<CurrencyId>) {
+        guard let element = changed.first else { return }
         soldCurrency = element
     }
 
-    func updatePurchasedCurrenciesList(onChanged: Set<CurrencyId>) {
-        purchasedCurrencyList = Array(onChanged.sorted(by: { $0 < $1 }))
+    func updatePurchasedCurrenciesList(changed: Set<CurrencyId>) {
+        purchasedCurrencyList = Array(changed.sorted(by: { $0 < $1 }))
     }
 
     func createSoldCurrencyModel(currencyID: CurrencyId) -> ConverterCurrencyView.SoldCurrencyModel {
@@ -167,27 +162,57 @@ private extension ConverterCurrencyPresenter {
         return model
     }
 
-    func createPurchasedCurrenciesListModel(purchasedCurrencyList: [CurrencyId]) -> ConverterCurrencyView.ListPurchasedCurrenciesModel {
-        var model: ConverterCurrencyView.ListPurchasedCurrenciesModel = .init(items: [])
+    func createPurchasedCurrenciesModels() -> [ConverterCurrencyTableViewCell.Model] {
+        guard purchasedCurrencyList.count > 0 else {
+//            view?.showEmpty()
+            return [ConverterCurrencyTableViewCell.Model]()
+        }
+        var models = [ConverterCurrencyTableViewCell.Model]()
+
         for element in purchasedCurrencyList {
             let flag = UIImage(named: element)
             let key = element
             let name = symbolsModel?.symbols.first(where: { $0.key == element })?.value ?? ""
-            let rate = ratesModel?.rates.first(where: { $0.key == element })?.value ?? 0.0
-            let amount = (Double(soldCurrencyModel.amount) ?? 0) * rate
-            let item: ConverterCurrencyView.ListPurchasedCurrenciesModel.Item = .init(flag: flag,
-                                                                                      currencyKey: key,
-                                                                                      currencyName: name,
-                                                                                      amount: String(format: "%.\(amountDecimals)f", amount),
-                                                                                      rate: String(format: "%.\(rateDecimals)f", rate))
+            let rate = isRequestNeeded ? 0.0 : ratesModel?.rates.first(where: { $0.key == element })?.value ?? 0.0
+            let amount = isRequestNeeded ? 0.0 : (Double(soldCurrencyModel.amount) ?? 0) * rate
 
-            model.items.append(item)
+            let item: ConverterCurrencyTableViewCell.Model = .init(
+                baseCurrency: soldCurrency,
+                flag: flag,
+                currencyKey: key,
+                currencyName: name,
+                amount: String(format: "%.\(amountDecimals)f", amount),
+                rate: "1 \(soldCurrency) = \(String(format: "%.\(rateDecimals)f", rate)) \(key)"
+            )
+            models.append(item)
         }
-        return model
+        return models
     }
 
-    func updateRateModel() {
-        ratesService.fetchRates(base: soldCurrency, symbols: purchasedCurrencyList, queue: .main) { [self] result in
+    func updateTablePurchasedCurrencies() {
+        let models = createPurchasedCurrenciesModels()
+        let viewModel = ConverterCurrencyView.Model(items: models)
+
+        var dateString = "unknown"
+        if let lastUpdate = ratesModel?.date {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "dd-MM-yyyy"
+            dateString = dateFormatter.string(from: lastUpdate)
+        }
+
+        view?.updateTablePurchasedCurrencies(
+            model: viewModel,
+            lastDateReceivedData: "Last update: \(dateString)"
+        )
+    }
+
+    func updateRatesCurrencies() {
+        ratesService.fetchRates(
+            base: soldCurrency,
+            symbols: purchasedCurrencyList,
+            queue: .main
+        ) { [self] result in
+
             switch result {
             case let .success(data):
                 ratesModel = data
@@ -195,18 +220,7 @@ private extension ConverterCurrencyPresenter {
             case let .failure(error):
                 print(error)
             }
+            updateTablePurchasedCurrencies()
         }
-    }
-
-    func clearRateAndAmountFields() {
-        for element in purchasedCurrencyListModel.items {
-            soldCurrencyModel.amount = "0"
-            if let index = purchasedCurrencyListModel.items.firstIndex(where: { $0.currencyKey == element.currencyKey }) {
-                purchasedCurrencyListModel.items[index].rate = "0"
-                purchasedCurrencyListModel.items[index].amount = "0"
-            }
-        }
-        view?.updateSoldCurrency(model: soldCurrencyModel)
-        view?.updateListPurchasedCurrencies(model: purchasedCurrencyListModel)
     }
 }

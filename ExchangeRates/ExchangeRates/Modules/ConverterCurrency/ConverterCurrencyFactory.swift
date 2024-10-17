@@ -2,7 +2,6 @@ import UIKit
 
 final class ConverterCurrencyFactory {
     func make() -> UIViewController {
-        /// Только Factory может наполнять Presenter реальными сервисами и другими зависимостями
         let networkClient = NetworkClient()
         let symbolsService = SymbolsDemoService()
         let ratesService = RatesDemoService()

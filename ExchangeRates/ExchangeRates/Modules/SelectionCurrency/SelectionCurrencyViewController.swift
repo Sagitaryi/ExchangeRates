@@ -4,7 +4,7 @@ protocol SelectionCurrencyViewProtocol: AnyObject {
     func update(model: SelectionCurrencyView.Model)
 }
 
-class SelectionCurrencyViewController: UIViewController {
+final class SelectionCurrencyViewController: UIViewController {
     private let presenter: SelectionCurrencyPresenterProtocol
     private lazy var customView = SelectionCurrencyView(presenter: presenter)
 
@@ -33,7 +33,7 @@ class SelectionCurrencyViewController: UIViewController {
     }
 
     deinit {
-        print(">>> ModuleBetaViewController is deinit")
+        print(">>> ModuleSelectionCurrency is deinit")
     }
 }
 
