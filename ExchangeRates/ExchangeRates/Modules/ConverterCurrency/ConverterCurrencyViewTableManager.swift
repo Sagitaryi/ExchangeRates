@@ -1,21 +1,29 @@
 import UIKit
 
 final class ConverterCurrencyViewTableManager: NSObject {
-    private weak var tableView: UITableView?
-    private var items: [ConverterCurrencyTableViewCell.Model]?
-
     var onTapped: ((_ indexPath: IndexPath) -> Void)?
+
+    private weak var tableView: UITableView?
+    private var items: [ConverterCurrencyModel]?
+    private var diffableDataSource: UITableViewDiffableDataSource<Int, ConverterCurrencyModel>?
 
     func set(tableView: UITableView) {
         tableView.delegate = self
-        tableView.dataSource = self
-
         self.tableView = tableView
+        setupDifableDataSource()
+    }
+
+    func updateDiffableDataSource() {
+        var snapshot = NSDiffableDataSourceSnapshot<Int, ConverterCurrencyModel>()
+        snapshot.appendSections([0])
+        guard let items = items else { return }
+        snapshot.appendItems(items)
+        diffableDataSource?.apply(snapshot, animatingDifferences: false)
     }
 
     func bind(items: [ConverterCurrencyTableViewCell.Model]) {
         self.items = items
-        tableView?.reloadData()
+        updateDiffableDataSource()
     }
 }
 

@@ -1,5 +1,7 @@
 import UIKit
 
+typealias ConverterCurrencyModel = ConverterCurrencyTableViewCell.Model
+
 final class ConverterCurrencyTableViewCell: UITableViewCell {
     static let id = "ConverterCurrencyTableViewCell"
 
@@ -11,7 +13,7 @@ final class ConverterCurrencyTableViewCell: UITableViewCell {
         case sizeRightContent = 150
     }
 
-    struct Model {
+    struct Model: Hashable {
         let baseCurrency: CurrencyId
         var flag: UIImage?
         var currencyKey: String

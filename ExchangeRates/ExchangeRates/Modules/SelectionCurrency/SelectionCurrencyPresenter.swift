@@ -61,7 +61,7 @@ final class SelectionCurrencyPresenter: SelectionCurrencyPresenterProtocol {
 private extension SelectionCurrencyPresenter {
     func updateUI() {
         guard symbolsModel.symbols.count > 0 else {
-//            view?.showEmpty()
+//            view?.showEmpty() // FIXME: для использования в будующем
             return
         }
 

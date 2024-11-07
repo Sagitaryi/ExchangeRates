@@ -164,7 +164,7 @@ private extension ConverterCurrencyPresenter {
 
     func createPurchasedCurrenciesModels() -> [ConverterCurrencyTableViewCell.Model] {
         guard purchasedCurrencyList.count > 0 else {
-//            view?.showEmpty()
+//            view?.showEmpty() // FIXME: для использования в будующем
             return [ConverterCurrencyTableViewCell.Model]()
         }
         var models = [ConverterCurrencyTableViewCell.Model]()

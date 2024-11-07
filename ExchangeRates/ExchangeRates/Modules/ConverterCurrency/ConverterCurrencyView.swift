@@ -1,8 +1,6 @@
 import UIKit
 
 final class ConverterCurrencyView: UIView {
-    // Модель через которую передают все изменения во View
-
     struct SoldCurrencyModel {
         var flag: UIImage?
         let currencyKey: String
@@ -11,7 +9,7 @@ final class ConverterCurrencyView: UIView {
     }
 
     struct Model {
-        let items: [ConverterCurrencyTableViewCell.Model]
+        let items: [ConverterCurrencyModel]
     }
 
     private var soldCurrency: SoldCurrencyModel?
@@ -27,7 +25,6 @@ final class ConverterCurrencyView: UIView {
         let view = LoaderView()
         return view
     }()
-
 
     private lazy var topBlockContentView: UIView = {
         let view = UIView()
@@ -148,7 +145,7 @@ final class ConverterCurrencyView: UIView {
     }
 
     func updateTablePurchasedCurrencies(model: Model, lastDateReceivedData: String) {
-        dateReceivedDataLabel.text = lastDateReceivedData // "Last update: \(date)" // FIXME: проверить формат string
+        dateReceivedDataLabel.text = lastDateReceivedData
         tableManager.bind(items: model.items)
     }
 
@@ -161,13 +158,15 @@ final class ConverterCurrencyView: UIView {
         return editBarButtonItem
     }
 
-    func showError() {
-        // Показываем View ошибки
-    }
+    // FIXME: для использования в будующем
+//    func showError() {
+//        // Показываем View ошибки
+//    }
 
-    func showEmpty() {
-        // Показываем какой-то View для Empty state
-    }
+    // FIXME: для использования в будующем
+//    func showEmpty() {
+//        // Показываем какой-то View для Empty state
+//    }
 
     func startLoader() {
         addSubview(loaderView)

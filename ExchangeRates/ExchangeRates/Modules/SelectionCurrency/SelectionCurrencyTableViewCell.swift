@@ -1,9 +1,11 @@
 import UIKit
 
+typealias SelectionModel = SelectionCurrencyTableViewCell.Model
+
 final class SelectionCurrencyTableViewCell: UITableViewCell {
     static let id = "SelectionCurrencyTableViewCell"
 
-    struct Model {
+    struct Model: Hashable {
         let currencyFullName: String
         let currencyKey: String
         let currencyName: String

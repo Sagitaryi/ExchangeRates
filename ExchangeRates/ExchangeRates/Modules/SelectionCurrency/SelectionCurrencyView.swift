@@ -2,7 +2,7 @@ import UIKit
 
 final class SelectionCurrencyView: UIView {
     struct Model {
-        let items: [SelectionCurrencyTableViewCell.Model]
+        let items: [SelectionModel]
     }
 
     private let tableManager = SelectionCurrencyViewTableManager()

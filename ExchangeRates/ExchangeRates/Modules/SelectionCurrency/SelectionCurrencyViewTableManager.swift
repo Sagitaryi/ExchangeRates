@@ -1,21 +1,29 @@
 import UIKit
 
 final class SelectionCurrencyViewTableManager: NSObject {
+    var onTapped: ((_ indexPath: IndexPath) -> Void)?
+
     private weak var tableView: UITableView?
     private var items: [SelectionCurrencyTableViewCell.Model]?
-
-    var onTapped: ((_ indexPath: IndexPath) -> Void)?
+    private var diffableDataSource: UITableViewDiffableDataSource<Int, SelectionModel>?
 
     func set(tableView: UITableView) {
         tableView.delegate = self
-        tableView.dataSource = self
-
         self.tableView = tableView
+        setupDifableDataSource()
+    }
+
+    func updateDiffableDataSource() {
+        var snapshot = NSDiffableDataSourceSnapshot<Int, SelectionModel>()
+        snapshot.appendSections([0])
+        guard let items = items else { return }
+        snapshot.appendItems(items)
+        diffableDataSource?.apply(snapshot, animatingDifferences: false)
     }
 
     func bind(items: [SelectionCurrencyTableViewCell.Model]) {
         self.items = items
-        tableView?.reloadData()
+        updateDiffableDataSource()
     }
 }
 
@@ -26,27 +34,26 @@ extension SelectionCurrencyViewTableManager: UITableViewDelegate {
     }
 }
 
-extension SelectionCurrencyViewTableManager: UITableViewDataSource {
-    func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-        items?.count ?? 0
-    }
+private extension SelectionCurrencyViewTableManager {
+    func setupDifableDataSource() {
+        guard let tableView = tableView else { return }
+        diffableDataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, _ in
+            let row = indexPath.row
+            guard let items = self.items,
+                  items.indices.contains(row), let cell = tableView.dequeueReusableCell(withIdentifier: SelectionCurrencyTableViewCell.id) as? SelectionCurrencyTableViewCell
+            else {
+                return UITableViewCell()
+            }
+            let item = items[row]
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let row = indexPath.row
-
-        guard let items = items, items.indices.contains(row), let cell = tableView.dequeueReusableCell(withIdentifier: SelectionCurrencyTableViewCell.id) as? SelectionCurrencyTableViewCell else {
-            return UITableViewCell()
-        }
-
-        let item = items[row]
-
-        let cellModel = SelectionCurrencyTableViewCell.Model(
-            currencyFullName: item.currencyFullName,
-            currencyKey: item.currencyKey,
-            currencyName: item.currencyName,
-            isSelected: item.isSelected
-        )
-        cell.configure(with: cellModel)
-        return cell
+            let cellModel = SelectionCurrencyTableViewCell.Model(
+                currencyFullName: item.currencyFullName,
+                currencyKey: item.currencyKey,
+                currencyName: item.currencyName,
+                isSelected: item.isSelected
+            )
+            cell.configure(with: cellModel)
+            return cell
+        })
     }
 }

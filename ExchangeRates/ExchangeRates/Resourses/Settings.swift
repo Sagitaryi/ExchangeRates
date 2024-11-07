@@ -1,10 +1,3 @@
-//
-//  Settings.swift
-//  ExchangeRates
-//
-//  Created by Алексей Чумаков on 23.08.2024.
-//
-
 import Foundation
 
 enum Settings {
